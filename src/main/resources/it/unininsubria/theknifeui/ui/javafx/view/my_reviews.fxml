@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="theknife.ui.javafx.MyReviewsController">
+
+    <top>
+        <Label text="Le mie recensioni"
+               style="-fx-font-size: 18; -fx-font-weight: bold; -fx-padding: 10 10 10 10;"/>
+    </top>
+
+    <center>
+        <TableView fx:id="tabellaRecensioni">
+            <columns>
+                <TableColumn fx:id="colonnaRistorante" text="Ristorante" prefWidth="180"/>
+                <TableColumn fx:id="colonnaVoto" text="Voto" prefWidth="80"/>
+                <TableColumn fx:id="colonnaTesto" text="Recensione" prefWidth="280"/>
+            </columns>
+        </TableView>
+    </center>
+
+    <bottom>
+        <Label fx:id="etichettaVuota"
+               text="Non hai ancora scritto recensioni."
+               style="-fx-text-fill: #6b7280; -fx-padding: 8 10 10 10;"/>
+    </bottom>
+</BorderPane>

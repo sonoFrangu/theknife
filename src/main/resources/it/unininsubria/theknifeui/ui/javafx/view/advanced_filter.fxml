@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="theknife.ui.javafx.AdvancedFilterController">
+    <center>
+        <VBox spacing="10">
+            <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+
+            <Label text="Filtro avanzato" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+
+            <!-- Nome -->
+            <Label text="Nome ristorante"/>
+            <TextField fx:id="campoNome" promptText="es. Da Vittorio"/>
+
+            <!-- Indirizzo -->
+            <Label text="Indirizzo"/>
+            <TextField fx:id="campoIndirizzo" promptText="via, piazza..."/>
+
+            <!-- Città -->
+            <Label text="Città"/>
+            <TextField fx:id="campoCitta" promptText="Milano, Varese..."/>
+
+            <!-- Nazione -->
+            <Label text="Nazione"/>
+            <TextField fx:id="campoNazione" promptText="Italia, Francia..."/>
+
+            <!-- Prezzo -->
+            <Label text="Prezzo massimo (€)"/>
+            <TextField fx:id="campoPrezzoMax" promptText="es. 80"/>
+
+            <!-- Tipo di cucina -->
+            <Label text="Tipo di cucina"/>
+            <TextField fx:id="campoTipoCucina" promptText="Italian, Seafood, Creative..."/>
+
+            <!-- Servizi -->
+            <Label text="Servizi (testo contiene)"/>
+            <TextField fx:id="campoServizi" promptText="es. Parcheggio, Terrazza"/>
+
+            <HBox spacing="10">
+                <CheckBox fx:id="checkConsegna" text="Consegna"/>
+                <CheckBox fx:id="checkPrenotazione" text="Prenotazione online"/>
+                <CheckBox fx:id="checkStellaVerde" text="Green Star"/>
+            </HBox>
+
+            <Label fx:id="etichettaErrore" textFill="red"/>
+
+            <HBox spacing="10">
+                <Button text="Applica" onAction="#onApply"/>
+                <Button text="Annulla" onAction="#onCancel"/>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

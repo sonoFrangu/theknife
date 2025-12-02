@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="theknife.ui.javafx.AddRestaurantController">
+
+    <center>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="15" right="15" bottom="15" left="15"/>
+            </padding>
+
+            <Label text="Nuovo ristorante" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+
+            <Label text="Nome *"/>
+            <TextField fx:id="campoNome" promptText="Nome ristorante"/>
+
+            <Label text="Nazione"/>
+            <TextField fx:id="campoNazione" promptText="es. Italia"/>
+
+            <Label text="Città"/>
+            <TextField fx:id="campoCitta" promptText="es. Milano"/>
+
+            <Label text="Indirizzo"/>
+            <TextField fx:id="campoIndirizzo" promptText="Via..."/>
+
+            <HBox spacing="10">
+                <VBox spacing="5">
+                    <Label text="Latitudine"/>
+                    <TextField fx:id="campoLatitudine" promptText="45.46"/>
+                </VBox>
+                <VBox spacing="5">
+                    <Label text="Longitudine"/>
+                    <TextField fx:id="campoLongitudine" promptText="9.18"/>
+                </VBox>
+            </HBox>
+
+            <Label text="Prezzo medio (€)"/>
+            <TextField fx:id="campoPrezzo" promptText="es. 60"/>
+
+            <Label text="Tipo di cucina"/>
+            <TextField fx:id="campoTipoCucina" promptText="Italian, Gourmet..."/>
+
+            <HBox spacing="10">
+                <CheckBox fx:id="checkConsegna" text="Consegna"/>
+                <CheckBox fx:id="checkPrenotazione" text="Prenotazione online"/>
+            </HBox>
+
+            <Label text="Sito web"/>
+            <TextField fx:id="campoSitoWeb" promptText="https://..."/>
+
+            <Label fx:id="etichettaErrore" textFill="red"/>
+
+            <HBox spacing="10">
+                <Button text="Salva" onAction="#onSalva"/>
+                <Button text="Annulla" onAction="#onAnnulla"/>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

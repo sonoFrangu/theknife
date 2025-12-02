@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.SpinnerValueFactory?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="theknife.ui.javafx.AddReviewController">
+
+    <center>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="15" right="15" bottom="15" left="15"/>
+            </padding>
+
+            <!-- Titolo in alto -->
+            <Label fx:id="etichettaTitolo"
+                   text="Aggiungi una recensione"
+                   style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+
+            <Label text="Voto (1-5)"/>
+            <Spinner fx:id="spinnerVoto" editable="true">
+                <valueFactory>
+                    <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="5" initialValue="5"/>
+                </valueFactory>
+            </Spinner>
+
+            <Label text="Testo recensione"/>
+            <TextArea fx:id="areaRecensione" prefRowCount="5"/>
+
+            <Label fx:id="etichettaErrore" textFill="red"/>
+
+            <HBox spacing="10">
+                <Button text="Salva" onAction="#onSalva"/>
+                <Button text="Annulla" onAction="#onAnnulla"/>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

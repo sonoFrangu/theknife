@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="theknife.ui.javafx.LoginController"
+      alignment="CENTER"
+      spacing="10"
+      prefWidth="300" prefHeight="220">
+
+    <children>
+        <Label text="Accedi" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+        <TextField fx:id="campoUsername"
+                   promptText="Username"
+                   maxWidth="220"/>
+
+        <PasswordField fx:id="campoPassword"
+                       promptText="Password"
+                       maxWidth="220"/>
+
+        <Label fx:id="etichettaErrore"
+               textFill="red"/>
+
+        <Button text="Accedi"
+                onAction="#onLogin"
+                maxWidth="150"/>
+
+        <Button text="Entra come ospite"
+                onAction="#onGuest"
+                maxWidth="150"/>
+    </children>
+
+    <padding>
+        <Insets top="15" right="15" bottom="15" left="15"/>
+    </padding>
+</VBox>

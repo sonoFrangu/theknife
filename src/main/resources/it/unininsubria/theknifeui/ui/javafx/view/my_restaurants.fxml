@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="theknife.ui.javafx.MyRestaurantsController">
+    <top>
+        <Label text="I miei ristoranti"
+               style="-fx-font-size: 18; -fx-font-weight: bold; -fx-padding: 10 10 10 10;"/>
+    </top>
+    <center>
+        <TableView fx:id="tabellaRistoranti">
+            <columns>
+                <TableColumn text="Nome" prefWidth="180"/>
+                <TableColumn text="Città" prefWidth="120"/>
+                <TableColumn text="Indirizzo" prefWidth="180"/>
+                <TableColumn text="Cucina" prefWidth="120"/>
+            </columns>
+        </TableView>
+    </center>
+    <bottom>
+        <Label fx:id="etichettaVuota"
+               text="Non hai ancora inserito ristoranti."
+               style="-fx-text-fill: #6b7280; -fx-padding: 8 10 8 10;"/>
+    </bottom>
+</BorderPane>

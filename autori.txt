@@ -1,0 +1,21 @@
+Cognome: Ossuzio
+Nome: Tommaso
+Matricola: 761586
+Sede: VA
+
+Cognome: Franguelli
+Nome: Matteo
+Matricola: 761133
+Sede: VA
+
+Cognome: Toschi
+Nome: Elia
+Matricola: 760873
+Sede: VA
+
+Cognome: Resteghini
+Nome: Celestino
+Matricola: 760865
+Sede: VA
+
+Link repository GitHub:  https://github.com/Tommaso-Ossuzio/theknife.git
