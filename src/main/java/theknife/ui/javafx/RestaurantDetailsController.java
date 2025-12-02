@@ -28,7 +28,7 @@ public class RestaurantDetailsController {
     @FXML private Hyperlink linkSitoWeb;
 
     // WebView dove visualizzare il sito del ristorante
-    @FXML private WebView webView; // usata come "mini browser" per il sito
+    @FXML private WebView vistaMappa; // usata come "mini browser" per il sito
 
     // Pulsanti in alto a destra
     @FXML private Button bottoneApriMaps;
@@ -173,13 +173,13 @@ public class RestaurantDetailsController {
     // --- sito web nella WebView ---
 
     private void apriInWebView(String url) {
-        if (webView != null && url != null && !url.isBlank()) {
-            webView.getEngine().load(url);
+        if (vistaMappa != null && url != null && !url.isBlank()) {
+            vistaMappa.getEngine().load(url);
         }
     }
 
     private void mostraMessaggioNessunSito() {
-        if (webView != null) {
+        if (vistaMappa != null) {
             String html = """
                     <html>
                       <body style="font-family: Arial; color:#444; padding: 12px;">
@@ -187,7 +187,7 @@ public class RestaurantDetailsController {
                       </body>
                     </html>
                     """;
-            webView.getEngine().loadContent(html);
+            vistaMappa.getEngine().loadContent(html);
         }
     }
 
