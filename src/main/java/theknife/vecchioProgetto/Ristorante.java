@@ -10,6 +10,7 @@ public class Ristorante {
     public double prezzo_Medio;
     public LinkedList<String> cucina;
     private Luogo luogo;
+    private static int id;
 
 
     public Ristorante(String nome, String numeroTelefono, boolean delivery, boolean prenotazioneOn, double prezzo_Medio, LinkedList<String> cucina, Luogo luogo)
@@ -21,6 +22,7 @@ public class Ristorante {
         this.prezzo_Medio = prezzo_Medio;
         this.cucina = cucina;
         this.luogo = luogo;
+        this.id+=id;
 
     }
     //temporaneo
@@ -33,9 +35,8 @@ public class Ristorante {
     public boolean getPrenotazione(){return prenotazioneOn;}
     public LinkedList<String> getCucina(){return cucina;}
     public Luogo getLuogo(){return luogo;}
-
-
-//    public double getMediaStelle()
+    public  int getId() { return id;  }
+    //    public double getMediaStelle()
 //    {
 //        if(!recensioni.isEmpty())
 //        {

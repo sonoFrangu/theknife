@@ -42,7 +42,7 @@ public class Ristoratore extends UtenteRegistrato{
         GestioneRecensioni gr = new GestioneRecensioni();
         for(Ristorante r :ristoranti)
             for (Recensione rec: gr.getRecensioni())
-                if(rec.getRistorante().equals(r))
+                if(rec.get_id_Ristorante()==r.getId())
                     recensioni.add(rec);
         return recensioni;
     }
@@ -58,7 +58,7 @@ public class Ristoratore extends UtenteRegistrato{
         int cont=0;
         for(Ristorante r : ristoranti)
             for(Recensione rec : gr.getRecensioni())
-                if(rec.getRistorante().equals(r))
+                if(rec.get_id_Ristorante()==r.getId())
                     cont++;
         return cont;
     }
@@ -69,7 +69,7 @@ public class Ristoratore extends UtenteRegistrato{
         int contStelle=0;
         for(Ristorante rist: ristoranti)
             for(Recensione rec : gr.getRecensioni())
-                if(rec.getRistorante().equals(rist))
+                if(rec.get_id_Ristorante()==rist.getId())
                     contStelle+=rec.getNumeroStelle();
 
 
@@ -85,7 +85,7 @@ public class Ristoratore extends UtenteRegistrato{
         {
             s+=r.toString();
             for (Recensione rec: gr.getRecensioni())
-                if(rec.getRistorante().equals(ristorante))
+                if(rec.get_id_Ristorante()== ristorante.getId())
                     s+="\t"+rec.toString();
         }
 

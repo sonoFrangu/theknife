@@ -23,7 +23,7 @@ public class GestioneRecensioni {
     {
         if(isPresente(r)) {
             recensioni.remove(r);
-            Recensione nuovaRecensione = new Recensione(numeroStelle, text, r.getUtente(), r.getRistorante());
+            Recensione nuovaRecensione = new Recensione(numeroStelle, text, r.getUtente(), r.get_id_Ristorante());
             recensioni.add(nuovaRecensione);
         }
     }

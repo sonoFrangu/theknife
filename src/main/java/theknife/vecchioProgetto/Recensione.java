@@ -7,17 +7,20 @@ public class Recensione {
     private String text;
     private Date data;
     private UtenteRegistrato utente;
-    private Ristorante ristorante;
+    private int id_ristorante;
+    private static int id;
 
-    public Recensione(int numeroStelle, String text, UtenteRegistrato utente, Ristorante ristorante)
+    public Recensione(int numeroStelle, String text, UtenteRegistrato utente, int id_ristorante)
     {
         if(text.length()>=300)
             text=text.substring(0,300);
         this.numeroStelle = numeroStelle;
         this.text = text;
         this.utente = utente;
-        this.ristorante = ristorante;
+        this.id_ristorante = id_ristorante;
         this.data = new Date();
+        this.id+=id;
+
     }
 
     //<editor-fold desc="Getter">
@@ -25,16 +28,17 @@ public class Recensione {
     public String getText() {return text;}
     public Date getData() {return data;}
     public UtenteRegistrato getUtente() {return utente;}
-    public Ristorante getRistorante() {return ristorante;}
+    public int get_id_Ristorante() {return id_ristorante;}
     //</editor-fold>
 
     @Override
     public String toString() {
-        return "Recensione: "+ numeroStelle+" "+text+" "+utente+" "+ristorante+"\n";
+        GestioneRistoranti g = new GestioneRistoranti();
+        return "Recensione: "+ numeroStelle+" "+text+" "+utente+" "+g.getRistorante(id_ristorante)+"\n";
     }
 
     public boolean equals(Recensione r) {
-        return this.data.equals(r.data) && this.utente.equals(r.utente) && this.ristorante.equals(r.ristorante);
+        return this.data.equals(r.data) && this.utente.equals(r.utente) && this.id_ristorante==(r.id_ristorante);
     }
 
     @Override
