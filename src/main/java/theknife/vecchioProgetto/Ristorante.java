@@ -36,20 +36,12 @@ public class Ristorante {
     public LinkedList<String> getCucina(){return cucina;}
     public Luogo getLuogo(){return luogo;}
     public  int getId() { return id;  }
-    //    public double getMediaStelle()
-//    {
-//        if(!recensioni.isEmpty())
-//        {
-//            int somma = 0;
-//            for (Recensione r : recensioni) {
-//                somma += r.getNumeroStelle();
-//            }
-//            return (double) somma / recensioni.size();
-//        }
-//        else
-//            return 0;
-//    }
-    //</editor-fold>
+
+    public double getMediaStelle()
+    {
+        GestioneRecensioni gr= new GestioneRecensioni();
+        return gr.mediaStelle(this.id);
+    }
 
     public String toString() {
         String cucine="";
