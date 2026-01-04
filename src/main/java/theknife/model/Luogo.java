@@ -5,7 +5,6 @@ public class Luogo {
 
     private static final double RAGGIOTERRESTRE_KM= 6371;
 
-
     private String nazione;
     private String via;
     private String citta;
@@ -47,8 +46,6 @@ public class Luogo {
     {
         return "Luogo: "+nazione+" "+via+" "+citta+" "+n_civico+" "+latitudine+" "+longitudine+"\n";
     }
-
-
     /**
      * Verifica se un luogo è vicino entro 10 kilometri
      *

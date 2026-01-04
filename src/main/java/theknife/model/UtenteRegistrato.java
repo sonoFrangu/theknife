@@ -76,7 +76,7 @@ public class UtenteRegistrato extends Utente{
 
     private void aggiungiRecensione(int n_stelle,String text, Date data, Ristorante ristorante)
     {
-        Recensione recensione= new Recensione(n_stelle, text,this, ristorante.getId());
+        Recensione recensione= new Recensione(n_stelle, text,this.id, ristorante.getId());
         GestioneRecensioni gr= new GestioneRecensioni();
 
         gr.add(recensione);
@@ -104,7 +104,7 @@ public class UtenteRegistrato extends Utente{
         LinkedList<Recensione> rec = getRecensioni();
         LinkedList<Recensione> recProprie= new LinkedList<>();
         for(Recensione r : rec)
-            if( r.getUtente()==this)
+            if( r.getIdUtente()==this.id)
                 recProprie.add(r);
 
         return recProprie;
