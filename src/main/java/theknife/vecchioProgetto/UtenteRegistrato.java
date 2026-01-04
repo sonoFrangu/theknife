@@ -11,8 +11,9 @@ public class UtenteRegistrato extends Utente{
     String password;
     boolean ristoratore;
     Luogo luogo;
+    private static int id;
 
-    public LinkedList<Ristorante> ristorantiPreferiti;
+    public LinkedList<Integer> ristorantiPreferiti;
 
 
     public UtenteRegistrato(String username, String nome, String cognome, Date dataNascita, String password, Luogo luogo) {
@@ -23,7 +24,9 @@ public class UtenteRegistrato extends Utente{
         this.password = password;
         this.ristoratore = false;
         this.luogo = luogo;
-        this.ristorantiPreferiti = new LinkedList<Ristorante>();
+        this.ristorantiPreferiti = new LinkedList<Integer>();
+        this.id+=id;
+
     }
 
     //<editor-fold desc="Getter">
@@ -33,7 +36,7 @@ public class UtenteRegistrato extends Utente{
     public Date getDataNascita() { return dataNascita; }
     public boolean isRistoratore() { return ristoratore; }
     public Luogo getLuogo() { return luogo; }
-    public LinkedList<Ristorante> getRistorantiPreferiti() { return ristorantiPreferiti; }
+    public LinkedList<Integer> getRistorantiPreferiti() { return ristorantiPreferiti; }
     public LinkedList<Recensione> getRecensioni() { GestioneRecensioni gr= new GestioneRecensioni();
         return  gr.getRecensioni();
     }
@@ -43,7 +46,7 @@ public class UtenteRegistrato extends Utente{
 
     public void aggiungiPreferito(Ristorante ristorante) {
         if (!ristorantiPreferiti.contains(ristorante)) {
-            ristorantiPreferiti.add(ristorante);
+            ristorantiPreferiti.add(ristorante.getId());
             System.out.println("Ristorante aggiunto ai preferiti: " /*+ ristorante.getNome()*/);
         } else {
             System.out.println("Il ristorante è già nei preferiti.");
@@ -55,7 +58,7 @@ public class UtenteRegistrato extends Utente{
             System.out.println("Nessun ristorante nei preferiti.");
         } else {
             System.out.println("Ristoranti preferiti:");
-            for (Ristorante r : ristorantiPreferiti) {
+            for (int i : ristorantiPreferiti) {
                 System.out.println("- " /*+ r.getNome()*/);
             }
         }
@@ -71,7 +74,7 @@ public class UtenteRegistrato extends Utente{
 
     private void aggiungiRecensione(int n_stelle,String text, Date data, Ristorante ristorante)
     {
-        Recensione recensione= new Recensione(n_stelle, text,this, ristorante);
+        Recensione recensione= new Recensione(n_stelle, text,this, ristorante.getId());
         GestioneRecensioni gr= new GestioneRecensioni();
 
         gr.add(recensione);
@@ -111,11 +114,14 @@ public class UtenteRegistrato extends Utente{
      */
     private LinkedList<Ristorante> visualizzaRistorantiRecensiti()
     {
-        LinkedList<Ristorante> lista = new LinkedList<>();
+        LinkedList<Integer> listaid=new LinkedList<>();
         GestioneRecensioni gr = new GestioneRecensioni();
-        for(Recensione r: gr.getRecensioni() )
-            lista.add(r.getRistorante());
-        return lista;
+        for(Recensione rec: gr.getRecensioni() )
+            if(!listaid.contains(rec.get_id_Ristorante()))
+                listaid.add(rec.get_id_Ristorante());
+        GestioneRistoranti ges= new GestioneRistoranti();
+        return ges.getRistoranti(listaid);
+
     }
 
     //da verificare in utente se void o LinkedList
@@ -126,7 +132,7 @@ public class UtenteRegistrato extends Utente{
         LinkedList<Recensione> lista = new LinkedList<>();
 
         for ( Recensione r : gr.getRecensioni())
-            if(r.getRistorante().equals(ristorante))
+            if(r.get_id_Ristorante()==ristorante.getId())
                 lista.add(r);
         return lista;
     }

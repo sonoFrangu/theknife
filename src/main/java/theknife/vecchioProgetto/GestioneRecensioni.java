@@ -23,7 +23,7 @@ public class GestioneRecensioni {
     {
         if(isPresente(r)) {
             recensioni.remove(r);
-            Recensione nuovaRecensione = new Recensione(numeroStelle, text, r.getUtente(), r.getRistorante());
+            Recensione nuovaRecensione = new Recensione(numeroStelle, text, r.getUtente(), r.get_id_Ristorante());
             recensioni.add(nuovaRecensione);
         }
     }
@@ -34,4 +34,15 @@ public class GestioneRecensioni {
     }
     public LinkedList<Recensione> getRecensioni() { return recensioni; }
 
+    public double mediaStelle(int idRistorante)
+    {
+        int somma=0;
+        int count=0;
+        for(Recensione r : recensioni)
+            if(r.get_id_Ristorante() == idRistorante) {
+                count++;
+                somma+=r.getNumeroStelle();
+            }
+        return somma/count;
+    }
 }

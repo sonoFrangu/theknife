@@ -23,4 +23,22 @@ public class GestioneRistoranti {
         listaRistoranti.removeIf(x -> x.getLuogo().equals(luogo)&&x.getNome().equals(nome));
         listaRistoranti.add(new_r);
     }
+    public Ristorante getRistorante(int id)
+    {
+        for(Ristorante r : listaRistoranti )
+            if(r.getId() == id)
+                return r;
+        return null;
+    }
+
+    public LinkedList<Ristorante> getRistoranti(LinkedList<Integer> listaid)
+    {
+        LinkedList<Ristorante> list = new LinkedList<>();
+        for(Ristorante r : listaRistoranti)
+            for(Integer i : listaid )
+                if(r.getId()==i)
+                    list.add(r);
+        return list;
+    }
+
 }
