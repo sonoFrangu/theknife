@@ -14,11 +14,21 @@ public class GestioneRecensioni {
             recensioni.add(r);
     }
 
+    /**
+     * rimuove una recensione dalla lista
+     * @param r
+     */
     public void rimuoviRecensione(Recensione r)
     {
         recensioni.remove(r);
     }
 
+    /**
+     * Modifica una recensione
+     * @param r
+     * @param text
+     * @param numeroStelle
+     */
     public void modificaRecensioni(Recensione r, String text, int numeroStelle)
     {
         if(isPresente(r)) {
@@ -27,13 +37,28 @@ public class GestioneRecensioni {
             recensioni.add(nuovaRecensione);
         }
     }
-    //verifica se è presente la recensione
+
+    /**
+     * Verifica se la recensione è già presente nella lista
+     * @param r
+     * @return
+     */
     public boolean isPresente(Recensione r)
     {
         return recensioni.contains(r);
     }
+
+    /**
+     * Restituisce tutte le recensioni presenti nella lista
+     * @return
+     */
     public LinkedList<Recensione> getRecensioni() { return recensioni; }
 
+    /**
+     * Restituisce la media delle stelle di un ristorante
+     * @param idRistorante
+     * @return
+     */
     public double mediaStelle(int idRistorante)
     {
         int somma=0;
@@ -45,4 +70,6 @@ public class GestioneRecensioni {
             }
         return somma/count;
     }
+
+
 }
