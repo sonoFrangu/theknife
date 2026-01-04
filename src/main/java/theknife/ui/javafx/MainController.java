@@ -110,67 +110,70 @@ public class MainController {
 
         String[] parti = dividiCsv(linea);
 
-        Restaurant r = new Restaurant(); //todo: SBAGLIATO!!! non bisogna usare i setter ma il costruttore
-        //todo prezzo, cucina, nazione
+        //todo: SBAGLIATO!!! non bisogna usare i setter ma il costruttore
 
-        if (parti.length > 0) r.setNome(pulisci(parti[0]));
-        if (parti.length > 1) {
-            String[] s = parti[1].split(",");
-            r.setIndirizzo(pulisci(s[0]));;
+        String nome = pulisci(parti[0]);
 
-            //r.setIndirizzo(pulisci(parti[1]));
+        String[] s = parti[1].split(",");
+        String indirizzo = pulisci(s[0]);;
+
+        s = parti[2].split(",");
+        String citta = pulisci(s[0]);
+        String nazione = pulisci(s[1]);
+
+
+        double prezzo = pulisci(parti[3]).length() * 20; //ogni simbolo = 20€
+
+        LinkedList<String> tipoCucina= new LinkedList<>();
+        s = parti[4].split(",");
+
+        // Aggiungi ogni elemento alla LinkedList
+        for (String e : s) {
+            tipoCucina.add(pulisci(e));
         }
-        if (parti.length > 2) {
-            String[] s = parti[2].split(",");
-            r.setCitta(pulisci(s[0]));
-            //r.setNazione(pulisci(s[1])); //todo se aggiungo la nazione smette di funzionare
-            //r.setCitta(pulisci(parti[2]));
-        }
-        if (parti.length > 3) r.setPrezzo(pulisci(parti[3]));
-        if (parti.length > 4) r.setTipoCucina(pulisci(parti[4]));
 
         // Coordinate (attenzione agli errori di formato)
-        if (parti.length > 5) {
-            try { r.setLongitudine(Double.parseDouble(pulisci(parti[5]))); } catch (NumberFormatException ignored) {}
-        }
-        if (parti.length > 6) {
-            try { r.setLatitudine(Double.parseDouble(pulisci(parti[6]))); } catch (NumberFormatException ignored) {}
-        }
+        double latitudine=0;
+        double longitudine=0;
+
+        try { longitudine = Double.parseDouble(pulisci(parti[5])); } catch (NumberFormatException ignored) {}
+
+        try { latitudine = Double.parseDouble(pulisci(parti[6])); } catch (NumberFormatException ignored) {}
 
         // Link e info aggiuntive
-        String linkDiRipiego = null;
-        if (parti.length > 8) {
-            linkDiRipiego = pulisci(parti[8]);
-        }
-        if (parti.length > 9) {
-            r.setWebsite(pulisci(parti[9]));
-        }
-        if (parti.length > 10) {
-            String[] s = parti[10].split(" ");
+        String link = pulisci(parti[8]);
 
-            double award;
-            String a = s[1].substring(0,4);
+        String website = pulisci(parti[9]);
 
-            if(parti[10]!=null && a.equals("Star"))
-            {
-                award = Double.parseDouble(pulisci(s[0]));
-            }else{
-                award = -1;
-            }
+        s = parti[10].split(" ");
 
-            r.setAwards(String.valueOf(award)); //todo: modificare in Restaurant l'attr award in double invece che string
-            //r.setAwards(pulisci(parti[10]));
+        double award;
+        String a = s[1].substring(0,4);
+
+        if(parti[10]!=null && a.equals("Star"))
+        {
+            award = Double.parseDouble(pulisci(s[0]));
+        }else{
+            award = -1;
         }
 
         // Se nel CSV non c’è un link, generiamo un link a Google Maps
-        if (linkDiRipiego != null && !linkDiRipiego.isBlank()) {
-            r.setLink(linkDiRipiego);
-        } else {
+        if (link == null || link.isBlank()) {
             String maps = "https://www.google.com/maps?q="
-                    + inUrl(r.getNome()) + "+" + inUrl(r.getIndirizzo()) + "+" + inUrl(r.getCitta());
-            r.setLink(maps);
+                    + inUrl(nome) + "+" + inUrl(indirizzo) + "+" + inUrl(citta);
+            link = maps;
         }
-        //todo: mettere il costruttore e creare r
+
+        boolean delivery = false;
+        boolean booking = false;
+
+        if(parti[14] == "true")
+            delivery = true;
+
+        if(parti[15] == "true")
+            booking = true;
+
+        Restaurant r = new Restaurant(nome, nazione, citta, indirizzo, latitudine, longitudine, prezzo, delivery, booking, tipoCucina, website, link, award);
 
         ristoranti.add(r);
     }
