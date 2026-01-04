@@ -55,14 +55,13 @@
             <center>
                 <VBox spacing="10" style="-fx-padding: 10;">
                     <!-- BARRA FILTRI -->
-                    <HBox spacing="10">
-                        <TextField fx:id="campoRicerca" promptText="Cerca per nome o città..." />
-                        <ComboBox fx:id="filtroCucina" promptText="Cucina" />
-                        <CheckBox fx:id="filtroConsegna" text="Delivery" />
-                        <CheckBox fx:id="filtroPrenotazione" text="Prenotazione" />
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <TextField fx:id="campoLuogo" promptText="Città (es. Milano)" HBox.hgrow="ALWAYS"/>
+                        <TextField fx:id="campoCucina" promptText="Cucina (es. Italian)" HBox.hgrow="ALWAYS"/>
                         <Button text="Filtra" onAction="#onApplyFilters"/>
-                        <Button text="Reset" onAction="#onResetFilters"/>
+                        <Button text="Reset" onAction="#onResetFilters" styleClass="footer-button" style="-fx-background-color: #7f8c8d;"/>
                         <Button text="Filtro avanzato" onAction="#onShowAdvancedFilter"/>
+
                     </HBox>
 
                     <!-- LISTA RISTORANTI -->

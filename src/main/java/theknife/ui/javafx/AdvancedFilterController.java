@@ -1,74 +1,83 @@
 package theknife.ui.javafx;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 public class AdvancedFilterController {
 
-    // Campi testuali per inserire i dettagli del filtro avanzato
-    @FXML private TextField campoNome;
-    @FXML private TextField campoIndirizzo;
-    @FXML private TextField campoCitta;
-    @FXML private TextField campoNazione;
+    @FXML private TextField campoLuogo;
+    @FXML private TextField campoCucina;
+    @FXML private TextField campoPrezzoMin;
     @FXML private TextField campoPrezzoMax;
-    @FXML private TextField campoTipoCucina;
-    @FXML private TextField campoServizi;
 
-    // Filtri booleani
-    @FXML private CheckBox checkConsegna;
-    @FXML private CheckBox checkPrenotazione;
-    @FXML private CheckBox checkStellaVerde; // Michelin Green Star
+    @FXML private Button star1, star2, star3, star4, star5;
 
-    // Etichetta per mostrare errori o avvisi all’utente
-    @FXML private Label etichettaErrore;
+    @FXML private CheckBox checkDelivery;
+    @FXML private CheckBox checkBooking;
 
-    // Riferimento al MainController per applicare i filtri alla lista principale
+    private int stelleSelezionate = 0;
     private MainController controllerPrincipale;
 
-    /**
-     * Imposta il controller principale della finestra principale.
-     * Permetterà di passare i parametri del filtro.
-     */
     public void setParent(MainController parent) {
         this.controllerPrincipale = parent;
     }
 
-    /**
-     * Chiamato quando l’utente clicca su “Applica”.
-     * Per ora stampa solo i valori inseriti per verifica grafica.
-     */
+    /* --- GESTIONE STELLE --- */
+
+    @FXML
+    private void onStarClicked(ActionEvent event) {
+        Button btn = (Button) event.getSource();
+        // Legge il valore "1", "2" ecc dallo userData nell'FXML
+        String val = (String) btn.getUserData();
+        stelleSelezionate = Integer.parseInt(val);
+        aggiornaGraficaStelle();
+    }
+
+    @FXML
+    private void onResetStars() {
+        stelleSelezionate = 0;
+        aggiornaGraficaStelle();
+    }
+
+    private void aggiornaGraficaStelle() {
+        Button[] stars = {star1, star2, star3, star4, star5};
+        for (int i = 0; i < stars.length; i++) {
+            if (i < stelleSelezionate) {
+                // Stella accesa (Oro)
+                stars[i].setStyle("-fx-background-color: transparent; -fx-font-size: 24px; -fx-text-fill: yellow; -fx-cursor: hand; -fx-padding: 0;");
+            } else {
+                // Stella spenta (Grigio chiaro)
+                stars[i].setStyle("-fx-background-color: transparent; -fx-font-size: 24px; -fx-text-fill: lightgray; -fx-cursor: hand; -fx-padding: 0;");
+            }
+        }
+    }
+
+    /* --- AZIONI --- */
+
     @FXML
     private void onApply() {
-        System.out.println("[ADV-FILTER] nome=" + campoNome.getText()
-                + " | città=" + campoCitta.getText()
-                + " | nazione=" + campoNazione.getText()
-                + " | prezzoMax=" + campoPrezzoMax.getText()
-                + " | cucina=" + campoTipoCucina.getText()
-                + " | servizi=" + campoServizi.getText()
-                + " | consegna=" + checkConsegna.isSelected()
-                + " | prenotazione=" + checkPrenotazione.isSelected()
-                + " | stellaVerde=" + checkStellaVerde.isSelected());
+        // 1. Raccoglie i dati
+        String luogo = campoLuogo.getText();
+        String cucina = campoCucina.getText();
+        String pMin = campoPrezzoMin.getText();
+        String pMax = campoPrezzoMax.getText();
+        boolean delivery = checkDelivery.isSelected();
+        boolean booking = checkBooking.isSelected();
 
-        // TODO: in futuro qui potrai passare una struttura dati al MainController
+      // TODO: CELE METTI IL TUO FILTRO
 
         chiudiFinestra();
     }
 
-    /**
-     * Chiamato quando l’utente clicca su “Annulla”.
-     * Non applica nulla, chiude solo la finestra.
-     */
     @FXML
     private void onCancel() {
         chiudiFinestra();
     }
 
-    /**
-     * Chiude la finestra corrente.
-     */
     private void chiudiFinestra() {
-        Stage finestra = (Stage) campoNome.getScene().getWindow();
-        finestra.close();
+        Stage stage = (Stage) campoLuogo.getScene().getWindow();
+        stage.close();
     }
 }

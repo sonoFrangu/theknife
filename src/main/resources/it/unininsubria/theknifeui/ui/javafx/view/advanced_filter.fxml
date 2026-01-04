@@ -6,53 +6,79 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="theknife.ui.javafx.AdvancedFilterController">
+            fx:controller="theknife.ui.javafx.AdvancedFilterController"
+            stylesheets="@style.css"
+            prefWidth="420" prefHeight="500">
+
     <center>
-        <VBox spacing="10">
-            <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+        <VBox spacing="15" style="-fx-background-color: white;">
+            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
 
-            <Label text="Filtro avanzato" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+            <Label text="Filtri Avanzati" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #333;"/>
+            <Separator/>
 
-            <!-- Nome -->
-            <Label text="Nome ristorante"/>
-            <TextField fx:id="campoNome" promptText="es. Da Vittorio"/>
+            <GridPane hgap="10" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="30"/>
+                    <ColumnConstraints percentWidth="70"/>
+                </columnConstraints>
 
-            <!-- Indirizzo -->
-            <Label text="Indirizzo"/>
-            <TextField fx:id="campoIndirizzo" promptText="via, piazza..."/>
+                <Label text="Luogo:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="campoLuogo" promptText="Città, indirizzo..." GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-            <!-- Città -->
-            <Label text="Città"/>
-            <TextField fx:id="campoCitta" promptText="Milano, Varese..."/>
+                <Label text="Cucina:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <TextField fx:id="campoCucina" promptText="Italian, Sushi, ecc..." GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            </GridPane>
 
-            <!-- Nazione -->
-            <Label text="Nazione"/>
-            <TextField fx:id="campoNazione" promptText="Italia, Francia..."/>
+            <VBox spacing="5">
+                <Label text="Fascia di Prezzo (€)" style="-fx-font-weight: bold;"/>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <TextField fx:id="campoPrezzoMin" promptText="Min" HBox.hgrow="ALWAYS"/>
+                    <Label text="-"/>
+                    <TextField fx:id="campoPrezzoMax" promptText="Max" HBox.hgrow="ALWAYS"/>
+                </HBox>
+            </VBox>
 
-            <!-- Prezzo -->
-            <Label text="Prezzo massimo (€)"/>
-            <TextField fx:id="campoPrezzoMax" promptText="es. 80"/>
+            <VBox spacing="5">
+                <Label text="Media Stelle (Minimo)" style="-fx-font-weight: bold;"/>
+                <HBox spacing="5" alignment="CENTER_LEFT">
+                    <Button fx:id="star1" text="★" onAction="#onStarClicked" userData="1" style="-fx-background-color: transparent; -fx-font-size: 24px; -fx-text-fill: lightgray; -fx-cursor: hand; -fx-padding: 0;"/>
+                    <Button fx:id="star2" text="★" onAction="#onStarClicked" userData="2" style="-fx-background-color: transparent; -fx-font-size: 24px; -fx-text-fill: lightgray; -fx-cursor: hand; -fx-padding: 0;"/>
+                    <Button fx:id="star3" text="★" onAction="#onStarClicked" userData="3" style="-fx-background-color: transparent; -fx-font-size: 24px; -fx-text-fill: lightgray; -fx-cursor: hand; -fx-padding: 0;"/>
+                    <Button fx:id="star4" text="★" onAction="#onStarClicked" userData="4" style="-fx-background-color: transparent; -fx-font-size: 24px; -fx-text-fill: lightgray; -fx-cursor: hand; -fx-padding: 0;"/>
+                    <Button fx:id="star5" text="★" onAction="#onStarClicked" userData="5" style="-fx-background-color: transparent; -fx-font-size: 24px; -fx-text-fill: lightgray; -fx-cursor: hand; -fx-padding: 0;"/>
 
-            <!-- Tipo di cucina -->
-            <Label text="Tipo di cucina"/>
-            <TextField fx:id="campoTipoCucina" promptText="Italian, Seafood, Creative..."/>
+                    <Region prefWidth="10"/>
 
-            <!-- Servizi -->
-            <Label text="Servizi (testo contiene)"/>
-            <TextField fx:id="campoServizi" promptText="es. Parcheggio, Terrazza"/>
+                    <Button text="✖" onAction="#onResetStars" style="-fx-background-color: transparent; -fx-text-fill: red; -fx-font-weight: bold; -fx-cursor: hand;">
+                        <tooltip>
+                            <Tooltip text="Rimuovi filtro stelle"/>
+                        </tooltip>
+                    </Button>
+                </HBox>
+            </VBox>
 
-            <HBox spacing="10">
-                <CheckBox fx:id="checkConsegna" text="Consegna"/>
-                <CheckBox fx:id="checkPrenotazione" text="Prenotazione online"/>
-                <CheckBox fx:id="checkStellaVerde" text="Green Star"/>
+            <VBox spacing="10">
+                <Label text="Servizi Extra" style="-fx-font-weight: bold;"/>
+                <HBox spacing="20">
+                    <CheckBox fx:id="checkDelivery" text="Delivery (Consegna)"/>
+                    <CheckBox fx:id="checkBooking" text="Booking (Prenotazione)"/>
+                </HBox>
+            </VBox>
+
+            <Pane VBox.vgrow="ALWAYS"/> <Separator/>
+
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Button text="Annulla"
+                        onAction="#onCancel"
+                        styleClass="footer-button"
+                        style="-fx-background-color: #95a5a6;"/>
+
+                <Button text="Applica Filtri"
+                        onAction="#onApply"
+                        styleClass="footer-button"/>
             </HBox>
 
-            <Label fx:id="etichettaErrore" textFill="red"/>
-
-            <HBox spacing="10">
-                <Button text="Applica" onAction="#onApply"/>
-                <Button text="Annulla" onAction="#onCancel"/>
-            </HBox>
         </VBox>
     </center>
 </BorderPane>
