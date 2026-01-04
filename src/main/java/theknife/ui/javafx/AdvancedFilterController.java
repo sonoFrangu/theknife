@@ -46,7 +46,7 @@ public class AdvancedFilterController {
         for (int i = 0; i < stars.length; i++) {
             if (i < stelleSelezionate) {
                 // Stella accesa (Oro)
-                stars[i].setStyle("-fx-background-color: transparent; -fx-font-size: 24px; -fx-text-fill: yellow; -fx-cursor: hand; -fx-padding: 0;");
+                stars[i].setStyle("-fx-background-color: transparent; -fx-font-size: 24px; -fx-text-fill: gold; -fx-cursor: hand; -fx-padding: 0;");
             } else {
                 // Stella spenta (Grigio chiaro)
                 stars[i].setStyle("-fx-background-color: transparent; -fx-font-size: 24px; -fx-text-fill: lightgray; -fx-cursor: hand; -fx-padding: 0;");

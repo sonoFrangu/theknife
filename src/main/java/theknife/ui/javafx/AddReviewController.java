@@ -57,7 +57,7 @@ public class AddReviewController {
             // Se l'indice è inferiore al voto selezionato, la stella è Oro
             // Es. voto 3: indici 0, 1, 2 sono Oro.
             if (i < votoSelezionato) {
-                stars[i].setStyle("-fx-background-color: transparent; -fx-font-size: 30px; -fx-cursor: hand; -fx-padding: 0; -fx-text-fill: yellow;"); // Oro
+                stars[i].setStyle("-fx-background-color: transparent; -fx-font-size: 30px; -fx-cursor: hand; -fx-padding: 0; -fx-text-fill: gold;"); // Oro
             } else {
                 stars[i].setStyle("-fx-background-color: transparent; -fx-font-size: 30px; -fx-cursor: hand; -fx-padding: 0; -fx-text-fill: lightgray;"); // Grigio
             }
