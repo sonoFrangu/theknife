@@ -93,4 +93,6 @@ public class AddReviewController {
         Stage finestra = (Stage) areaRecensione.getScene().getWindow();
         finestra.close();
     }
+    //todo: scrittura su file recensioni.csv
 }
+

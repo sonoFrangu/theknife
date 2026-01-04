@@ -11,7 +11,10 @@ public class GestioneFile {
     private static String nomeFile = "michelin_my_maps.csv";
     private static final String percorsoFile= System.getProperty("user.dir") + File.separator + nomeCartella + File.separator + nomeFile;
 
-    //leggiFile dovrà restiruire la lista dei ristoranti !!! DA IMPLEMENTARE
+    /**
+     * Lettura da file csv
+     * @return LinkedList<Ristorante>
+     */
     public static LinkedList<Ristorante> leggiFile() {
         try (BufferedReader br = new BufferedReader(new FileReader(percorsoFile))) {
             String riga;
@@ -35,6 +38,10 @@ public class GestioneFile {
         }
     }
 
+    /**
+     * Scrittura su file csv
+     * @param ristorante
+     */
     public static void scriviFile(Ristorante ristorante) {
         // Costruzione dei campi da scrivere nel file
         String name = ristorante.getNome();
@@ -80,19 +87,4 @@ public class GestioneFile {
             System.err.println("Errore nella scrittura del file: " + e.getMessage());
         }
     }
-
-
-    /*public static void main(String[] args) {
-        LinkedList<String> cucina = new LinkedList<>();
-        cucina.add("Italiana");
-        cucina.add("Vegetariana");
-
-        Luogo luogo = new Luogo("Italia", "Via Roma", "Arcisate", 10, 10.10,10.10);
-        Ristorante r = new Ristorante("Trattoria da Mario", "+3901122334455", true, true, 35.50, cucina, luogo);
-
-        GestioneFile gf = new GestioneFile();
-        gf.scriviFile(r);
-        GestioneFile.leggiFile();
-    }*/
-
 }
