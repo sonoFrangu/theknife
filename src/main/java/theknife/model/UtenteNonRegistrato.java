@@ -1,4 +1,6 @@
-package theknife.vecchioProgetto;
+package theknife.model;
+
+import theknife.vecchioProgetto.Ristorante;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -7,7 +9,16 @@ import java.util.stream.Collectors;
 public class UtenteNonRegistrato extends Utente {
     public UtenteNonRegistrato() {}
 
-
+    /**
+     * Effettua la registrazione dell'utente
+     * @param username
+     * @param nome
+     * @param cognome
+     * @param dataNascita
+     * @param password
+     * @param ristoratore
+     * @param luogo
+     */
     public void registrazione(String username, String nome, String cognome, Date dataNascita, String password, boolean ristoratore, Luogo luogo) {
         //implementazione metodo in corso
         if(!ristoratore)
@@ -47,6 +58,18 @@ public class UtenteNonRegistrato extends Utente {
         possiamo decidere se fare un unico metodo, quindi in base agli elementi inseriti troviamo i ristoranti (gli elementi non inseriti saranno null, i double -1 e i boolean false)
         oppure facciamo più metodi con l'overloading (anche se essendoci la combinazione di più criteri conviene farne uno unico)
     */
+
+    /**
+     * effettua la ricerca dei ristoranti
+     * @param luogo
+     * @param cucina
+     * @param prezzoMinore
+     * @param prezzoMaggiore
+     * @param delivery
+     * @param prenotazioneOn
+     * @param medStelle
+     * @return
+     */
     @Override
     public LinkedList<Ristorante> cercaRistorante(Luogo luogo, String cucina, double prezzoMinore, double prezzoMaggiore, boolean delivery, boolean prenotazioneOn, double medStelle)
     {

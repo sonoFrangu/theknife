@@ -1,4 +1,4 @@
-package theknife.vecchioProgetto;
+package theknife.model;
 
 import java.util.Date;
 
@@ -6,17 +6,17 @@ public class Recensione {
     private int numeroStelle;
     private String text;
     private Date data;
-    private UtenteRegistrato utente;
+    private int id_utente_reg;
     private int id_ristorante;
     private static int id;
 
-    public Recensione(int numeroStelle, String text, UtenteRegistrato utente, int id_ristorante)
+    public Recensione(int numeroStelle, String text, int id_utente, int id_ristorante)
     {
         if(text.length()>=300)
             text=text.substring(0,300);
         this.numeroStelle = numeroStelle;
         this.text = text;
-        this.utente = utente;
+        this.id_utente_reg = id_utente;
         this.id_ristorante = id_ristorante;
         this.data = new Date();
         this.id+=id;
@@ -27,18 +27,18 @@ public class Recensione {
     public int getNumeroStelle() {return numeroStelle;}
     public String getText() {return text;}
     public Date getData() {return data;}
-    public UtenteRegistrato getUtente() {return utente;}
+    public int getIdUtente() {return id_utente_reg;}
     public int get_id_Ristorante() {return id_ristorante;}
     //</editor-fold>
 
     @Override
     public String toString() {
         GestioneRistoranti g = new GestioneRistoranti();
-        return "Recensione: "+ numeroStelle+" "+text+" "+utente+" "+g.getRistorante(id_ristorante)+"\n";
+        return "Recensione: "+ numeroStelle+" "+text+" "+id_utente_reg+" "+g.getRistorante(id_ristorante)+"\n";
     }
 
     public boolean equals(Recensione r) {
-        return this.data.equals(r.data) && this.utente.equals(r.utente) && this.id_ristorante==(r.id_ristorante);
+        return this.data.equals(r.data) && this.id_utente_reg ==(r.id_utente_reg) && this.id_ristorante==(r.id_ristorante);
     }
 
     @Override
