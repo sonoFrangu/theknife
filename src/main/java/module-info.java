@@ -7,6 +7,4 @@ module it.unininsubria.theknifeui {
     exports theknife;
     exports theknife.ui.javafx;
     opens theknife.ui.javafx to javafx.fxml;
-    exports theknife.persistence;
-    opens theknife.persistence to javafx.fxml;
 }

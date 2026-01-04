@@ -118,8 +118,9 @@ public class MainController {
         String indirizzo = pulisci(s[0]);;
 
         s = parti[2].split(",");
-        String citta = pulisci(s[0]);
-        String nazione = pulisci(s[1]);
+
+        String citta   = s.length > 0 ? pulisci(s[0]) : null;
+        String nazione = s.length > 1 ? pulisci(s[1]) : null;
 
 
         double prezzo = pulisci(parti[3]).length() * 20; //ogni simbolo = 20€
@@ -167,10 +168,10 @@ public class MainController {
         boolean delivery = false;
         boolean booking = false;
 
-        if(parti[14] == "true")
+        if(parti.length > 14 && "true".equalsIgnoreCase(parti[14]))
             delivery = true;
 
-        if(parti[15] == "true")
+        if(parti.length > 15 && "true".equalsIgnoreCase(parti[15]))
             booking = true;
 
         Restaurant r = new Restaurant(nome, nazione, citta, indirizzo, latitudine, longitudine, prezzo, delivery, booking, tipoCucina, website, link, award);
@@ -235,7 +236,7 @@ public class MainController {
                 }
 
                 // Per ora usiamo la label "premi" per mostrare il tipo di cucina
-                String cucina = r.getTipoCucina();
+                String cucina = String.join(", ", r.getTipoCucina());
                 if (cucina != null && !cucina.isBlank()) {
                     premiEtichetta.setText(cucina);
                     premiEtichetta.setVisible(true);
@@ -283,10 +284,10 @@ public class MainController {
                     rd.getIndirizzo(),
                     rd.getLatitudine(),
                     rd.getLongitudine(),
-                    rd.getPrezzo(),           // qui ora passi la stringa tipo €€€
+                    String.valueOf(rd.getPrezzo()),           // qui ora passi la stringa tipo €€€ NON PIU' ADESSO PASSO IL VALORE MA SCRITTO COME STRINGA
                     rd.isDelivery(),
                     rd.isBooking(),
-                    rd.getTipoCucina(),
+                    String.join(", ", rd.getTipoCucina()), //passo la stringa unica di tutte le tipologie di cucina
                     rd.getWebsite(),
                     rd.getLink()
             );
