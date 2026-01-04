@@ -1,5 +1,6 @@
 package theknife.ui.javafx;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -7,92 +8,96 @@ import theknife.model.Restaurant;
 
 public class AddReviewController {
 
-    // Etichetta del titolo in alto, dove mostriamo il nome del ristorante
     @FXML private Label etichettaTitolo;
-
-    // Spinner per scegliere il voto (da 1 a 5)
-    @FXML private Spinner<Integer> spinnerVoto;
-
-    // Area di testo dove l’utente scrive la recensione
     @FXML private TextArea areaRecensione;
-
-    // Etichetta per mostrare eventuali messaggi di errore
     @FXML private Label etichettaErrore;
 
-    // Ristorante a cui è associata la recensione
+    // Riferimenti ai 5 bottoni stella
+    @FXML private Button star1, star2, star3, star4, star5;
+
     private Restaurant ristoranteDestinazione;
 
-    /**
-     * Imposta il ristorante a cui è riferita questa recensione.
-     */
+    // Variabile per tenere traccia del voto (default 5 stelle)
+    private int votoSelezionato = 5;
+
     public void setRestaurant(Restaurant restaurant) {
         this.ristoranteDestinazione = restaurant;
     }
 
-    /**
-     * Imposta il titolo della finestra con il nome del ristorante.
-     * Es: "Aggiungi una recensione - Ristorante X"
-     */
     public void setRestaurantName(String nomeRistorante) {
         if (etichettaTitolo != null && nomeRistorante != null && !nomeRistorante.isBlank()) {
-            etichettaTitolo.setText("Aggiungi una recensione - " + nomeRistorante);
+            etichettaTitolo.setText("Recensisci: " + nomeRistorante);
         }
     }
 
-    /**
-     * Inizializzazione automatica chiamata da JavaFX.
-     * Qui configuriamo lo spinner del voto (1–5, predefinito 5).
-     */
     @FXML
     private void initialize() {
-        if (spinnerVoto != null && spinnerVoto.getValueFactory() == null) {
-            spinnerVoto.setValueFactory(
-                    new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 5, 5)
-            );
+        // Appena si apre la finestra, coloriamo le stelle in base al default (5)
+        aggiornaGraficaStelle();
+    }
+
+    /* =========================
+       GESTIONE STELLE
+       ========================= */
+
+    @FXML
+    private void onStarClicked(ActionEvent event) {
+        Button btn = (Button) event.getSource();
+        // Leggiamo "1", "2"... dallo userData definito nell'FXML
+        String val = (String) btn.getUserData();
+        votoSelezionato = Integer.parseInt(val);
+
+        aggiornaGraficaStelle();
+    }
+
+    private void aggiornaGraficaStelle() {
+        Button[] stars = {star1, star2, star3, star4, star5};
+
+        for (int i = 0; i < stars.length; i++) {
+            // Se l'indice è inferiore al voto selezionato, la stella è Oro
+            // Es. voto 3: indici 0, 1, 2 sono Oro.
+            if (i < votoSelezionato) {
+                stars[i].setStyle("-fx-background-color: transparent; -fx-font-size: 30px; -fx-cursor: hand; -fx-padding: 0; -fx-text-fill: yellow;"); // Oro
+            } else {
+                stars[i].setStyle("-fx-background-color: transparent; -fx-font-size: 30px; -fx-cursor: hand; -fx-padding: 0; -fx-text-fill: lightgray;"); // Grigio
+            }
         }
     }
 
-    /**
-     * Chiamato quando l’utente preme il pulsante "Salva".
-     * Controlla che ci sia del testo e stampa la recensione in console (per ora solo debug).
-     */
+    /* =========================
+       AZIONI SALVA / ANNULLA
+       ========================= */
+
     @FXML
     private void onSalva() {
         if (areaRecensione.getText() == null || areaRecensione.getText().isBlank()) {
-            etichettaErrore.setText("Scrivi almeno una riga.");
+            etichettaErrore.setText("Il testo della recensione non può essere vuoto.");
             return;
         }
 
-        int voto = spinnerVoto.getValue();
         String testo = areaRecensione.getText();
 
         if (ristoranteDestinazione != null) {
-            System.out.println("[REVIEW DEBUG] recensione per: " + ristoranteDestinazione.getNome()
-                    + " | voto: " + voto
-                    + " | testo: " + testo);
+            System.out.println("[REVIEW NEW] Ristorante: " + ristoranteDestinazione.getNome()
+                    + " | Voto: " + votoSelezionato
+                    + " | Testo: " + testo);
+
+            // TODO: Qui dovrai chiamare il metodo per salvare su CSV
+            // es: GestioneFile.salvaRecensione(ristoranteDestinazione, votoSelezionato, testo);
         } else {
-            System.out.println("[REVIEW DEBUG] nessun ristorante associato (!)");
+            System.err.println("Errore: nessun ristorante associato alla recensione.");
         }
 
         chiudiFinestra();
     }
 
-    /**
-     * Chiamato quando l’utente preme il pulsante "Annulla".
-     * Non salva nulla, chiude solo la finestra.
-     */
     @FXML
     private void onAnnulla() {
         chiudiFinestra();
     }
 
-    /**
-     * Chiude la finestra corrente di inserimento recensione.
-     */
     private void chiudiFinestra() {
         Stage finestra = (Stage) areaRecensione.getScene().getWindow();
         finestra.close();
     }
-    //todo: scrittura su file recensioni.csv
 }
-

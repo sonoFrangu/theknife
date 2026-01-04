@@ -1,46 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="theknife.ui.javafx.RegisterController">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="theknife.ui.javafx.RegisterController">
     <center>
-        <VBox spacing="10" alignment="TOP_LEFT">
+        <VBox alignment="TOP_LEFT" spacing="10">
             <padding>
-                <Insets top="15" right="15" bottom="15" left="15"/>
+                <Insets bottom="15" left="15" right="15" top="15" />
             </padding>
 
-            <Label text="Registrazione utente" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+            <Label style="-fx-font-size: 18; -fx-font-weight: bold;" text="Registrazione utente" />
 
-            <Label text="Nome"/>
-            <TextField fx:id="campoNome" promptText="Nome"/>
+            <Label text="Nome" />
+            <TextField fx:id="campoNome" promptText="Nome" />
 
-            <Label text="Cognome"/>
-            <TextField fx:id="campoCognome" promptText="Cognome"/>
+            <Label text="Cognome" />
+            <TextField fx:id="campoCognome" promptText="Cognome" />
 
-            <Label text="Username *"/>
-            <TextField fx:id="campoUsername" promptText="Username"/>
+            <Label text="Username *" />
+            <TextField fx:id="campoUsername" promptText="Username" />
 
-            <Label text="Password *"/>
-            <PasswordField fx:id="campoPassword" promptText="Password"/>
+            <Label text="Password *" />
+            <PasswordField fx:id="campoPassword" promptText="Password" />
 
-            <Label text="Città / domicilio"/>
-            <TextField fx:id="campoCitta" promptText="Es. Varese"/>
+            <Label text="Città / domicilio" />
+            <TextField fx:id="campoCitta" promptText="Es. Varese" />
 
-            <Label text="Ruolo"/>
+            <Label text="Ruolo" />
             <HBox spacing="10">
-                <RadioButton fx:id="radioCliente" text="Cliente" selected="true"/>
-                <RadioButton fx:id="radioRistoratore" text="Ristoratore"/>
+                <RadioButton fx:id="radioCliente" selected="true" text="Cliente" />
+                <RadioButton fx:id="radioRistoratore" text="Ristoratore" />
             </HBox>
 
-            <Label fx:id="etichettaErrore" textFill="red"/>
+            <Label fx:id="etichettaErrore" textFill="red" />
 
             <HBox spacing="10">
-                <Button text="Crea account" onAction="#onCreate"/>
-                <Button text="Annulla" onAction="#onBack"/>
+                <Button onAction="#onCreate" text="Crea account" />
+                <Button onAction="#onBack" text="Annulla" />
             </HBox>
         </VBox>
     </center>

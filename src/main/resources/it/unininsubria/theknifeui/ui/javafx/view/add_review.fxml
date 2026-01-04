@@ -3,38 +3,57 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.control.SpinnerValueFactory?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="theknife.ui.javafx.AddReviewController">
+            fx:controller="theknife.ui.javafx.AddReviewController"
+            stylesheets="@style.css"
+            prefWidth="400">
 
     <center>
-        <VBox spacing="10">
+        <VBox spacing="15" style="-fx-background-color: white;">
             <padding>
-                <Insets top="15" right="15" bottom="15" left="15"/>
+                <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
 
-            <!-- Titolo in alto -->
             <Label fx:id="etichettaTitolo"
                    text="Aggiungi una recensione"
-                   style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+                   style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #333;"/>
 
-            <Label text="Voto (1-5)"/>
-            <Spinner fx:id="spinnerVoto" editable="true">
-                <valueFactory>
-                    <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="5" initialValue="5"/>
-                </valueFactory>
-            </Spinner>
+            <Separator/>
 
-            <Label text="Testo recensione"/>
-            <TextArea fx:id="areaRecensione" prefRowCount="5"/>
+            <VBox spacing="5">
+                <Label text="Il tuo voto:" style="-fx-font-weight: bold; -fx-text-fill: #555;"/>
+                <HBox spacing="5" alignment="CENTER_LEFT">
+                    <Button fx:id="star1" text="★" onAction="#onStarClicked" userData="1"
+                            style="-fx-background-color: transparent; -fx-font-size: 30px; -fx-cursor: hand; -fx-padding: 0;"/>
+                    <Button fx:id="star2" text="★" onAction="#onStarClicked" userData="2"
+                            style="-fx-background-color: transparent; -fx-font-size: 30px; -fx-cursor: hand; -fx-padding: 0;"/>
+                    <Button fx:id="star3" text="★" onAction="#onStarClicked" userData="3"
+                            style="-fx-background-color: transparent; -fx-font-size: 30px; -fx-cursor: hand; -fx-padding: 0;"/>
+                    <Button fx:id="star4" text="★" onAction="#onStarClicked" userData="4"
+                            style="-fx-background-color: transparent; -fx-font-size: 30px; -fx-cursor: hand; -fx-padding: 0;"/>
+                    <Button fx:id="star5" text="★" onAction="#onStarClicked" userData="5"
+                            style="-fx-background-color: transparent; -fx-font-size: 30px; -fx-cursor: hand; -fx-padding: 0;"/>
+                </HBox>
+            </VBox>
+
+            <VBox spacing="5" VBox.vgrow="ALWAYS">
+                <Label text="La tua esperienza:" style="-fx-font-weight: bold; -fx-text-fill: #555;"/>
+                <TextArea fx:id="areaRecensione" wrapText="true" promptText="Scrivi qui cosa ti è piaciuto..." VBox.vgrow="ALWAYS"/>
+            </VBox>
 
             <Label fx:id="etichettaErrore" textFill="red"/>
 
-            <HBox spacing="10">
-                <Button text="Salva" onAction="#onSalva"/>
-                <Button text="Annulla" onAction="#onAnnulla"/>
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Button text="Annulla"
+                        onAction="#onAnnulla"
+                        styleClass="footer-button"
+                        style="-fx-background-color: #95a5a6;"/>
+
+                <Button text="Salva Recensione"
+                        onAction="#onSalva"
+                        styleClass="footer-button"/>
             </HBox>
         </VBox>
     </center>
