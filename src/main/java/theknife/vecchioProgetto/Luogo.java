@@ -1,6 +1,10 @@
 package theknife.vecchioProgetto;
+import static java.lang.Math.*;
 
 public class Luogo {
+
+    private static final double RAGGIOTERRESTRE_KM= 6371;
+
 
     private String nazione;
     private String via;
@@ -44,5 +48,29 @@ public class Luogo {
         return "Luogo: "+nazione+" "+via+" "+citta+" "+n_civico+" "+latitudine+" "+longitudine+"\n";
     }
 
+    public boolean checkDistance10KM(double lat2, double longi2  )
+    {
+        double lat1Rad = toRadians(latitudine);
+        double long1Rad= toRadians(longitudine);
+
+        double lat2Rad = toRadians(lat2);
+        double long2Rad= toRadians(longi2);
+
+        double dLat = lat2 - lat1Rad;
+        double dLon = longi2 - long1Rad;
+
+        // Applicazione della formula di Haversine
+        double a = pow(sin(dLat / 2), 2) +
+                cos(lat1Rad) * cos(lat2Rad) *
+                        pow(sin(dLon / 2), 2);
+
+        double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+        double distanzaKm=RAGGIOTERRESTRE_KM*c;
+        if(distanzaKm> 10)
+            return false;
+        else
+            return true;
+    }
 
 }
