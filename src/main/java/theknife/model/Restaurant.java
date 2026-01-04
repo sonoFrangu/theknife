@@ -53,7 +53,7 @@ public class Restaurant {
     public String getLink() { return link; }
     public double getAwards() { return awards; }
 
-    // setter
+    /* setter
     public void setNome(String nome) { this.nome = nome; }
     public void setCitta(String citta) { this.citta = citta; }
     public void setIndirizzo(String indirizzo) { this.indirizzo = indirizzo; }
@@ -66,5 +66,5 @@ public class Restaurant {
     public void setLongitudine(double longitudine) { this.longitudine = longitudine; }
     public void setWebsite(String website) { this.website = website; }
     public void setLink(String link) { this.link = link; }
-    public void setAwards(String awards) { this.awards = awards; }
+    public void setAwards(String awards) { this.awards = awards; }*/
 }
