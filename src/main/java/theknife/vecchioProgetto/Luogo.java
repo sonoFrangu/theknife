@@ -48,6 +48,14 @@ public class Luogo {
         return "Luogo: "+nazione+" "+via+" "+citta+" "+n_civico+" "+latitudine+" "+longitudine+"\n";
     }
 
+
+    /**
+     * Verifica se un luogo è vicino entro 10 kilometri
+     *
+     * @param lat2 latitudine da confrontare
+     * @param longi2 longitudine da confrontare
+     * @return boolean true se < 10 km
+     */
     public boolean checkDistance10KM(double lat2, double longi2  )
     {
         double lat1Rad = toRadians(latitudine);
@@ -59,7 +67,6 @@ public class Luogo {
         double dLat = lat2 - lat1Rad;
         double dLon = longi2 - long1Rad;
 
-        // Applicazione della formula di Haversine
         double a = pow(sin(dLat / 2), 2) +
                 cos(lat1Rad) * cos(lat2Rad) *
                         pow(sin(dLon / 2), 2);
