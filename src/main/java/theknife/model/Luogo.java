@@ -1,4 +1,4 @@
-package theknife.vecchioProgetto;
+package theknife.model;
 import static java.lang.Math.*;
 
 public class Luogo {

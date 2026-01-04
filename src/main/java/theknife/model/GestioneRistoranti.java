@@ -1,4 +1,6 @@
-package theknife.vecchioProgetto;
+package theknife.model;
+
+import theknife.vecchioProgetto.Ristorante;
 
 import java.util.LinkedList;
 

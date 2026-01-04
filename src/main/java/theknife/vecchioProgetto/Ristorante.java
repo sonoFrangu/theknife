@@ -1,5 +1,8 @@
 package theknife.vecchioProgetto;
 
+import theknife.model.GestioneRecensioni;
+import theknife.model.Luogo;
+
 import java.util.LinkedList;
 
 public class Ristorante {

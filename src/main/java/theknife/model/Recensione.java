@@ -1,4 +1,4 @@
-package theknife.vecchioProgetto;
+package theknife.model;
 
 import java.util.Date;
 

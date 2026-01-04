@@ -10,14 +10,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import theknife.model.Restaurant;
-import theknife.vecchioProgetto.GestioneFile;
-import theknife.vecchioProgetto.Luogo;
-import theknife.vecchioProgetto.Ristorante;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
-import java.util.stream.Collectors;
 
 // NIENTE import it.unininsubria...Session QUI
 
