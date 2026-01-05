@@ -496,7 +496,7 @@ public class MainController {
        ========================= */
 
     @FXML
-    private void onApplyFilters() {
+    protected void onApplyFilters() {
         /*
             todo: DA IMPLEMENTARE IN UNA CLASSE
         *

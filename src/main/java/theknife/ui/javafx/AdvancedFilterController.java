@@ -29,7 +29,6 @@ public class AdvancedFilterController {
     @FXML
     private void onStarClicked(ActionEvent event) {
         Button btn = (Button) event.getSource();
-        // Legge il valore "1", "2" ecc dallo userData nell'FXML
         String val = (String) btn.getUserData();
         stelleSelezionate = Integer.parseInt(val);
         aggiornaGraficaStelle();
@@ -54,21 +53,77 @@ public class AdvancedFilterController {
         }
     }
 
-    /* --- AZIONI --- */
 
     @FXML
     private void onApply() {
-        // 1. Raccoglie i dati
         String luogo = campoLuogo.getText();
         String cucina = campoCucina.getText();
-        String pMin = campoPrezzoMin.getText();
-        String pMax = campoPrezzoMax.getText();
+        String pMinStr = campoPrezzoMin.getText();
+        String pMaxStr = campoPrezzoMax.getText();
         boolean delivery = checkDelivery.isSelected();
         boolean booking = checkBooking.isSelected();
 
-      // TODO: CELE METTI IL TUO FILTRO
+        Double prezzoMin = null;
+        Double prezzoMax = null;
+
+        try {
+            if (pMinStr != null && !pMinStr.isBlank()) {
+                // Sostituisce la virgola con il punto per evitare errori e converte
+                prezzoMin = Double.parseDouble(pMinStr.replace(",", "."));
+            }
+        } catch (NumberFormatException e) {
+            mostraErrore("Prezzo Minimo non valido", "Inserisci un numero valido");
+            return;
+        }
+
+        try {
+            if (pMaxStr != null && !pMaxStr.isBlank()) {
+                prezzoMax = Double.parseDouble(pMaxStr.replace(",", "."));
+            }
+        } catch (NumberFormatException e) {
+            mostraErrore("Prezzo Massimo non valido", "Inserisci un numero valido (es. 50)");
+            return;
+        }
+
+        // Controllo logico per prezzo
+        if (prezzoMin != null && prezzoMax != null && prezzoMin > prezzoMax) {
+            mostraErrore("Intervallo non valido", "Il prezzo minimo non può essere maggiore del massimo.");
+            return;
+        }
+
+
+        System.out.println("=== [DEBUG ADVANCED FILTER] ===");
+        System.out.println("Luogo: " + (luogo != null ? luogo : ""));
+        System.out.println("Cucina: " + (cucina != null ? cucina : ""));
+        System.out.println("Prezzo Min: " + prezzoMin);
+        System.out.println("Prezzo Max: " + prezzoMax);
+        System.out.println("Stelle: " + stelleSelezionate);
+        System.out.println("Delivery: " + delivery);
+        System.out.println("Booking: " + booking);
+
+        // 4. Passa i dati al MainController per applicare il filtro
+        if (controllerPrincipale != null) {
+            controllerPrincipale.onApplyFilters(
+//                    luogo,
+//                    cucina,
+//                    prezzoMin,
+//                    prezzoMax,
+//                    stelleSelezionate,
+//                    delivery,
+//                    booking
+                    //TODO: Modificare chiamata una volta creata la nuova classe
+            );
+        }
 
         chiudiFinestra();
+    }
+
+    private void mostraErrore(String titolo, String messaggio) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Errore nell'inserimento");
+        alert.setHeaderText(titolo);
+        alert.setContentText(messaggio);
+        alert.showAndWait();
     }
 
     @FXML
