@@ -31,10 +31,9 @@ public class MainController {
     @FXML private Button bottoneAggiungiRecensione;
     @FXML private Button bottoneAggiungiRistorante;
 
-    @FXML private TextField campoRicerca;
-    @FXML private ComboBox<String> filtroCucina;
-    @FXML private CheckBox filtroConsegna;
-    @FXML private CheckBox filtroPrenotazione;
+    @FXML private TextField campoLuogo;
+    @FXML private TextField campoCucina;
+
 
     // Lista dei ristoranti usata dal codice (dati) collegata alla ListView
     private final ObservableList<Restaurant> ristoranti = FXCollections.observableArrayList();
@@ -52,13 +51,6 @@ public class MainController {
         // Imposta i pulsanti in base al ruolo (parte come "ospite")
         aggiornaInterfaccia();
 
-        // Inizializza il filtro per tipo di cucina
-        if (filtroCucina != null) {
-            filtroCucina.setItems(FXCollections.observableArrayList(
-                    "Tutte", "Italian", "Seafood", "Creative", "Japanese", "Other"
-            ));
-            filtroCucina.getSelectionModel().selectFirst();
-        }
     }
 
     /* =========================
@@ -552,18 +544,22 @@ public class MainController {
         }
         */
 
-        System.out.println("[FILTER] testo=" + (campoRicerca != null ? campoRicerca.getText() : "")
-                + " cucina=" + (filtroCucina != null ? filtroCucina.getValue() : "")
-                + " delivery=" + (filtroConsegna != null && filtroConsegna.isSelected())
-                + " booking=" + (filtroPrenotazione != null && filtroPrenotazione.isSelected()));
+        System.out.println("[FILTER] luogo=" + (campoLuogo != null ? campoLuogo.getText() : "")
+                + " cucina=" + (campoCucina != null ? campoCucina.getText() : ""));
     }
 
     @FXML
     private void onResetFilters() {
-        if (campoRicerca != null) campoRicerca.clear();
-        if (filtroCucina != null) filtroCucina.getSelectionModel().selectFirst();
-        if (filtroConsegna != null) filtroConsegna.setSelected(false);
-        if (filtroPrenotazione != null) filtroPrenotazione.setSelected(false);
+        // 1. Pulisce i campi di testo grafici
+        if (campoLuogo != null) campoLuogo.clear();
+        if (campoCucina != null) campoCucina.clear();
+
+        //TODO: Per gestire una volta messi i filtri
+//        if (filteredData != null) {
+//            filteredData.setPredicate(p -> true);
+//        }
+
+        System.out.println("[FILTER] Filtri resettati.");
     }
 
     @FXML
