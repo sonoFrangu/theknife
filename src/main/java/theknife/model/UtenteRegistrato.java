@@ -17,7 +17,15 @@ public class UtenteRegistrato extends Utente{
 
     public LinkedList<Integer> ristorantiPreferiti;
 
-
+    /**
+     * Costruttore utente registrato
+     * @param username
+     * @param nome
+     * @param cognome
+     * @param dataNascita
+     * @param password
+     * @param luogo
+     */
     public UtenteRegistrato(String username, String nome, String cognome, Date dataNascita, String password, Luogo luogo) {
         this.username = username;
         this.nome = nome;
@@ -45,36 +53,55 @@ public class UtenteRegistrato extends Utente{
     //</editor-fold>
 
 
-
-    public void aggiungiPreferito(Ristorante ristorante) {
-        if (!ristorantiPreferiti.contains(ristorante)) {
+    /**
+     * Aggiunge un ristorante ai preferiti
+     * @param ristorante
+     * @return true se viene aggiunto
+     *      false se è già presente
+     */
+    public boolean aggiungiPreferito(Ristorante ristorante) {
+        if (!ristorantiPreferiti.contains(ristorante.getId())) {
             ristorantiPreferiti.add(ristorante.getId());
-            System.out.println("Ristorante aggiunto ai preferiti: " /*+ ristorante.getNome()*/);
-        } else {
-            System.out.println("Il ristorante è già nei preferiti.");
+            return true;
         }
+        return false;
     }
 
-    public void visualizzaPreferito() {
-        if (ristorantiPreferiti.isEmpty()) {
-            System.out.println("Nessun ristorante nei preferiti.");
-        } else {
-            System.out.println("Ristoranti preferiti:");
-            for (int i : ristorantiPreferiti) {
-                System.out.println("- " /*+ r.getNome()*/);
-            }
-        }
+    /**
+     * Visualizza i ristoranti preferiti
+     * @return lista di ristoranti
+     */
+    public LinkedList<Ristorante> visualizzaPreferito() {
+
+        LinkedList<Ristorante> list=new LinkedList<>();
+        GestioneRistoranti gr = new GestioneRistoranti();
+
+        for(Integer i: ristorantiPreferiti )
+            list.add(gr.getRistorante(i));
+        return list;
+
     }
 
-    public void rimuoviPreferito(Ristorante ristorante) {
+    /**
+     * Rimuove un ristorante preferito
+     * @param ristorante
+     * @return true se viene rimosso, false se non presente
+     */
+    public boolean rimuoviPreferito(Ristorante ristorante) {
         if (ristorantiPreferiti.remove(ristorante)) {
-            System.out.println("Ristorante rimosso dai preferiti: " /*+ ristorante.getNome()*/);
-        } else {
-            System.out.println("Il ristorante non era nei preferiti.");
-        }
+            return true;
+        } else
+            return false;
     }
 
-    private void aggiungiRecensione(int n_stelle,String text, Date data, Ristorante ristorante)
+    /**
+     * aggiunta di una recensione
+     * @param n_stelle
+     * @param text
+     * @param data
+     * @param ristorante
+     */
+    public void aggiungiRecensione(int n_stelle,String text, Date data, Ristorante ristorante)
     {
         Recensione recensione= new Recensione(n_stelle, text,this.id, ristorante.getId());
         GestioneRecensioni gr= new GestioneRecensioni();
@@ -83,23 +110,46 @@ public class UtenteRegistrato extends Utente{
 
     }
 
-    private void rimuoviRecensione(Recensione recensione)
+    /**
+     * Rimuove una recensione se presente
+     * @param rec
+     * @return true se rimossa
+     */
+    public boolean rimuoviRecensione(Recensione rec)
     {
         GestioneRecensioni gr= new GestioneRecensioni();
-        gr.rimuoviRecensione(recensione);
-
+        if(gr.isPresente(rec))
+        {
+            gr.rimuoviRecensione(rec);
+            return true;
+        }
+        return false;
     }
 
-    private void modificaRecensione(Recensione recensione, String text, int numeroStelle )
+    /**
+     * modifica una recensione se presente
+     * @param recensione
+     * @param text
+     * @param numeroStelle
+     * @return true se viene effettuata la modifica
+     */
+    public boolean modificaRecensione(Recensione recensione, String text, int numeroStelle )
     {
         GestioneRecensioni gr= new GestioneRecensioni();
-        numeroStelle = numeroStelle == 0 ? recensione.getNumeroStelle(): numeroStelle;
-        text = text.length()==0 ||text ==null ? recensione.getText(): text;
-
-        gr.modificaRecensioni(recensione, text, numeroStelle);
+        if(gr.isPresente(recensione)) {
+            numeroStelle = numeroStelle == 0 ? recensione.getNumeroStelle() : numeroStelle;
+            text = text.length() == 0 || text == null ? recensione.getText() : text;
+            gr.modificaRecensioni(recensione, text, numeroStelle);
+            return true;
+        }
+        return false;
     }
 
-    private LinkedList<Recensione> visualizzaRecensioniFatte()
+    /**
+     * Visualizza le recensioni effettuate da un utente
+     * @return LinkedList<Recensione>
+     */
+    public LinkedList<Recensione> visualizzaRecensioniFatte()
     {
         LinkedList<Recensione> rec = getRecensioni();
         LinkedList<Recensione> recProprie= new LinkedList<>();
@@ -112,7 +162,7 @@ public class UtenteRegistrato extends Utente{
 
     /**
      * restituisce tutti i ristoranti recensiti
-     * @return
+     * @return LinkedList<Ristorante>
      */
     private LinkedList<Ristorante> visualizzaRistorantiRecensiti()
     {
@@ -126,7 +176,11 @@ public class UtenteRegistrato extends Utente{
 
     }
 
-    //da verificare in utente se void o LinkedList
+    /**
+     * Visualizza le recensioni effettuate ad un ristorante
+     * @param ristorante
+     * @return
+     */
     @Override
     public LinkedList<Recensione> visualizzaRecensioni(Ristorante ristorante)
     {
@@ -139,7 +193,27 @@ public class UtenteRegistrato extends Utente{
         return lista;
     }
 
+    /**
+     * Visualizza le recensioni effettuate ad un ristorante
+     * @param id del ristorante
+     * @return
+     */
+    public LinkedList<Recensione> visualizzaRecensioni(Integer  id)
+    {
+        GestioneRecensioni gr = new GestioneRecensioni();
+        LinkedList<Recensione> lista = new LinkedList<>();
 
+        for ( Recensione r : gr.getRecensioni())
+            if(r.get_id_Ristorante()==id)
+                lista.add(r);
+        return lista;
+    }
+
+    /**
+     * visualizza il ristorante
+     * @param ristorante
+     * @return
+     */
     @Override
     public String visualizzaRistorante(Ristorante ristorante)
     {
@@ -158,6 +232,18 @@ public class UtenteRegistrato extends Utente{
         possiamo decidere se fare un unico metodo, quindi in base agli elementi inseriti troviamo i ristoranti (gli elementi non inseriti saranno null)
         oppure facciamo più metodi con l'overloading (anche se essendoci la combinazione di più criteri conviene farne uno unico)
     */
+
+    /**
+     * ricerca di un ristorante
+     * @param luogo
+     * @param cucina
+     * @param prezzoMinore
+     * @param prezzoMaggiore
+     * @param delivery
+     * @param prenotazioneOn
+     * @param medStelle
+     * @return lista di ristoranti
+     */
     @Override
     public LinkedList<Ristorante> cercaRistorante(Luogo luogo, String cucina, double prezzoMinore, double prezzoMaggiore, boolean delivery, boolean prenotazioneOn, double medStelle)
     {
@@ -205,6 +291,7 @@ public class UtenteRegistrato extends Utente{
         }
 
         return lista;
+        //todo da rivedere se serve
     }
 
 //    public static void main(String args[])
