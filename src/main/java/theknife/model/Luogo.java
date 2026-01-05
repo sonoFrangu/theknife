@@ -3,7 +3,8 @@ import static java.lang.Math.*;
 
 public class Luogo {
 
-    private static final double RAGGIOTERRESTRE_KM= 6371;
+    private final double RAGGIOTERRESTRE_KM= 6371;
+
 
     private String nazione;
     private String via;
@@ -12,6 +13,15 @@ public class Luogo {
     private double latitudine;
     private double longitudine;
 
+    /**
+     * Costruttore di luogo
+     * @param nazione
+     * @param via
+     * @param citta
+     * @param n_civico
+     * @param latitudine
+     * @param longitudine
+     */
     public Luogo(String nazione, String via, String citta, int n_civico,double latitudine, double longitudine)
     {
         this.nazione = nazione;
@@ -53,7 +63,7 @@ public class Luogo {
      * @param longi2 longitudine da confrontare
      * @return boolean true se < 10 km
      */
-    public boolean checkDistance10KM(double lat2, double longi2  )
+    public boolean checkDistance10KM(double lat2, double longi2)
     {
         double lat1Rad = toRadians(latitudine);
         double long1Rad= toRadians(longitudine);
@@ -61,8 +71,8 @@ public class Luogo {
         double lat2Rad = toRadians(lat2);
         double long2Rad= toRadians(longi2);
 
-        double dLat = lat2 - lat1Rad;
-        double dLon = longi2 - long1Rad;
+        double dLat = lat2Rad - lat1Rad;
+        double dLon = long2Rad - long1Rad;
 
         double a = pow(sin(dLat / 2), 2) +
                 cos(lat1Rad) * cos(lat2Rad) *
@@ -71,10 +81,10 @@ public class Luogo {
         double c = 2 * atan2(sqrt(a), sqrt(1 - a));
 
         double distanzaKm=RAGGIOTERRESTRE_KM*c;
-        if(distanzaKm> 10)
-            return false;
-        else
+        if(distanzaKm<=10)
             return true;
+        else
+            return false;
     }
 
 }
