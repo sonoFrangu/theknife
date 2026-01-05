@@ -415,7 +415,9 @@ public class MainController {
     @FXML
     private void onAddRestaurant() {
         Session s = Session.getInstance();
-        if (s.getRole() != Session.Role.RISTORATORE) {
+
+        // Verifica se l'utente ha il permesso di aggiungere ristoranti
+        if (!s.isRistoratore()) {
             Alert a = new Alert(Alert.AlertType.WARNING);
             a.setTitle("Permesso negato");
             a.setHeaderText(null);
@@ -432,37 +434,37 @@ public class MainController {
             st.setTitle("Nuovo ristorante");
             st.initModality(Modality.APPLICATION_MODAL);
 
-            // se il controller ha setParent, glielo passiamo
             try {
                 AddRestaurantController ctrl = loader.getController();
                 ctrl.setControllerPrincipale(this);
             } catch (Exception ignored) {}
 
             st.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) { e.printStackTrace(); }
     }
 
     @FXML
     private void onAddReview() {
         Session s = Session.getInstance();
 
-        if (s.getRole() == Session.Role.GUEST) {
+        // Verifica se l'utente ha il permesso di recensire
+        if (!s.isCliente()) {
             Alert a = new Alert(Alert.AlertType.WARNING);
             a.setTitle("Permesso negato");
             a.setHeaderText(null);
-            a.setContentText("Devi essere registrato per inserire recensioni.");
+
+            if (s.isGuest())
+                a.setContentText("Devi effettuare il login per recensire.");
+            else
+                a.setContentText("Il tuo account non ha i permessi da Cliente per lasciare recensioni.");
+
             a.showAndWait();
             return;
         }
 
-        if (listaRistoranti == null) {
-            System.err.println("listaRistoranti è null (controlla fx:id in main.fxml)");
-            return;
-        }
-
+        if (listaRistoranti == null) return;
         Restaurant selezionato = listaRistoranti.getSelectionModel().getSelectedItem();
+
         if (selezionato == null) {
             Alert a = new Alert(Alert.AlertType.WARNING);
             a.setTitle("Nessun ristorante");
@@ -485,9 +487,7 @@ public class MainController {
             ctrl.setRestaurantName(selezionato.getNome());
 
             st.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) { e.printStackTrace(); }
     }
 
     /* =========================

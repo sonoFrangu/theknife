@@ -12,7 +12,8 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * Controller della finestra di registrazione.
- * Gestisce la creazione di un nuovo utente e il salvataggio in doc/users.csv.
+ * Gestisce la creazione di un nuovo utente (cliente e/o ristoratore)
+ * e il salvataggio delle credenziali nel file doc/users.csv.
  */
 public class RegisterController {
 
@@ -29,7 +30,6 @@ public class RegisterController {
 
     private MainController controllerPrincipale;
 
-    // Percorso del file: cartella "doc", file "users.csv"
     private static final String NOME_CARTELLA = "doc";
     private static final String NOME_FILE = "users.csv";
 
@@ -39,9 +39,9 @@ public class RegisterController {
 
     @FXML
     private void initialize() {
-        // I CheckBox sono indipendenti, non serve ToggleGroup.
-        // Di default lasciamo selezionato "Cliente".
-        if (checkCliente != null) checkCliente.setSelected(true);
+        if (checkCliente != null) {
+            checkCliente.setSelected(true);
+        }
     }
 
     @FXML
@@ -60,25 +60,38 @@ public class RegisterController {
         boolean isCliente     = checkCliente.isSelected();
         boolean isRistoratore = checkRistoratore.isSelected();
 
-        // Campi obbligatori
+        // Cambi obbligatori
         if (username == null || username.isBlank() || password == null || password.isBlank()) {
             etichettaErrore.setText("Username e password sono obbligatori.");
             return;
         }
 
-        // Almeno un ruolo selezionato
         if (!isCliente && !isRistoratore) {
             etichettaErrore.setText("Devi selezionare almeno un ruolo.");
             return;
         }
 
-        // Calcolo Hash
+        // Controllo se username gia' presente
+        if (usernameEsiste(username)) {
+            etichettaErrore.setText("Username già in uso. Scegline un altro.");
+            return;
+        }
+
         String passwordHashed = calcolaSha256(password);
 
+        // Verifica cartella
         File cartellaDoc = new File(NOME_CARTELLA);
+        if (!cartellaDoc.exists()) {
+            boolean creata = cartellaDoc.mkdirs();
+            if (!creata) {
+                etichettaErrore.setText("Impossibile creare la cartella " + NOME_CARTELLA);
+                return;
+            }
+        }
+
         File fileUtenti = new File(cartellaDoc, NOME_FILE);
 
-        // Formato file: username;hash;nome;cognome;città;isCliente;isRistoratore
+        // Salva su file
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileUtenti, true))) {
             bw.write(username + ";" + passwordHashed + ";" +
                     valoreNonNullo(nome) + ";" +
@@ -93,7 +106,7 @@ public class RegisterController {
             return;
         }
 
-        // AutoLogin
+        // Auto login
         Session.Role ruoloSessione;
         if (isRistoratore) {
             ruoloSessione = Session.Role.RISTORATORE;
@@ -102,13 +115,45 @@ public class RegisterController {
         }
 
         Session.getInstance().login(username, ruoloSessione);
+        //Permessi impostati dopo la registrazione
+        Session.getInstance().setPermessi(isCliente, isRistoratore);
 
-        // 7. Aggiornamento UI Principale
         if (controllerPrincipale != null) {
             controllerPrincipale.onLoginSuccess();
         }
 
         chiudiFinestra();
+    }
+
+    /**
+     * Legge il file users.csv per verificare se lo username è già presente.
+     * Restituisce true se lo trova, false altrimenti.
+     */
+    private boolean usernameEsiste(String usernameDaCercare) {
+        File fileUtenti = new File(NOME_CARTELLA, NOME_FILE);
+
+        // Se il file non esiste ancora non esiste nemmeno lo username
+        if (!fileUtenti.exists()) {
+            return false;
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(fileUtenti, StandardCharsets.UTF_8))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                if (linea.isBlank()) continue;
+
+                String[] parti = linea.split(";");
+                if (parti.length >= 1) {
+                    String usernameSalvato = parti[0];
+                    if (usernameSalvato.equalsIgnoreCase(usernameDaCercare)) {
+                        return true;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private void chiudiFinestra() {
@@ -121,9 +166,7 @@ public class RegisterController {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] hash = md.digest(input.getBytes(StandardCharsets.UTF_8));
             StringBuilder sb = new StringBuilder();
-            for (byte b : hash) {
-                sb.append(String.format("%02x", b));
-            }
+            for (byte b : hash) sb.append(String.format("%02x", b));
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
