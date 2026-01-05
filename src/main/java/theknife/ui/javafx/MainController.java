@@ -20,7 +20,6 @@ public class MainController {
 
     @FXML private ListView<Restaurant> listaRistoranti;
 
-    // Barra in alto (top bar) con i pulsanti di login/registrazione ecc.
     @FXML private Button bottoneLogin;
     @FXML private Button bottoneRegistrati;
     @FXML private Button bottoneLogout;
@@ -29,11 +28,9 @@ public class MainController {
     @FXML private Button bottoneMieRecensioni;
     @FXML private Button bottoneMieiRistoranti; // se nel tuo FXML non c’è, puoi toglierlo
 
-    // Pulsanti per le azioni principali
     @FXML private Button bottoneAggiungiRecensione;
     @FXML private Button bottoneAggiungiRistorante;
 
-    // Campi per i filtri di ricerca
     @FXML private TextField campoRicerca;
     @FXML private ComboBox<String> filtroCucina;
     @FXML private CheckBox filtroConsegna;
@@ -41,6 +38,8 @@ public class MainController {
 
     // Lista dei ristoranti usata dal codice (dati) collegata alla ListView
     private final ObservableList<Restaurant> ristoranti = FXCollections.observableArrayList();
+    private static final String NOME_CARTELLA = "doc";
+    private static final String NOME_FILE_DATI = "michelin_my_maps.csv";
 
     @FXML
     private void initialize() {
@@ -71,25 +70,35 @@ public class MainController {
      * ogni riga come ristorante nella lista.
      */
     private void caricaRistorantiDaCsv() {
-        try (InputStream is = getClass().getResourceAsStream("/michelin_my_maps.csv")) {
+        InputStream is = null;
+
+        try {
+            File fileEsterno = new File(NOME_CARTELLA, NOME_FILE_DATI);
+
+            if (fileEsterno.exists()) {
+                System.out.println("Caricamento dati da: " + fileEsterno.getAbsolutePath());
+                is = new FileInputStream(fileEsterno);
+            }
+
             if (is == null) {
-                System.err.println("/michelin_my_maps.csv non trovato in resources");
+                System.err.println("ERRORE: " + NOME_FILE_DATI + " non trovato.");
                 return;
             }
+
             try (BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
                 String linea = br.readLine();
-
-                // Salta la riga di intestazione se contiene "name"
+                // Salta la riga di intestazione se contiene se trova name
                 if (linea != null && linea.toLowerCase().contains("name")) {
                     linea = br.readLine();
                 }
 
-                // Legge tutte le righe del file
                 while (linea != null) {
                     aggiungiDaRigaCsv(linea);
                     linea = br.readLine();
                 }
             }
+            is.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
