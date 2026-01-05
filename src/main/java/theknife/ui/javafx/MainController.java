@@ -303,56 +303,49 @@ public class MainController {
      * - ristoratore
      */
     private void aggiornaInterfaccia() {
-        Session sessione = Session.getInstance();
-        Session.Role ruolo = sessione.getRole();
+        Session s = Session.getInstance();
 
-        boolean isOspite = (ruolo == Session.Role.GUEST);
-        boolean isCliente = (ruolo == Session.Role.CLIENTE);
-        boolean isRisto   = (ruolo == Session.Role.RISTORATORE);
+        // Recuperiamo i permessi esatti
+        boolean isGuest = s.isGuest();
+        boolean puoRecensire = s.isCliente();       // Vero se nel CSV è Cliente
+        boolean puoAggiungereRisto = s.isRistoratore();  // Vero se nel CSV è Ristoratore
+        boolean isLogged = !isGuest;
 
-        // Pulsanti login/registrazione/logout
-        if (bottoneLogin != null) {
-            bottoneLogin.setVisible(isOspite);
-            bottoneLogin.setManaged(isOspite);
-        }
-        if (bottoneRegistrati != null) {
-            bottoneRegistrati.setVisible(isOspite);
-            bottoneRegistrati.setManaged(isOspite);
-        }
-        if (bottoneLogout != null) {
-            bottoneLogout.setVisible(!isOspite);
-            bottoneLogout.setManaged(!isOspite);
-        }
+        // Login / Logout / Registrati
+        if (bottoneLogin != null) { bottoneLogin.setVisible(isGuest); bottoneLogin.setManaged(isGuest); }
+        if (bottoneRegistrati != null) { bottoneRegistrati.setVisible(isGuest); bottoneRegistrati.setManaged(isGuest); }
+        if (bottoneLogout != null) { bottoneLogout.setVisible(isLogged); bottoneLogout.setManaged(isLogged); }
 
-        // Etichetta con ruolo/username
+        // Etichetta Ruolo in alto
         if (etichettaRuolo != null) {
-            if (isOspite) etichettaRuolo.setText("Ospite");
-            else if (isCliente) etichettaRuolo.setText("Cliente: " + valoreNonNullo(sessione.getUsername()));
-            else if (isRisto) etichettaRuolo.setText("Ristoratore: " + valoreNonNullo(sessione.getUsername()));
+            if (isGuest) etichettaRuolo.setText("Ospite");
+            else if (puoRecensire && puoAggiungereRisto) etichettaRuolo.setText("Utente & Ristoratore: " + valoreNonNullo(s.getUsername()));
+            else if (puoAggiungereRisto) etichettaRuolo.setText("Ristoratore: " + valoreNonNullo(s.getUsername()));
+            else etichettaRuolo.setText("Cliente: " + valoreNonNullo(s.getUsername()));
         }
 
-        // Pulsanti specifici del cliente
+        // Pulsanti Personali (Preferiti / Mie Recensioni): visibili se PUOI recensire
         if (bottonePreferiti != null) {
-            bottonePreferiti.setVisible(isCliente);
-            bottonePreferiti.setManaged(isCliente);
+            bottonePreferiti.setVisible(puoRecensire);
+            bottonePreferiti.setManaged(puoRecensire);
         }
         if (bottoneMieRecensioni != null) {
-            bottoneMieRecensioni.setVisible(isCliente);
-            bottoneMieRecensioni.setManaged(isCliente);
+            bottoneMieRecensioni.setVisible(puoRecensire);
+            bottoneMieRecensioni.setManaged(puoRecensire);
         }
 
-        // Pulsante "i miei ristoranti" solo per ristoratori
+        // Pulsante "Miei Ristoranti": visibile se PUOI aggiungere ristoranti
         if (bottoneMieiRistoranti != null) {
-            bottoneMieiRistoranti.setVisible(isRisto);
-            bottoneMieiRistoranti.setManaged(isRisto);
+            bottoneMieiRistoranti.setVisible(puoAggiungereRisto);
+            bottoneMieiRistoranti.setManaged(puoAggiungereRisto);
         }
 
-        // Azioni abilitate/disabilitate
+        // Abilitazione Azioni (Footer)
         if (bottoneAggiungiRecensione != null) {
-            bottoneAggiungiRecensione.setDisable(!isCliente);
+            bottoneAggiungiRecensione.setDisable(!puoRecensire); // Disabilita se non sei cliente
         }
         if (bottoneAggiungiRistorante != null) {
-            bottoneAggiungiRistorante.setDisable(!isRisto);
+            bottoneAggiungiRistorante.setDisable(!puoAggiungereRisto); // Disabilita se non sei ristoratore
         }
     }
 
@@ -454,11 +447,12 @@ public class MainController {
     @FXML
     private void onAddReview() {
         Session s = Session.getInstance();
-        if (s.getRole() != Session.Role.CLIENTE) {
+
+        if (s.getRole() == Session.Role.GUEST) {
             Alert a = new Alert(Alert.AlertType.WARNING);
             a.setTitle("Permesso negato");
             a.setHeaderText(null);
-            a.setContentText("Solo i clienti possono inserire recensioni.");
+            a.setContentText("Devi essere registrato per inserire recensioni.");
             a.showAndWait();
             return;
         }
