@@ -2,39 +2,50 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="theknife.ui.javafx.LoginController"
-      alignment="CENTER"
-      spacing="10"
-      prefWidth="300" prefHeight="220">
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="theknife.ui.javafx.LoginController"
+            stylesheets="@style.css"
+            styleClass="app-root"
+            prefWidth="350" prefHeight="280">
 
-    <children>
-        <Label text="Accedi" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+    <center>
+        <VBox alignment="TOP_LEFT" spacing="15" style="-fx-background-color: white;">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
 
-        <TextField fx:id="campoUsername"
-                   promptText="Username"
-                   maxWidth="220"/>
+            <Label text="Accedi" styleClass="section-title"/>
 
-        <PasswordField fx:id="campoPassword"
-                       promptText="Password"
-                       maxWidth="220"/>
+            <Separator />
 
-        <Label fx:id="etichettaErrore"
-               textFill="red"/>
+            <VBox spacing="5">
+                <Label text="Username" style="-fx-font-weight: bold; -fx-text-fill: #555;"/>
+                <TextField fx:id="campoUsername" promptText="Inserisci username"/>
+            </VBox>
 
-        <Button text="Accedi"
-                onAction="#onLogin"
-                maxWidth="150"/>
+            <VBox spacing="5">
+                <Label text="Password" style="-fx-font-weight: bold; -fx-text-fill: #555;"/>
+                <PasswordField fx:id="campoPassword" promptText="Inserisci password"/>
+            </VBox>
 
-        <Button text="Entra come ospite"
-                onAction="#onGuest"
-                maxWidth="150"/>
-    </children>
+            <Label fx:id="etichettaErrore" textFill="red" wrapText="true"/>
 
-    <padding>
-        <Insets top="15" right="15" bottom="15" left="15"/>
-    </padding>
-</VBox>
+            <Pane VBox.vgrow="ALWAYS" />
+            <Separator />
+
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Button text="Ospite"
+                        onAction="#onGuest"
+                        styleClass="footer-button"
+                        style="-fx-background-color: #95a5a6;"/>
+
+                <Button text="Accedi"
+                        onAction="#onLogin"
+                        styleClass="footer-button"/>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>
