@@ -15,13 +15,11 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 
-// NIENTE import it.unininsubria...Session QUI
 
 public class MainController {
 
     @FXML private ListView<Restaurant> listaRistoranti;
 
-    // Barra in alto (top bar) con i pulsanti di login/registrazione ecc.
     @FXML private Button bottoneLogin;
     @FXML private Button bottoneRegistrati;
     @FXML private Button bottoneLogout;
@@ -30,18 +28,17 @@ public class MainController {
     @FXML private Button bottoneMieRecensioni;
     @FXML private Button bottoneMieiRistoranti; // se nel tuo FXML non c’è, puoi toglierlo
 
-    // Pulsanti per le azioni principali
     @FXML private Button bottoneAggiungiRecensione;
     @FXML private Button bottoneAggiungiRistorante;
 
-    // Campi per i filtri di ricerca
-    @FXML private TextField campoRicerca;
-    @FXML private ComboBox<String> filtroCucina;
-    @FXML private CheckBox filtroConsegna;
-    @FXML private CheckBox filtroPrenotazione;
+    @FXML private TextField campoLuogo;
+    @FXML private TextField campoCucina;
+
 
     // Lista dei ristoranti usata dal codice (dati) collegata alla ListView
     private final ObservableList<Restaurant> ristoranti = FXCollections.observableArrayList();
+    private static final String NOME_CARTELLA = "doc";
+    private static final String NOME_FILE_DATI = "michelin_my_maps.csv";
 
     @FXML
     private void initialize() {
@@ -54,13 +51,6 @@ public class MainController {
         // Imposta i pulsanti in base al ruolo (parte come "ospite")
         aggiornaInterfaccia();
 
-        // Inizializza il filtro per tipo di cucina
-        if (filtroCucina != null) {
-            filtroCucina.setItems(FXCollections.observableArrayList(
-                    "Tutte", "Italian", "Seafood", "Creative", "Japanese", "Other"
-            ));
-            filtroCucina.getSelectionModel().selectFirst();
-        }
     }
 
     /* =========================
@@ -72,25 +62,35 @@ public class MainController {
      * ogni riga come ristorante nella lista.
      */
     private void caricaRistorantiDaCsv() {
-        try (InputStream is = getClass().getResourceAsStream("/michelin_my_maps.csv")) {
+        InputStream is = null;
+
+        try {
+            File fileEsterno = new File(NOME_CARTELLA, NOME_FILE_DATI);
+
+            if (fileEsterno.exists()) {
+                System.out.println("Caricamento dati da: " + fileEsterno.getAbsolutePath());
+                is = new FileInputStream(fileEsterno);
+            }
+
             if (is == null) {
-                System.err.println("/michelin_my_maps.csv non trovato in resources");
+                System.err.println("ERRORE: " + NOME_FILE_DATI + " non trovato.");
                 return;
             }
+
             try (BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
                 String linea = br.readLine();
-
-                // Salta la riga di intestazione se contiene "name"
+                // Salta la riga di intestazione se contiene se trova name
                 if (linea != null && linea.toLowerCase().contains("name")) {
                     linea = br.readLine();
                 }
 
-                // Legge tutte le righe del file
                 while (linea != null) {
                     aggiungiDaRigaCsv(linea);
                     linea = br.readLine();
                 }
             }
+            is.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -304,56 +304,49 @@ public class MainController {
      * - ristoratore
      */
     private void aggiornaInterfaccia() {
-        Session sessione = Session.getInstance();
-        Session.Role ruolo = sessione.getRole();
+        Session s = Session.getInstance();
 
-        boolean isOspite = (ruolo == Session.Role.GUEST);
-        boolean isCliente = (ruolo == Session.Role.CLIENTE);
-        boolean isRisto   = (ruolo == Session.Role.RISTORATORE);
+        // Recuperiamo i permessi esatti
+        boolean isGuest = s.isGuest();
+        boolean puoRecensire = s.isCliente();       // Vero se nel CSV è Cliente
+        boolean puoAggiungereRisto = s.isRistoratore();  // Vero se nel CSV è Ristoratore
+        boolean isLogged = !isGuest;
 
-        // Pulsanti login/registrazione/logout
-        if (bottoneLogin != null) {
-            bottoneLogin.setVisible(isOspite);
-            bottoneLogin.setManaged(isOspite);
-        }
-        if (bottoneRegistrati != null) {
-            bottoneRegistrati.setVisible(isOspite);
-            bottoneRegistrati.setManaged(isOspite);
-        }
-        if (bottoneLogout != null) {
-            bottoneLogout.setVisible(!isOspite);
-            bottoneLogout.setManaged(!isOspite);
-        }
+        // Login / Logout / Registrati
+        if (bottoneLogin != null) { bottoneLogin.setVisible(isGuest); bottoneLogin.setManaged(isGuest); }
+        if (bottoneRegistrati != null) { bottoneRegistrati.setVisible(isGuest); bottoneRegistrati.setManaged(isGuest); }
+        if (bottoneLogout != null) { bottoneLogout.setVisible(isLogged); bottoneLogout.setManaged(isLogged); }
 
-        // Etichetta con ruolo/username
+        // Etichetta Ruolo in alto
         if (etichettaRuolo != null) {
-            if (isOspite) etichettaRuolo.setText("Ospite");
-            else if (isCliente) etichettaRuolo.setText("Cliente: " + valoreNonNullo(sessione.getUsername()));
-            else if (isRisto) etichettaRuolo.setText("Ristoratore: " + valoreNonNullo(sessione.getUsername()));
+            if (isGuest) etichettaRuolo.setText("Ospite");
+            else if (puoRecensire && puoAggiungereRisto) etichettaRuolo.setText("Utente & Ristoratore: " + valoreNonNullo(s.getUsername()));
+            else if (puoAggiungereRisto) etichettaRuolo.setText("Ristoratore: " + valoreNonNullo(s.getUsername()));
+            else etichettaRuolo.setText("Cliente: " + valoreNonNullo(s.getUsername()));
         }
 
-        // Pulsanti specifici del cliente
+        // Pulsanti Personali (Preferiti / Mie Recensioni): visibili se PUOI recensire
         if (bottonePreferiti != null) {
-            bottonePreferiti.setVisible(isCliente);
-            bottonePreferiti.setManaged(isCliente);
+            bottonePreferiti.setVisible(puoRecensire);
+            bottonePreferiti.setManaged(puoRecensire);
         }
         if (bottoneMieRecensioni != null) {
-            bottoneMieRecensioni.setVisible(isCliente);
-            bottoneMieRecensioni.setManaged(isCliente);
+            bottoneMieRecensioni.setVisible(puoRecensire);
+            bottoneMieRecensioni.setManaged(puoRecensire);
         }
 
-        // Pulsante "i miei ristoranti" solo per ristoratori
+        // Pulsante "Miei Ristoranti": visibile se PUOI aggiungere ristoranti
         if (bottoneMieiRistoranti != null) {
-            bottoneMieiRistoranti.setVisible(isRisto);
-            bottoneMieiRistoranti.setManaged(isRisto);
+            bottoneMieiRistoranti.setVisible(puoAggiungereRisto);
+            bottoneMieiRistoranti.setManaged(puoAggiungereRisto);
         }
 
-        // Azioni abilitate/disabilitate
+        // Abilitazione Azioni (Footer)
         if (bottoneAggiungiRecensione != null) {
-            bottoneAggiungiRecensione.setDisable(!isCliente);
+            bottoneAggiungiRecensione.setDisable(!puoRecensire); // Disabilita se non sei cliente
         }
         if (bottoneAggiungiRistorante != null) {
-            bottoneAggiungiRistorante.setDisable(!isRisto);
+            bottoneAggiungiRistorante.setDisable(!puoAggiungereRisto); // Disabilita se non sei ristoratore
         }
     }
 
@@ -423,7 +416,9 @@ public class MainController {
     @FXML
     private void onAddRestaurant() {
         Session s = Session.getInstance();
-        if (s.getRole() != Session.Role.RISTORATORE) {
+
+        // Verifica se l'utente ha il permesso di aggiungere ristoranti
+        if (!s.isRistoratore()) {
             Alert a = new Alert(Alert.AlertType.WARNING);
             a.setTitle("Permesso negato");
             a.setHeaderText(null);
@@ -440,36 +435,37 @@ public class MainController {
             st.setTitle("Nuovo ristorante");
             st.initModality(Modality.APPLICATION_MODAL);
 
-            // se il controller ha setParent, glielo passiamo
             try {
                 AddRestaurantController ctrl = loader.getController();
                 ctrl.setControllerPrincipale(this);
             } catch (Exception ignored) {}
 
             st.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) { e.printStackTrace(); }
     }
 
     @FXML
     private void onAddReview() {
         Session s = Session.getInstance();
-        if (s.getRole() != Session.Role.CLIENTE) {
+
+        // Verifica se l'utente ha il permesso di recensire
+        if (!s.isCliente()) {
             Alert a = new Alert(Alert.AlertType.WARNING);
             a.setTitle("Permesso negato");
             a.setHeaderText(null);
-            a.setContentText("Solo i clienti possono inserire recensioni.");
+
+            if (s.isGuest())
+                a.setContentText("Devi effettuare il login per recensire.");
+            else
+                a.setContentText("Il tuo account non ha i permessi da Cliente per lasciare recensioni.");
+
             a.showAndWait();
             return;
         }
 
-        if (listaRistoranti == null) {
-            System.err.println("listaRistoranti è null (controlla fx:id in main.fxml)");
-            return;
-        }
-
+        if (listaRistoranti == null) return;
         Restaurant selezionato = listaRistoranti.getSelectionModel().getSelectedItem();
+
         if (selezionato == null) {
             Alert a = new Alert(Alert.AlertType.WARNING);
             a.setTitle("Nessun ristorante");
@@ -492,9 +488,7 @@ public class MainController {
             ctrl.setRestaurantName(selezionato.getNome());
 
             st.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) { e.printStackTrace(); }
     }
 
     /* =========================
@@ -502,7 +496,7 @@ public class MainController {
        ========================= */
 
     @FXML
-    private void onApplyFilters() {
+    protected void onApplyFilters() {
         /*
             todo: DA IMPLEMENTARE IN UNA CLASSE
         *
@@ -550,18 +544,22 @@ public class MainController {
         }
         */
 
-        System.out.println("[FILTER] testo=" + (campoRicerca != null ? campoRicerca.getText() : "")
-                + " cucina=" + (filtroCucina != null ? filtroCucina.getValue() : "")
-                + " delivery=" + (filtroConsegna != null && filtroConsegna.isSelected())
-                + " booking=" + (filtroPrenotazione != null && filtroPrenotazione.isSelected()));
+        System.out.println("[FILTER] luogo=" + (campoLuogo != null ? campoLuogo.getText() : "")
+                + " cucina=" + (campoCucina != null ? campoCucina.getText() : ""));
     }
 
     @FXML
     private void onResetFilters() {
-        if (campoRicerca != null) campoRicerca.clear();
-        if (filtroCucina != null) filtroCucina.getSelectionModel().selectFirst();
-        if (filtroConsegna != null) filtroConsegna.setSelected(false);
-        if (filtroPrenotazione != null) filtroPrenotazione.setSelected(false);
+        // 1. Pulisce i campi di testo grafici
+        if (campoLuogo != null) campoLuogo.clear();
+        if (campoCucina != null) campoCucina.clear();
+
+        //TODO: Per gestire una volta messi i filtri
+//        if (filteredData != null) {
+//            filteredData.setPredicate(p -> true);
+//        }
+
+        System.out.println("[FILTER] Filtri resettati.");
     }
 
     @FXML
