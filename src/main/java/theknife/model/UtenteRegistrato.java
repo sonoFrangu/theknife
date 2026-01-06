@@ -262,24 +262,24 @@ public class UtenteRegistrato extends Utente{
         {    if(prezzoMaggiore>0)
             {
                 //Ricerca completa min>x>max
-                lista.removeIf((x)->x.prezzo_Medio<prezzoMaggiore);
+                lista.removeIf((x)->x.prezzo<prezzoMaggiore);
             }
             //ricerca min>x
-            lista.removeIf((x)->x.prezzo_Medio<prezzoMinore);
+            lista.removeIf((x)->x.prezzo<prezzoMinore);
         }
         else
             if(prezzoMaggiore>0)
                 //ricerca max>x
-                lista.removeIf((x)->x.prezzo_Medio<prezzoMaggiore);
+                lista.removeIf((x)->x.prezzo<prezzoMaggiore);
 
         if(delivery)
         {
-            lista.removeIf((x)->x.getDomicilio()==false);
+            lista.removeIf((x)->x.isDelivery()==false);
         }
 
         if(prenotazioneOn)
         {
-            lista.removeIf((x)->x.getPrenotazione()==false);
+            lista.removeIf((x)->x.isBooking()==false);
         }
 
         //per convenzione lo il num stelle a zero è nullo

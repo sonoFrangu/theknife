@@ -45,13 +45,13 @@ public class GestioneFile {
         String name = ristorante.getNome();
         String address = ristorante.getLuogo() != null ? "\"" + ristorante.getLuogo()+", " + ristorante.getLuogo().getIndirizzo() + ", " + ristorante.getLuogo().getCitta() + "\"": "null";
         String location = ristorante.getLuogo() != null ? "\"" + ristorante.getLuogo().getCitta() + ", " + ristorante.getLuogo().getNazione() + "\"": "null";
-        String price = String.valueOf(ristorante.prezzo_Medio);
+        String price = String.valueOf(ristorante.prezzo);
         String cuisine = ristorante.getCucina() != null ? "\"" + String.join(", ", ristorante.getCucina()) + "\"" : "null";
         String longitude = ristorante.getLuogo() != null ? String.valueOf(ristorante.getLuogo().getLongitudine()) : "null";
         String latitude = ristorante.getLuogo() != null ? String.valueOf(ristorante.getLuogo().getLatitudine()) : "null";
         String phoneNumber = ristorante.getN_tel();
-        String domicilio = ristorante.getDomicilio() ? "true" : "false";
-        String prenotazione = ristorante.getDomicilio() ? "true" : "false";
+        String domicilio = ristorante.isDelivery() ? "true" : "false";
+        String prenotazione = ristorante.isBooking() ? "true" : "false";
 
         // Non esistente nel costruttore di ristorante
         String url = "null";

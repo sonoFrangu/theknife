@@ -4,7 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import theknife.model.Restaurant;
+import theknife.model.Ristorante;
 
 public class AddReviewController {
 
@@ -15,12 +15,12 @@ public class AddReviewController {
     // Riferimenti ai 5 bottoni stella
     @FXML private Button star1, star2, star3, star4, star5;
 
-    private Restaurant ristoranteDestinazione;
+    private Ristorante ristoranteDestinazione;
 
     // Variabile per tenere traccia del voto (default 5 stelle)
     private int votoSelezionato = 5;
 
-    public void setRestaurant(Restaurant restaurant) {
+    public void setRestaurant(Ristorante restaurant) {
         this.ristoranteDestinazione = restaurant;
     }
 

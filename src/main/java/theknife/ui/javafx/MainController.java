@@ -9,7 +9,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import theknife.model.Restaurant;
+import theknife.model.Ristorante;
+import theknife.model.Luogo;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -18,7 +19,7 @@ import java.util.LinkedList;
 
 public class MainController {
 
-    @FXML private ListView<Restaurant> listaRistoranti;
+    @FXML private ListView<Ristorante> listaRistoranti;
 
     @FXML private Button bottoneLogin;
     @FXML private Button bottoneRegistrati;
@@ -36,7 +37,7 @@ public class MainController {
 
 
     // Lista dei ristoranti usata dal codice (dati) collegata alla ListView
-    private final ObservableList<Restaurant> ristoranti = FXCollections.observableArrayList();
+    private final ObservableList<Ristorante> ristoranti = FXCollections.observableArrayList();
     private static final String NOME_CARTELLA = "doc";
     private static final String NOME_FILE_DATI = "michelin_my_maps.csv";
 
@@ -169,8 +170,9 @@ public class MainController {
 
         if(parti.length > 15 && "true".equalsIgnoreCase(parti[15]))
             booking = true;
-
-        Restaurant r = new Restaurant(nome, nazione, citta, indirizzo, latitudine, longitudine, prezzo, delivery, booking, tipoCucina, website, link, award);
+        //todo: prendere num tel
+        String num_tel = "ciao";
+        Ristorante r = new Ristorante(nome, num_tel, delivery, booking, prezzo, tipoCucina, new Luogo(nazione, indirizzo, citta, latitudine, longitudine), website, link, award);
 
         ristoranti.add(r);
     }
@@ -204,7 +206,7 @@ public class MainController {
             }
 
             @Override
-            protected void updateItem(Restaurant r, boolean empty) {
+            protected void updateItem(Ristorante r, boolean empty) {
                 super.updateItem(r, empty);
                 if (empty || r == null) {
                     setGraphic(null);
@@ -216,7 +218,7 @@ public class MainController {
 
                 // Indirizzo completo (indirizzo + città)
                 indirizzoEtichetta.setText(
-                        (valoreNonNullo(r.getIndirizzo()) + ", " + valoreNonNullo(r.getCitta()))
+                        (valoreNonNullo(r.getLuogo().getIndirizzo()) + ", " + valoreNonNullo(r.getLuogo().getCitta()))
                                 .replaceAll(", $", "")
                 );
 
@@ -232,7 +234,7 @@ public class MainController {
                 }
 
                 // Per ora usiamo la label "premi" per mostrare il tipo di cucina
-                String cucina = String.join(", ", r.getTipoCucina());
+                String cucina = String.join(", ", r.getCucina());
                 if (cucina != null && !cucina.isBlank()) {
                     premiEtichetta.setText(cucina);
                     premiEtichetta.setVisible(true);
@@ -255,7 +257,7 @@ public class MainController {
     /**
      * Apre una nuova finestra con i dettagli del ristorante selezionato.
      */
-    private void apriDettagliRistorante(Restaurant rd) {
+    private void apriDettagliRistorante(Ristorante rd) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/it/unininsubria/theknifeui/ui/javafx/view/restaurant_details.fxml"));
@@ -275,15 +277,15 @@ public class MainController {
             RestaurantDetailsController ctrl = loader.getController();
             ctrl.setRestaurantData(
                     rd.getNome(),
-                    rd.getNazione(),
-                    rd.getCitta(),
-                    rd.getIndirizzo(),
-                    rd.getLatitudine(),
-                    rd.getLongitudine(),
+                    rd.getLuogo().getNazione(),
+                    rd.getLuogo().getCitta(),
+                    rd.getLuogo().getIndirizzo(),
+                    rd.getLuogo().getLatitudine(),
+                    rd.getLuogo().getLongitudine(),
                     String.valueOf(rd.getPrezzo()),           // qui ora passi la stringa tipo €€€ NON PIU' ADESSO PASSO IL VALORE MA SCRITTO COME STRINGA
                     rd.isDelivery(),
                     rd.isBooking(),
-                    String.join(", ", rd.getTipoCucina()), //passo la stringa unica di tutte le tipologie di cucina
+                    String.join(", ", rd.getCucina()), //passo la stringa unica di tutte le tipologie di cucina
                     rd.getWebsite(),
                     rd.getLink()
             );
@@ -464,7 +466,7 @@ public class MainController {
         }
 
         if (listaRistoranti == null) return;
-        Restaurant selezionato = listaRistoranti.getSelectionModel().getSelectedItem();
+        Ristorante selezionato = listaRistoranti.getSelectionModel().getSelectedItem();
 
         if (selezionato == null) {
             Alert a = new Alert(Alert.AlertType.WARNING);

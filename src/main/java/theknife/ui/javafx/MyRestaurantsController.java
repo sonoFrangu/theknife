@@ -3,12 +3,12 @@ package theknife.ui.javafx;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
-import theknife.model.Restaurant;
+import theknife.model.Ristorante;
 
 public class MyRestaurantsController {
 
     // Tabella che mostrerà la lista dei ristoranti gestiti dall’utente ristoratore
-    @FXML private TableView<Restaurant> tabellaRistoranti;
+    @FXML private TableView<Ristorante> tabellaRistoranti;
 
     // Etichetta da mostrare quando la tabella è vuota
     @FXML private Label etichettaVuota;
@@ -27,7 +27,7 @@ public class MyRestaurantsController {
      * In futuro potrai usare questo metodo per passare i ristoranti dell’utente
      * e popolare la tabella.
      */
-    public void setRestaurants(java.util.List<Restaurant> lista) {
+    public void setRestaurants(java.util.List<Ristorante> lista) {
         if (lista == null || lista.isEmpty()) {
             tabellaRistoranti.getItems().clear();
         } else {

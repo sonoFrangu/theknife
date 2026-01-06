@@ -100,23 +100,23 @@ public class UtenteNonRegistrato extends Utente {
 
             if (prezzoMinore >= 0 && prezzoMaggiore >= 0)//rimozione dei ristoranti con prezzo medio non compreso tra min e max
             {
-                r.removeIf(x -> !(x.prezzo_Medio > prezzoMinore && x.prezzo_Medio < prezzoMaggiore));
+                r.removeIf(x -> !(x.prezzo > prezzoMinore && x.prezzo < prezzoMaggiore));
             } else if (prezzoMinore >= 0)//rimozione dei ristoranti con prezzo medio minore del min
             {
-                r.removeIf(x -> x.prezzo_Medio < prezzoMinore);
+                r.removeIf(x -> x.prezzo < prezzoMinore);
             } else if (prezzoMaggiore >= 0) //rimozione dei ristoranti con prezzo medio maggiore del max
             {
-                r.removeIf(x -> x.prezzo_Medio > prezzoMaggiore);
+                r.removeIf(x -> x.prezzo > prezzoMaggiore);
             }
 
             if (delivery) //rimozione dei ristoranti che non hanno il servizio di delivery
             {
-                r.removeIf(x -> x.getDomicilio() == false);
+                r.removeIf(x -> x.isDelivery() == false);
             }
 
-            if (prenotazioneOn) //rimozione dei ristoranti che non hanno il servizio di delivery
+            if (prenotazioneOn) //rimozione dei ristoranti che non hanno il servizio di booking
             {
-                r.removeIf(x -> x.getPrenotazione() == false);
+                r.removeIf(x -> x.isBooking() == false);
             }
 
             if (medStelle >= 0) {
