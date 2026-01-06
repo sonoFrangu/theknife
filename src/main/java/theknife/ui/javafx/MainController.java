@@ -225,7 +225,7 @@ public class MainController {
 
                 // Sito web (se presente lo mostriamo, altrimenti nascondiamo il link)
                 String sitoWeb = r.getWebsite();
-                if (sitoWeb != null && !sitoWeb.isBlank()) {
+                if (sitoWeb != null && !sitoWeb.isBlank() && !sitoWeb.equals("null")) {
                     sitoEtichetta.setText(sitoWeb);
                     sitoEtichetta.setVisible(true);
                     sitoEtichetta.setManaged(true);
