@@ -52,7 +52,7 @@
                         style="-fx-background-color: #95a5a6;"/>
 
                 <Button text="Salva Recensione"
-                        onAction="#onSalva"
+                        onAction="#onCreate"
                         styleClass="footer-button"/>
             </HBox>
         </VBox>

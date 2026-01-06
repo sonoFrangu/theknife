@@ -43,6 +43,21 @@ public class GestioneRistoranti {
     }
 
     /**
+     *
+     * @param indirizzo
+     * @return
+     */
+    public Ristorante getRistoranteDaIndirizzo(String indirizzo)
+    {
+        for(Ristorante r: listaRistoranti)
+        {
+            if(r.getLuogo().getIndirizzo().equals(indirizzo))
+                return r;
+        }
+        return null;
+    }
+
+    /**
      * Restituisce un ristorante avendo l'id
      * @param id
      * @return
