@@ -4,9 +4,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import theknife.model.GestioneRecensioni;
+import theknife.model.GestioneRistoranti;
+
+import theknife.model.Recensione;
 import theknife.model.Ristorante;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+
 public class AddReviewController {
+
+    private static final String NOME_CARTELLA = "doc";
+    private static final String NOME_FILE = "recensioni.csv";
 
     @FXML private Label etichettaTitolo;
     @FXML private TextArea areaRecensione;
@@ -100,4 +111,66 @@ public class AddReviewController {
         Stage finestra = (Stage) areaRecensione.getScene().getWindow();
         finestra.close();
     }
+    private void onCreate()
+    {
+        GestioneRecensioni gestRest = new GestioneRecensioni();
+        GestioneRistoranti gr = new GestioneRistoranti();
+        String Utente     = Session.getInstance().getUsername();
+        String indirizzoRistorante =  ristoranteDestinazione.getLuogo().getIndirizzo();
+        int idUtente =0;
+        int  stelle       = votoSelezionato;
+        String text      = areaRecensione.getText();
+
+        Ristorante r = gr.getRistoranteDaIndirizzo(indirizzoRistorante);
+
+        int idRistorante= r.getId();
+
+        File fileRecensioni = new File(NOME_CARTELLA, NOME_FILE);
+        try (BufferedReader br = new BufferedReader(new FileReader(fileRecensioni, StandardCharsets.UTF_8))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+
+                String[] parti = linea.split(";");
+                idUtente= Integer.valueOf(parti[7]);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (stelle == 0 || idUtente== 0 || text == null || idRistorante== 0) {
+            etichettaErrore.setText("Inserire tutti i campi");
+            return;
+        }
+
+
+        // Verifica cartella
+        File cartellaDoc = new File(NOME_CARTELLA);
+        if (!cartellaDoc.exists()) {
+            boolean creata = cartellaDoc.mkdirs();
+            if (!creata) {
+                etichettaErrore.setText("Impossibile creare la cartella " + NOME_CARTELLA);
+                return;
+            }
+        }
+
+        Recensione recensione= new Recensione(stelle,text,Integer.valueOf(idUtente),idRistorante);
+        gestRest.add(recensione);
+        File fileUtenti = new File(cartellaDoc, NOME_FILE);
+
+        // Salva su file
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileUtenti, true))) {
+            bw.write(stelle + ";" + text + ";" +
+                    LocalDateTime.now() + ";" +
+                    idUtente + ";" +
+                    idRistorante);
+            bw.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+            etichettaErrore.setText("Errore nel salvataggio recensione su file.");
+            return;
+        }
+
+        chiudiFinestra();
+    }
+
 }
