@@ -42,7 +42,7 @@ public class MainController {
     private final ObservableList<Ristorante> ristoranti = FXCollections.observableArrayList();
     private static final String NOME_CARTELLA = "doc";
     private static final String NOME_FILE_DATI = "michelin_my_maps.csv";
-    private GestioneRistoranti gr = new GestioneRistoranti();
+    GestioneRistoranti gr = GestioneRistoranti.getInstance();
 
     @FXML
     private void initialize() {
@@ -507,11 +507,14 @@ public class MainController {
         System.out.println("[FILTER] luogo=" + (campoLuogo != null ? campoLuogo.getText() : "")
                 + " cucina=" + (campoCucina != null ? campoCucina.getText() : ""));
 
-        LinkedList<Ristorante> rist = gr.Filtro(campoLuogo.getText(), campoCucina.getText(), 0,0, false, false, -1);
+        LinkedList<Ristorante> rist = gr.Filtro(campoLuogo.getText(), campoCucina.getText(), -1,-1, false, false, -1);
 
-        System.out.println("=== [Lista dei ristoranti] ===");
-        for (Ristorante ristorante : rist) {
-            System.out.println("- " + ristorante);
+        if(rist!=null)
+        {
+            System.out.println("=== [Lista dei ristoranti] ===");
+            for (Ristorante ristorante : rist) {
+                System.out.println("- " + ristorante);
+            }
         }
     }
 

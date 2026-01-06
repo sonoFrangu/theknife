@@ -7,9 +7,17 @@ import java.util.stream.Collectors;
 
 public class GestioneRistoranti {
     public LinkedList<Ristorante> listaRistoranti;
+    private static GestioneRistoranti instance;
     public GestioneRistoranti()
     {
         listaRistoranti = new LinkedList<>();
+    }
+
+    public static synchronized GestioneRistoranti getInstance() {
+        if (instance == null) {
+            instance = new GestioneRistoranti();
+        }
+        return instance;
     }
 
     /**
@@ -91,12 +99,12 @@ public class GestioneRistoranti {
     {
         LinkedList<Ristorante> r = null;
 
-        if(luogo!=null)
+        if(luogo!=null && luogo.length()>0)
         {
             //todo: DA CAMBIARE mettendo i ristoranti nelle vicinanze e prendere la lista pubblica
             r = listaRistoranti.stream().filter(x -> x.getLuogo().getCitta().equals(luogo)).collect(Collectors.toCollection(LinkedList::new));
 
-            if (cucina != null)//rimozione dei ristoranti con cucine diverse da quella selezionata
+            if (cucina != null && cucina.length()>0)//rimozione dei ristoranti con cucine diverse da quella selezionata
             {
                 r.removeIf(x -> !x.getCucina().contains(cucina));
             }
@@ -126,6 +134,11 @@ public class GestioneRistoranti {
                 r.removeIf(x -> x.getMediaStelle() < medStelle); //rimozione dei ristoranti che non hanno medStelle minore
             }
         }
+        else
+        {
+            System.out.println("=== [MANCA IL LUOGO] ===");
+        }
+
         return r;
     }
 
