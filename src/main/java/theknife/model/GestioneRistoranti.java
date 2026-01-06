@@ -21,6 +21,8 @@ public class GestioneRistoranti {
         return instance;
     }
 
+    public LinkedList<Ristorante> getListaRistoranti() {return listaRistoranti;    }
+
     /**
      * Aggiunge un ristorante
      * @param ristorante
@@ -160,6 +162,7 @@ public class GestioneRistoranti {
 
         return r;
     }
+
 
 
 }

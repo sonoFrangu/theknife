@@ -18,6 +18,8 @@ public class AddReviewController {
 
     private static final String NOME_CARTELLA = "doc";
     private static final String NOME_FILE = "recensioni.csv";
+    private static final String NOME_FILE_USER = "users.csv";
+
 
     @FXML private Label etichettaTitolo;
     @FXML private TextArea areaRecensione;
@@ -115,12 +117,14 @@ public class AddReviewController {
 
     @FXML
     //metodo di toschi da sistemare
+    //todo da verificare se scrive su file e se il colelgamento è giusto
+    //todo
     private void onCreate()
     {
-        GestioneRecensioni gestRest = new GestioneRecensioni();
-        GestioneRistoranti gr = new GestioneRistoranti();
+        GestioneRecensioni gestRest =  GestioneRecensioni.getInstance();
+        GestioneRistoranti gr =  GestioneRistoranti.getInstance();
         String Utente     = Session.getInstance().getUsername();
-        String indirizzoRistorante =  ristoranteDestinazione.getLuogo().getIndirizzo();
+        String indirizzoRistorante = ristoranteDestinazione.getLuogo().getIndirizzo();
         int idUtente =0;
         int  stelle       = votoSelezionato;
         String text      = areaRecensione.getText();
@@ -135,7 +139,12 @@ public class AddReviewController {
             while ((linea = br.readLine()) != null) {
 
                 String[] parti = linea.split(";");
-                idUtente= Integer.valueOf(parti[7]);
+
+                if(parti.length>7)
+                    idUtente= Integer.valueOf(parti[7]);
+                else
+                    idUtente=1;
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -159,7 +168,7 @@ public class AddReviewController {
 
         Recensione recensione= new Recensione(stelle,text,Integer.valueOf(idUtente),idRistorante);
         gestRest.add(recensione);
-        File fileUtenti = new File(cartellaDoc, NOME_FILE);
+        File fileUtenti = new File(cartellaDoc, NOME_FILE_USER);
 
         // Salva su file
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileUtenti, true))) {
