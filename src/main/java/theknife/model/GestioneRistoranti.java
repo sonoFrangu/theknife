@@ -1,5 +1,7 @@
 package theknife.model;
 
+import javafx.collections.FXCollections;
+
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
@@ -16,7 +18,7 @@ public class GestioneRistoranti {
      */
     public void add(Ristorante ristorante)
     {
-        if(ristorante != null && !listaRistoranti.contains(ristorante))
+        //if(ristorante != null && !listaRistoranti.contains(ristorante)) //todo: ci sono alcuni luoghi uguali
             listaRistoranti.add(ristorante);
     }
 

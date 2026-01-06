@@ -42,6 +42,7 @@ public class MainController {
     private final ObservableList<Ristorante> ristoranti = FXCollections.observableArrayList();
     private static final String NOME_CARTELLA = "doc";
     private static final String NOME_FILE_DATI = "michelin_my_maps.csv";
+    private GestioneRistoranti gr = new GestioneRistoranti();
 
     @FXML
     private void initialize() {
@@ -174,6 +175,8 @@ public class MainController {
             booking = true;
 
         Ristorante r = new Ristorante(nome, num_tel, delivery, booking, prezzo, tipoCucina, new Luogo(nazione, indirizzo, citta, latitudine, longitudine), website, link, award);
+
+        gr.add(r);
 
         ristoranti.add(r);
     }
@@ -504,7 +507,6 @@ public class MainController {
         System.out.println("[FILTER] luogo=" + (campoLuogo != null ? campoLuogo.getText() : "")
                 + " cucina=" + (campoCucina != null ? campoCucina.getText() : ""));
 
-        GestioneRistoranti gr = new GestioneRistoranti();
         LinkedList<Ristorante> rist = gr.Filtro(campoLuogo.getText(), campoCucina.getText(), 0,0, false, false, -1);
 
         System.out.println("=== [Lista dei ristoranti] ===");
