@@ -503,6 +503,14 @@ public class MainController {
     protected void onApplyFilters() {
         System.out.println("[FILTER] luogo=" + (campoLuogo != null ? campoLuogo.getText() : "")
                 + " cucina=" + (campoCucina != null ? campoCucina.getText() : ""));
+
+        GestioneRistoranti gr = new GestioneRistoranti();
+        LinkedList<Ristorante> rist = gr.Filtro(campoLuogo.getText(), campoCucina.getText(), 0,0, false, false, -1);
+
+        System.out.println("=== [Lista dei ristoranti] ===");
+        for (Ristorante ristorante : rist) {
+            System.out.println("- " + ristorante);
+        }
     }
 
     @FXML

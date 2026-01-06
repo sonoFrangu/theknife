@@ -70,17 +70,15 @@ public class GestioneRistoranti {
         return list;
     }
 
-    public LinkedList<Ristorante> Filtro(Luogo luogo, String cucina, double prezzoMinore, double prezzoMaggiore, boolean delivery, boolean prenotazioneOn, double medStelle)
+    public LinkedList<Ristorante> Filtro(String luogo, String cucina, double prezzoMinore, double prezzoMaggiore, boolean delivery, boolean booking, double medStelle)
     {
         LinkedList<Ristorante> r = null;
 
         if(luogo!=null)
         {
             //todo: DA CAMBIARE mettendo i ristoranti nelle vicinanze e prendere la lista pubblica
-            r = listaRistoranti.stream().filter(x -> x.getLuogo().equals(luogo)).collect(Collectors.toCollection(LinkedList::new));
-        }
-        else
-        {
+            r = listaRistoranti.stream().filter(x -> x.getLuogo().getCitta().equals(luogo)).collect(Collectors.toCollection(LinkedList::new));
+
             if (cucina != null)//rimozione dei ristoranti con cucine diverse da quella selezionata
             {
                 r.removeIf(x -> !x.getCucina().contains(cucina));
@@ -102,13 +100,13 @@ public class GestioneRistoranti {
                 r.removeIf(x -> x.isDelivery() == false);
             }
 
-            if (prenotazioneOn) //rimozione dei ristoranti che non hanno il servizio di booking
+            if (booking) //rimozione dei ristoranti che non hanno il servizio di booking
             {
                 r.removeIf(x -> x.isBooking() == false);
             }
 
             if (medStelle >= 0) {
-                r.removeIf(x -> x.getMediaStelle() < medStelle);
+                r.removeIf(x -> x.getMediaStelle() < medStelle); //rimozione dei ristoranti che non hanno medStelle minore
             }
         }
         return r;
