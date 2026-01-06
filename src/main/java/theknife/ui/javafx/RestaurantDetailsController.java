@@ -81,7 +81,7 @@ public class RestaurantDetailsController {
             mostraMessaggioNessunSito();
         }
 
-        // Prepara il bottone "Apri in Maps" (Link esterno al browser)
+        // Bottono "Apri in Maps"
         preparaGoogleMapsUrl();
 
         // Gestione bottone Preferiti in base al ruolo
@@ -89,23 +89,11 @@ public class RestaurantDetailsController {
     }
 
     private void preparaGoogleMapsUrl() {
-        String urlFinale;
+        String urlFinale = " ";
 
         if (latitudine != 0 && longitudine != 0) {
             // Coordinate precise
             urlFinale = "https://www.google.com/maps?q=" + latitudine + "," + longitudine;
-        } else {
-            // Ricerca per indirizzo
-            String query = (valoreNonNullo(etichettaNome.getText()) + " "
-                    + valoreNonNullo(etichettaIndirizzo.getText()) + " "
-                    + valoreNonNullo(etichettaCitta.getText())).trim();
-
-            if (!query.isBlank()) {
-                String encoded = query.replace(" ", "+");
-                urlFinale = "https://www.google.com/maps/search/?api=1&query=" + encoded;
-            } else {
-                urlFinale = null;
-            }
         }
 
         this.googleMapsUrl = urlFinale;

@@ -91,6 +91,8 @@ public class RegisterController {
 
         File fileUtenti = new File(cartellaDoc, NOME_FILE);
 
+        int nuovoId = calcolaProssimoId(fileUtenti);
+
         // Salva su file
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileUtenti, true))) {
             bw.write(username + ";" + passwordHashed + ";" +
@@ -98,7 +100,8 @@ public class RegisterController {
                     valoreNonNullo(cognome) + ";" +
                     valoreNonNullo(citta) + ";" +
                     isCliente + ";" +
-                    isRistoratore);
+                    isRistoratore + ";" +
+                    nuovoId);
             bw.newLine();
         } catch (IOException e) {
             e.printStackTrace();
@@ -171,6 +174,31 @@ public class RegisterController {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private int calcolaProssimoId(File fileUtenti) {
+        if (!fileUtenti.exists()) {     return 1;   }
+
+        int maxId = 0;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(fileUtenti, StandardCharsets.UTF_8))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+
+                String[] parti = linea.split(";");
+                if (parti.length >= 8) {
+                    try {
+                        int idLetto = Integer.parseInt(parti[parti.length - 1].trim());
+                        if (idLetto > maxId) {
+                            maxId = idLetto;
+                        }
+                    } catch (NumberFormatException e) {}
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return maxId + 1;
     }
 
     private String valoreNonNullo(String s) {
