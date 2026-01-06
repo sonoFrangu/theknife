@@ -48,8 +48,9 @@ public class Ristorante {
 
     public double getMediaStelle()
     {
-        GestioneRecensioni gr= new GestioneRecensioni();
-        return gr.mediaStelle(this.id);
+        /*GestioneRecensioni gr= new GestioneRecensioni();
+        return gr.mediaStelle(this.id);*/
+        return awards;
     }
 
     public String toString() {
