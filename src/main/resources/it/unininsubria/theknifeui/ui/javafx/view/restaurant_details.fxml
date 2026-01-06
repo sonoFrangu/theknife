@@ -16,24 +16,21 @@
         <Insets top="16" right="16" bottom="16" left="16"/>
     </padding>
 
-    <!-- HEADER -->
     <HBox spacing="10" styleClass="details-header">
-        <!-- Parte sinistra: nome, indirizzo, città -->
         <VBox spacing="4" HBox.hgrow="ALWAYS">
             <Label fx:id="etichettaNome" styleClass="restaurant-name"/>
 
-            <HBox spacing="4">
-                <Label text="📍" styleClass="details-line"/>
+            <HBox spacing="4" alignment="CENTER_LEFT">
+                <Label text="📍" styleClass="emoticon"/>
                 <Label fx:id="etichettaIndirizzo" styleClass="details-line"/>
             </HBox>
 
-            <HBox spacing="4">
-                <Label text="🏙️" styleClass="details-line"/>
+            <HBox spacing="4" alignment="CENTER_LEFT">
+                <Label text="🏙" styleClass="emoticon"/>
                 <Label fx:id="etichettaCitta" styleClass="details-line"/>
             </HBox>
         </VBox>
 
-        <!-- Parte destra: bottoni -->
         <HBox spacing="8" alignment="CENTER_RIGHT">
             <Button fx:id="bottoneApriMaps"
                     text="Apri in Maps"
@@ -46,33 +43,52 @@
         </HBox>
     </HBox>
 
-    <!-- INFO PANEL -->
     <GridPane hgap="12" vgap="6" styleClass="details-info-panel">
         <columnConstraints>
-            <ColumnConstraints percentWidth="30"/>
-            <ColumnConstraints percentWidth="70"/>
+            <ColumnConstraints percentWidth="35"/> <ColumnConstraints percentWidth="65"/>
         </columnConstraints>
         <children>
-            <Label text="💰 Prezzo medio:" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="details-label"/>
+            <HBox spacing="5" alignment="CENTER_LEFT" GridPane.rowIndex="0" GridPane.columnIndex="0">
+                <Label text="💰" styleClass="emoticon"/>
+                <Label text="Prezzo medio:" styleClass="details-label"/>
+            </HBox>
             <Label fx:id="valorePrezzo" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="details-value"/>
 
-            <Label text="🍽️ Cucina:" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="details-label"/>
+            <HBox spacing="5" alignment="CENTER_LEFT" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                <Label text="🍽" styleClass="emoticon"/>
+                <Label text="Cucina:" styleClass="details-label"/>
+            </HBox>
             <Label fx:id="valoreCucina" GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="details-value"/>
 
-            <Label text="🚚 Consegna:" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="details-label"/>
+            <HBox spacing="5" alignment="CENTER_LEFT" GridPane.rowIndex="2" GridPane.columnIndex="0">
+                <Label text="🚚" styleClass="emoticon"/>
+                <Label text="Consegna:" styleClass="details-label"/>
+            </HBox>
             <Label fx:id="valoreConsegna" GridPane.rowIndex="2" GridPane.columnIndex="1" styleClass="details-value"/>
 
-            <Label text="📅 Prenotazione:" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="details-label"/>
+            <HBox spacing="5" alignment="CENTER_LEFT" GridPane.rowIndex="3" GridPane.columnIndex="0">
+                <Label text="📅" styleClass="emoticon"/>
+                <Label text="Prenotazione:" styleClass="details-label"/>
+            </HBox>
             <Label fx:id="valorePrenotazione" GridPane.rowIndex="3" GridPane.columnIndex="1" styleClass="details-value"/>
 
-            <Label text="🌐 Sito web:" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="details-label"/>
-            <Hyperlink fx:id="linkSitoWeb" GridPane.rowIndex="4" GridPane.columnIndex="1" styleClass="details-link"/>
+            <HBox spacing="5" alignment="CENTER_LEFT" GridPane.rowIndex="4" GridPane.columnIndex="0">
+                <Label text="📞" styleClass="emoticon"/>
+                <Label text="Telefono:" styleClass="details-label"/>
+            </HBox>
+            <Label fx:id="valoreTelefono" GridPane.rowIndex="4" GridPane.columnIndex="1" styleClass="details-value"/>
+
+            <HBox spacing="5" alignment="CENTER_LEFT" GridPane.rowIndex="5" GridPane.columnIndex="0">
+                <Label text="🌐" styleClass="emoticon"/>
+                <Label text="Sito web:" styleClass="details-label"/>
+            </HBox>
+            <Hyperlink fx:id="linkSitoWeb" GridPane.rowIndex="5" GridPane.columnIndex="1" styleClass="details-link"/>
         </children>
     </GridPane>
 
-    <Label text="Sito web" styleClass="details-section-title"/>
+    <Label text="Sito Web del ristorante" styleClass="details-section-title"/>
 
-    <WebView fx:id="vistaMappa"
+    <WebView fx:id="vistaSito"
              prefWidth="680.0"
              prefHeight="450.0"
              minHeight="280.0">
@@ -83,6 +99,8 @@
 
     <HBox spacing="10">
         <Pane HBox.hgrow="ALWAYS"/>
-        <Button text="Chiudi" onAction="#onChiudi"/>
+        <Button text="Chiudi"
+                onAction="#onChiudi"
+                styleClass="footer-button"/>
     </HBox>
 </VBox>
