@@ -80,6 +80,7 @@ public class AddReviewController {
        ========================= */
 
     @FXML
+    //Metodo vecchio con solo la stampa
     private void onSalva() {
         if (areaRecensione.getText() == null || areaRecensione.getText().isBlank()) {
             etichettaErrore.setText("Il testo della recensione non può essere vuoto.");
@@ -111,6 +112,9 @@ public class AddReviewController {
         Stage finestra = (Stage) areaRecensione.getScene().getWindow();
         finestra.close();
     }
+
+    @FXML
+    //metodo di toschi da sistemare
     private void onCreate()
     {
         GestioneRecensioni gestRest = new GestioneRecensioni();
