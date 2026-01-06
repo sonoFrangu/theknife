@@ -4,6 +4,9 @@ import java.util.LinkedList;
 
 public class GestioneRecensioni {
     public LinkedList<Recensione> recensioni;
+
+    private static GestioneRecensioni instance;
+
     public GestioneRecensioni() {
         recensioni = new LinkedList<>();
     }
@@ -14,6 +17,12 @@ public class GestioneRecensioni {
             recensioni.add(r);
     }
 
+    public static synchronized GestioneRecensioni getInstance() {
+        if (instance == null) {
+            instance = new GestioneRecensioni();
+        }
+        return instance;
+    }
     /**
      * rimuove una recensione dalla lista
      * @param r
