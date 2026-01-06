@@ -7,42 +7,31 @@ public class Luogo {
 
 
     private String nazione;
-    private String via;
+    private String indirizzo;
     private String citta;
-    private int n_civico;
     private double latitudine;
     private double longitudine;
 
-    /**
-     * Costruttore di luogo
-     * @param nazione
-     * @param via
-     * @param citta
-     * @param n_civico
-     * @param latitudine
-     * @param longitudine
-     */
-    public Luogo(String nazione, String via, String citta, int n_civico,double latitudine, double longitudine)
+
+    public Luogo(String nazione, String indirizzo, String citta, double latitudine, double longitudine)
     {
         this.nazione = nazione;
-        this.via = via;
+        this.indirizzo = indirizzo;
         this.citta = citta;
-        this.n_civico = n_civico;
         this.latitudine = latitudine;
         this.longitudine = longitudine;
     }
     //<editor-fold desc="Get">
     public String getNazione() { return nazione;}
-    public String getVia() { return via;}
+    public String getIndirizzo() { return indirizzo;}
     public String getCitta() { return citta;}
-    public int getN_civico() { return n_civico;}
     public double getLatitudine() { return latitudine;}
     public double getLongitudine() { return longitudine;}
     //</editor-fold>
 
     public boolean equals(Luogo l)
     {
-        return this.nazione.equals(l.nazione) && this.via.equals(l.via) && this.citta.equals(l.citta) &&this.latitudine == l.latitudine && this.longitudine == l.longitudine ;
+        return this.nazione.equals(l.nazione) && this.indirizzo.equals(l.indirizzo) && this.citta.equals(l.citta) &&this.latitudine == l.latitudine && this.longitudine == l.longitudine ;
     }
 
     public boolean equals(Object obj)
@@ -54,7 +43,7 @@ public class Luogo {
     @Override
     public String toString()
     {
-        return "Luogo: "+nazione+" "+via+" "+citta+" "+n_civico+" "+latitudine+" "+longitudine+"\n";
+        return "Luogo: "+nazione+" "+indirizzo+" "+citta+" "+latitudine+" "+longitudine+"\n";
     }
     /**
      * Verifica se un luogo è vicino entro 10 kilometri

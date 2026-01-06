@@ -18,6 +18,7 @@ public class Restaurant {
     private double awards;
 
     public Restaurant() {
+
     }
 
     public Restaurant(String nome, String Nazione, String citta, String indirizzo,

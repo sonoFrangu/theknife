@@ -1,7 +1,5 @@
 package theknife.model;
 
-import theknife.vecchioProgetto.Ristorante;
-
 import java.io.*;
 import java.util.LinkedList;
 
@@ -45,7 +43,7 @@ public class GestioneFile {
     public static void scriviFile(Ristorante ristorante) {
         // Costruzione dei campi da scrivere nel file
         String name = ristorante.getNome();
-        String address = ristorante.getLuogo() != null ? "\"" + ristorante.getLuogo().getVia() + ", " + ristorante.getLuogo().getN_civico() + ", " + ristorante.getLuogo().getCitta() + "\"": "null";
+        String address = ristorante.getLuogo() != null ? "\"" + ristorante.getLuogo()+", " + ristorante.getLuogo().getIndirizzo() + ", " + ristorante.getLuogo().getCitta() + "\"": "null";
         String location = ristorante.getLuogo() != null ? "\"" + ristorante.getLuogo().getCitta() + ", " + ristorante.getLuogo().getNazione() + "\"": "null";
         String price = String.valueOf(ristorante.prezzo_Medio);
         String cuisine = ristorante.getCucina() != null ? "\"" + String.join(", ", ristorante.getCucina()) + "\"" : "null";

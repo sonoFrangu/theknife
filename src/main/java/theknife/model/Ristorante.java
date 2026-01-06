@@ -1,7 +1,4 @@
-package theknife.vecchioProgetto;
-
-import theknife.model.GestioneRecensioni;
-import theknife.model.Luogo;
+package theknife.model;
 
 import java.util.LinkedList;
 
