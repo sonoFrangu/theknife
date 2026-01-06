@@ -282,10 +282,11 @@ public class MainController {
                     rd.getLuogo().getIndirizzo(),
                     rd.getLuogo().getLatitudine(),
                     rd.getLuogo().getLongitudine(),
-                    String.valueOf(rd.getPrezzo()),           // qui ora passi la stringa tipo €€€ NON PIU' ADESSO PASSO IL VALORE MA SCRITTO COME STRINGA
+                    String.valueOf(rd.getPrezzo()),
+                    rd.getN_tel(),
                     rd.isDelivery(),
                     rd.isBooking(),
-                    String.join(", ", rd.getCucina()), //passo la stringa unica di tutte le tipologie di cucina
+                    String.join(", ", rd.getCucina()),
                     rd.getWebsite(),
                     rd.getLink()
             );
