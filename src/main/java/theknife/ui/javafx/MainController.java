@@ -9,12 +9,14 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import theknife.model.GestioneRistoranti;
 import theknife.model.Ristorante;
 import theknife.model.Luogo;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 
 public class MainController {
@@ -107,8 +109,6 @@ public class MainController {
 
         String[] parti = dividiCsv(linea);
 
-        //todo: SBAGLIATO!!! non bisogna usare i setter ma il costruttore
-
         String nome = pulisci(parti[0]);
 
         String[] s = parti[1].split(",");
@@ -137,6 +137,8 @@ public class MainController {
         try { longitudine = Double.parseDouble(pulisci(parti[5])); } catch (NumberFormatException ignored) {}
 
         try { latitudine = Double.parseDouble(pulisci(parti[6])); } catch (NumberFormatException ignored) {}
+
+        String num_tel = pulisci(parti[7]);
 
         // Link e info aggiuntive
         String link = pulisci(parti[8]);
@@ -170,8 +172,7 @@ public class MainController {
 
         if(parti.length > 15 && "true".equalsIgnoreCase(parti[15]))
             booking = true;
-        //todo: prendere num tel
-        String num_tel = "ciao";
+
         Ristorante r = new Ristorante(nome, num_tel, delivery, booking, prezzo, tipoCucina, new Luogo(nazione, indirizzo, citta, latitudine, longitudine), website, link, award);
 
         ristoranti.add(r);
@@ -499,53 +500,6 @@ public class MainController {
 
     @FXML
     protected void onApplyFilters() {
-        /*
-            todo: DA IMPLEMENTARE IN UNA CLASSE
-        *
-            LinkedList<Ristorante> r = null;
-
-            if(luogo!=null)
-            {
-            /*
-                //DA CAMBIARE mettendo i ristoranti nelle vicinanze e prendere la lista pubblica
-                r = GestioneFile.leggiFile().stream().filter(x -> x.getLuogo().equals(luogo)).collect(Collectors.toCollection(LinkedList::new));
-            }
-            else
-            {
-                if (filtroCucina.getValue() != null)//rimozione dei ristoranti con cucine diverse da quella selezionata
-                {
-                    r.removeIf(x -> !x.getCucina().contains(filtroCucina.getValue()));
-                }
-
-                if (prezzoMinore >= 0 && prezzoMaggiore >= 0)//rimozione dei ristoranti con prezzo medio non compreso tra min e max
-                {
-                    r.removeIf(x -> !(x.prezzo_Medio > prezzoMinore && x.prezzo_Medio < prezzoMaggiore));
-                } else if (prezzoMinore >= 0)//rimozione dei ristoranti con prezzo medio minore del min
-                {
-                    r.removeIf(x -> x.prezzo_Medio < prezzoMinore);
-                } else if (prezzoMaggiore >= 0) //rimozione dei ristoranti con prezzo medio maggiore del max
-                {
-                    r.removeIf(x -> x.prezzo_Medio > prezzoMaggiore);
-                }
-
-                if (delivery) //rimozione dei ristoranti che non hanno il servizio di delivery
-                {
-                    r.removeIf(x -> x.getDomicilio() == false);
-                }
-
-                if (prenotazioneOn) //rimozione dei ristoranti che non hanno il servizio di delivery
-                {
-                    r.removeIf(x -> x.getPrenotazione() == false);
-                }
-
-                if (medStelle >= 0) {
-                    //r.removeIf(x -> x.getMediaStelle() < medStelle);
-                }
-            }
-            return r;
-        }
-        */
-
         System.out.println("[FILTER] luogo=" + (campoLuogo != null ? campoLuogo.getText() : "")
                 + " cucina=" + (campoCucina != null ? campoCucina.getText() : ""));
     }

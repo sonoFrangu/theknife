@@ -1,6 +1,7 @@
 package theknife.model;
 
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 public class GestioneRistoranti {
     public LinkedList<Ristorante> listaRistoranti;
@@ -68,5 +69,50 @@ public class GestioneRistoranti {
                     list.add(r);
         return list;
     }
+
+    public LinkedList<Ristorante> Filtro(Luogo luogo, String cucina, double prezzoMinore, double prezzoMaggiore, boolean delivery, boolean prenotazioneOn, double medStelle)
+    {
+        LinkedList<Ristorante> r = null;
+
+        if(luogo!=null)
+        {
+            //todo: DA CAMBIARE mettendo i ristoranti nelle vicinanze e prendere la lista pubblica
+            r = listaRistoranti.stream().filter(x -> x.getLuogo().equals(luogo)).collect(Collectors.toCollection(LinkedList::new));
+        }
+        else
+        {
+            if (cucina != null)//rimozione dei ristoranti con cucine diverse da quella selezionata
+            {
+                r.removeIf(x -> !x.getCucina().contains(cucina));
+            }
+
+            if (prezzoMinore >= 0 && prezzoMaggiore >= 0)//rimozione dei ristoranti con prezzo medio non compreso tra min e max
+            {
+                r.removeIf(x -> !(x.prezzo > prezzoMinore && x.prezzo < prezzoMaggiore));
+            } else if (prezzoMinore >= 0)//rimozione dei ristoranti con prezzo medio minore del min
+            {
+                r.removeIf(x -> x.prezzo < prezzoMinore);
+            } else if (prezzoMaggiore >= 0) //rimozione dei ristoranti con prezzo medio maggiore del max
+            {
+                r.removeIf(x -> x.prezzo > prezzoMaggiore);
+            }
+
+            if (delivery) //rimozione dei ristoranti che non hanno il servizio di delivery
+            {
+                r.removeIf(x -> x.isDelivery() == false);
+            }
+
+            if (prenotazioneOn) //rimozione dei ristoranti che non hanno il servizio di booking
+            {
+                r.removeIf(x -> x.isBooking() == false);
+            }
+
+            if (medStelle >= 0) {
+                r.removeIf(x -> x.getMediaStelle() < medStelle);
+            }
+        }
+        return r;
+    }
+
 
 }
