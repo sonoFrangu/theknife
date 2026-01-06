@@ -148,16 +148,16 @@ public class MainController {
 
         s = parti[10].split(" ");
 
-        double award;
-        String a = s[1].substring(0,4);
+        double award = -1;
+        if(s.length > 1) {
+            String a = s[1].substring(0, 4);
 
-        if(parti[10]!=null && a.equals("Star"))
-        {
-            award = Double.parseDouble(pulisci(s[0]));
-        }else{
-            award = -1;
+            if (parti[10] != null && a.equals("Star")) {
+                award = Double.parseDouble(pulisci(s[0]));
+            } else {
+                award = -1;
+            }
         }
-
         // Se nel CSV non c’è un link, generiamo un link a Google Maps
         if (link == null || link.isBlank()) {
             String maps = "https://www.google.com/maps?q="

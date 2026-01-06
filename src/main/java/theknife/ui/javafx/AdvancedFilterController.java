@@ -119,17 +119,7 @@ public class AdvancedFilterController {
                     System.out.println("- " + ristorante);
                 }
             }
-           // controllerPrincipale.onApplyFilters(
-//                    luogo,
-//                    cucina,
-//                    prezzoMin,
-//                    prezzoMax,
-//                    stelleSelezionate,
-//                    delivery,
-//                    booking
-                    //TODO: Modificare chiamata una volta creata la nuova classe
-
-           // );
+           // TODO: mettere i ristoranti anche graficamente
         }
 
         chiudiFinestra();
