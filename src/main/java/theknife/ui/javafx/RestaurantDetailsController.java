@@ -69,11 +69,10 @@ public class RestaurantDetailsController {
         valorePrenotazione.setText(booking ? "Disponibile" : "No");
 
         // GESTIONE SITO WEB (WebView)
-        if (website != null && !website.isBlank()) {
+        if (website != null && !website.isBlank() && !website.equalsIgnoreCase("null")){
             linkSitoWeb.setText(website);
             linkSitoWeb.setDisable(false);
             linkSitoWeb.setOnAction(e -> apriInWebView(website));
-            // Carica automaticamente il sito all'apertura
             apriInWebView(website);
         } else {
             linkSitoWeb.setText("-");
