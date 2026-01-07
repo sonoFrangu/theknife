@@ -13,7 +13,8 @@ public class Ristorante {
     private String website;
     private String link;
     private double awards;
-    private static int id=0;
+    private  int id;
+    private static int contatore=0;
 
 
     public Ristorante(String nome, String numeroTelefono, boolean delivery, boolean booking, double prezzo, LinkedList<String> cucina, Luogo luogo, String website, String link, double awards)
@@ -28,7 +29,7 @@ public class Ristorante {
         this.website = website;
         this.link = link;
         this.awards = awards;
-        this.id++;
+        this.id =++contatore;
 
     }
     //temporaneo

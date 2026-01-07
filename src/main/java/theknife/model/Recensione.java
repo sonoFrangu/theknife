@@ -8,7 +8,8 @@ public class Recensione {
     private Date data;
     private int id_utente_reg;
     private int id_ristorante;
-    private static int id=0;
+    private  int id;
+    private static int contatore=0;
 
     public Recensione(int numeroStelle, String text, int id_utente, int id_ristorante)
     {
@@ -19,8 +20,7 @@ public class Recensione {
         this.id_utente_reg = id_utente;
         this.id_ristorante = id_ristorante;
         this.data = new Date();
-        this.id++;
-
+        this.id = ++contatore;
     }
 
     //<editor-fold desc="Getter">
