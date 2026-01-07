@@ -120,6 +120,7 @@ public class GestioneRistoranti {
             else
             {
                 System.out.println("=== [MANCANO RISTORANTI IN QUEL LUOGO] ===");
+                return r;
             }
 
             /*todo: Versione senza ristoranti vicini
