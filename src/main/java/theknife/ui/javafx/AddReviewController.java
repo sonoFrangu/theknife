@@ -159,7 +159,7 @@ public class AddReviewController {
             e.printStackTrace();
         }
 
-        if (stelle == 0 || idUtente== 0 || text == null || idRistorante== 0) {
+        if (stelle == 0 || idUtente== 0 || areaRecensione.getText().isEmpty() || idRistorante== 0) {
             etichettaErrore.setText("Inserire tutti i campi");
             return;
         }

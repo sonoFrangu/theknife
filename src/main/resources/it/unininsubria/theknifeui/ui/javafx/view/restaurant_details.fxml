@@ -52,6 +52,7 @@
                 <Label text="💰" styleClass="emoticon"/>
                 <Label text="Prezzo medio:" styleClass="details-label"/>
             </HBox>
+
             <Label fx:id="valorePrezzo" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="details-value"/>
 
             <HBox spacing="5" alignment="CENTER_LEFT" GridPane.rowIndex="1" GridPane.columnIndex="0">
@@ -79,10 +80,16 @@
             <Label fx:id="valoreTelefono" GridPane.rowIndex="4" GridPane.columnIndex="1" styleClass="details-value"/>
 
             <HBox spacing="5" alignment="CENTER_LEFT" GridPane.rowIndex="5" GridPane.columnIndex="0">
+                <Label text="⭐" styleClass="emoticon"/>
+                <Label text="Stelle Michelin:" styleClass="details-label"/>
+            </HBox>
+            <Label fx:id="valoreStelle" GridPane.rowIndex="5" GridPane.columnIndex="1" styleClass="details-value"/>
+
+            <HBox spacing="5" alignment="CENTER_LEFT" GridPane.rowIndex="6" GridPane.columnIndex="0">
                 <Label text="🌐" styleClass="emoticon"/>
                 <Label text="Sito web:" styleClass="details-label"/>
             </HBox>
-            <Hyperlink fx:id="linkSitoWeb" GridPane.rowIndex="5" GridPane.columnIndex="1" styleClass="details-link"/>
+            <Hyperlink fx:id="linkSitoWeb" GridPane.rowIndex="6" GridPane.columnIndex="1" styleClass="details-link"/>
         </children>
     </GridPane>
 

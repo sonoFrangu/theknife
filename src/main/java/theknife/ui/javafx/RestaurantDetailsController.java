@@ -22,6 +22,7 @@ public class RestaurantDetailsController {
     @FXML private Label valoreConsegna;
     @FXML private Label valorePrenotazione;
     @FXML private Label valoreTelefono;
+    @FXML private Label valoreStelle;
 
     @FXML private Hyperlink linkSitoWeb;
 
@@ -46,7 +47,7 @@ public class RestaurantDetailsController {
                                   boolean booking,
                                   String cuisine,
                                   String website,
-                                  String mapsUrl) {
+                                  double mediaStelle) {
 
         this.latitudine = latitude;
         this.longitudine = longitude;
@@ -67,6 +68,8 @@ public class RestaurantDetailsController {
         valoreCucina.setText(valoreNonNullo(cuisine));
         valoreConsegna.setText(delivery ? "Disponibile" : "No");
         valorePrenotazione.setText(booking ? "Disponibile" : "No");
+
+        mostraMediaStelle(mediaStelle);
 
         // GESTIONE SITO WEB (WebView)
         if (website != null && !website.isBlank() && !website.equalsIgnoreCase("null")){
@@ -174,5 +177,34 @@ public class RestaurantDetailsController {
 
     private String valoreNonNullo(String s) {
         return s == null ? "" : s;
+    }
+
+    /**
+     * Arrotonda la media all'intero più vicino e imposta le stelle grafiche.
+     * Esempio: 3.7 diventa "★★★★☆ (3.7/5)"
+     */
+    private void mostraMediaStelle(double media) {
+        if (media <= 0) {
+            valoreStelle.setText("Nessuna stella Michelin");
+            valoreStelle.setStyle("-fx-text-fill: gray; -fx-font-size: 14px;"); // Grigio
+            return;
+        }
+        long stellePiene = Math.round(media);
+
+        StringBuilder sb = new StringBuilder();
+
+        // Costruisce la stringa di stelle
+        for (int i = 0; i < 3; i++) {
+            if (i < stellePiene) {
+                sb.append("★");
+            } else {
+                sb.append("☆");
+            }
+        }
+
+        valoreStelle.setText(sb.toString());
+
+        // Imposta colore ORO e font più grande
+        valoreStelle.setStyle("-fx-text-fill: gold; -fx-font-size: 18px; -fx-font-weight: bold;");
     }
 }
