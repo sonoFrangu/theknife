@@ -126,7 +126,7 @@ public class ViewReviewsController {
         });
     }
 
-    @FXML
+        @FXML
     private void onChiudi() {
         Stage stage = (Stage) etichettaTitolo.getScene().getWindow();
         stage.close();

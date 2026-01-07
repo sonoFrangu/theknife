@@ -2,6 +2,10 @@ package theknife.model;
 
 import java.util.LinkedList;
 
+/**
+ * @author Elia Toschi
+ * @author Matteo Franguelli
+ */
 public class GestioneRecensioni {
     public LinkedList<Recensione> recensioni;
 
@@ -17,6 +21,11 @@ public class GestioneRecensioni {
             recensioni.add(r);
     }
 
+    /**
+     * @author Elia Toschi
+     * @author Celestino Resteghini
+     * @return null
+     */
     public static synchronized GestioneRecensioni getInstance() {
         if (instance == null) {
             instance = new GestioneRecensioni();
@@ -37,6 +46,8 @@ public class GestioneRecensioni {
      * @param r
      * @param text
      * @param numeroStelle
+     * @author Elia Toschi
+     * @author Matteo Franguelli
      */
     public void modificaRecensioni(Recensione r, String text, int numeroStelle)
     {
@@ -50,7 +61,8 @@ public class GestioneRecensioni {
     /**
      * Verifica se la recensione è già presente nella lista
      * @param r
-     * @return
+     * @author Celestino Resteghini
+     * @return se la recensione è presente
      */
     public boolean isPresente(Recensione r)
     {
@@ -59,12 +71,14 @@ public class GestioneRecensioni {
 
     /**
      * Restituisce tutte le recensioni presenti nella lista
+     * @author Matteo Franguelli
      * @return
      */
     public LinkedList<Recensione> getRecensioni() { return recensioni; }
 
     /**
      * Restituisce la media delle stelle di un ristorante
+     * @author Elia Toschi
      * @param idRistorante
      * @return
      */

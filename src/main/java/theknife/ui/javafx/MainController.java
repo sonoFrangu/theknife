@@ -20,7 +20,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+/**
+ * @author Matteo Franguelli
+ * @author Celestino Resteghini
+ * @author Elia Toschi
+ */
 public class MainController {
 
     @FXML private ListView<Ristorante> listaRistoranti;
@@ -46,6 +50,9 @@ public class MainController {
     private static final String NOME_FILE_DATI = "michelin_my_maps.csv";
     GestioneRistoranti gr = GestioneRistoranti.getInstance();
 
+    /**
+     * @author Matteo Franguelli
+     */
     @FXML
     private void initialize() {
         Label placeholder = new Label("Nessun risultato trovato");
@@ -68,6 +75,9 @@ public class MainController {
     /**
      * Legge il file CSV dalle risorse del progetto e aggiunge
      * ogni riga come ristorante nella lista.
+     *
+     * @author Matteo Franguelli
+     * @author Celestino Resteghini
      */
     private void caricaRistorantiDaCsv() {
         // Avviamo il thread
@@ -120,6 +130,8 @@ public class MainController {
     /**
      * Converte una singola riga CSV in un oggetto Restaurant
      * e lo aggiunge alla lista dei ristoranti.
+     *
+     * @author Celestino Resteghini
      */
     private void aggiungiDaRigaCsv(String linea, List<Ristorante> destinazione) {
         if (linea == null || linea.isBlank()) return;
@@ -204,6 +216,7 @@ public class MainController {
     /**
      * Imposta come i ristoranti devono essere mostrati dentro la ListView:
      * ogni riga ha nome, indirizzo, sito e tipo di cucina.
+     * @author Matteo Franguelli
      */
     private void inizializzaListaRistoranti() {
         listaRistoranti.setItems(ristoranti);
@@ -225,6 +238,11 @@ public class MainController {
                 box.getChildren().addAll(nomeEtichetta, indirizzoEtichetta, sitoEtichetta, premiEtichetta);
             }
 
+            /**
+             * @author Matteo Franguelli
+             * @param r
+             * @param empty
+             */
             @Override
             protected void updateItem(Ristorante r, boolean empty) {
                 super.updateItem(r, empty);
@@ -276,6 +294,7 @@ public class MainController {
 
     /**
      * Apre una nuova finestra con i dettagli del ristorante selezionato.
+     * @author Matteo Franguelli
      */
     private void apriDettagliRistorante(Ristorante rd) {
         try {
@@ -321,10 +340,13 @@ public class MainController {
        ========================= */
 
     /**
+     *
      * Aggiorna la visibilità dei pulsanti in base al ruolo dell’utente:
      * - ospite
      * - cliente
      * - ristoratore
+     *
+     *
      */
     private void aggiornaInterfaccia() {
         Session s = Session.getInstance();
@@ -381,7 +403,9 @@ public class MainController {
     /* =========================
        HANDLER TOP BAR
        ========================= */
-
+    /**
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onShowLogin() {
         try {
@@ -400,7 +424,9 @@ public class MainController {
             e.printStackTrace();
         }
     }
-
+    /**
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onShowRegister() {
         try {
@@ -419,7 +445,9 @@ public class MainController {
             e.printStackTrace();
         }
     }
-
+    /**
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onLogout() {
         Session.getInstance().logout();
@@ -436,6 +464,9 @@ public class MainController {
        HANDLER AZIONI
        ========================= */
 
+    /**
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onAddRestaurant() {
         Session s = Session.getInstance();
@@ -467,6 +498,10 @@ public class MainController {
         } catch (IOException e) { e.printStackTrace(); }
     }
 
+    /**
+     * @author Matteo Franguelli
+     * @author Elia Toschi
+     */
     @FXML
     private void onAddReview() {
         Session s = Session.getInstance();
@@ -519,8 +554,8 @@ public class MainController {
        ========================= */
 
     /**
-     * Author Matteo Franguelli
-     * Author Celestino Resteghini
+     * @author Matteo Franguelli
+     * @author Celestino Resteghini
      */
     @FXML
     protected void onApplyFilters() {
@@ -541,7 +576,7 @@ public class MainController {
         else { ristoranti.clear(); }
     }
     /**
-     * Author Matteo Franguelli
+     * @author Matteo Franguelli
      */
     @FXML
     private void onResetFilters() {
@@ -553,7 +588,7 @@ public class MainController {
         System.out.println("[FILTER] Filtri resettati.");
     }
     /**
-     * Author Matteo Franguelli
+     * @author Matteo Franguelli
      */
     @FXML
     private void onShowMyRestaurants() {
@@ -570,7 +605,7 @@ public class MainController {
         }
     }
     /**
-     * Author Matteo Franguelli
+     * @author Matteo Franguelli
      */
     @FXML
     private void onShowFavorites() {
@@ -587,7 +622,7 @@ public class MainController {
         }
     }
     /**
-     * Author Matteo Franguelli
+     * @author Matteo Franguelli
      */
     @FXML
     private void onShowAdvancedFilter() {
@@ -608,7 +643,7 @@ public class MainController {
         }
     }
     /**
-     * Author Matteo Franguelli
+     * @author Matteo Franguelli
      */
     @FXML
     private void onShowMyReviews() {
@@ -626,7 +661,7 @@ public class MainController {
         }
     }
     /**
-     * Author Matteo Franguelli
+     * @author Matteo Franguelli
      */
     @FXML
     private void onViewReviews() {
@@ -664,7 +699,7 @@ public class MainController {
        ========================= */
 
     /**
-     * Author Matteo Franguelli
+     * @author Matteo Franguelli
      */
     private void mostraErrore(String titolo, String messaggio) {
         Alert alert = new Alert(Alert.AlertType.WARNING);

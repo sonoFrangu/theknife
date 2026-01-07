@@ -3,6 +3,12 @@ package theknife.model;
 import java.io.*;
 import java.util.LinkedList;
 
+/**
+ * @author Elia Toschi
+ * @author Celestino Resteghini
+ * @author Matteo Franguelli
+ * La classe si occupa della gestione dei File
+ */
 public class GestioneFile {
 
     private static String nomeCartella = "doc";
