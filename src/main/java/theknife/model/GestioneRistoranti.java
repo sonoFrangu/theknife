@@ -160,10 +160,6 @@ public class GestioneRistoranti {
         {
             System.out.println("=== [MANCA IL LUOGO] ===");
         }
-
         return r;
     }
-
-
-
 }

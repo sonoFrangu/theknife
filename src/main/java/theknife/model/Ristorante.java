@@ -44,7 +44,7 @@ public class Ristorante {
     public Luogo getLuogo(){return luogo;}
     public String getWebsite() { return website; }
     public String getLink() { return link; }
-    public int getId() { return id;  }
+    public  int getId() { return id;  }
 
     public double getMediaStelle()
     {

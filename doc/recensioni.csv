@@ -1,2 +1,3 @@
-Text;N_Stelle;Date;IdUtente;IdRistorante
-fafefa;3;"""25/3/25""";1;1
+N_Stelle;Text;Date;IdUtente;IdRistorante;
+3;ffee;2026-01-07T17:15:26.198196300;1;17737
+5;fefe;2026-01-07T17:15:35.930090300;1;17737

@@ -1,5 +1,4 @@
-clt;667ae99a22d281e83efde10bde1282107ad99a08945d6e6d89b8738469e5630f;clt;clt;clt;true;false;1
-ris;a335c3c780dea242e191c3b83ce2b33adefeade0c4ab286d23711452510082a1;ris;ris;ris;false;true;2
-entrambi;ea05a3a54e8b021c4a5f06898b793d24fea78cc349c78dd19e828fade7b6923e;entrambi;entrambi;entrambi;true;true;3
-3;sdfg;2026-01-06T20:39:38.308036300;1;17736
-5;dfgbnm;2026-01-06T22:33:37.382328100;1;17736
+Username;password;Nome;Cognome;Citta;isCliente;isRistoratore;IdUtente;RistorantiPreferiti
+clt;667ae99a22d281e83efde10bde1282107ad99a08945d6e6d89b8738469e5630f;clt;clt;clt;true;false;1;
+ris;a335c3c780dea242e191c3b83ce2b33adefeade0c4ab286d23711452510082a1;ris;ris;ris;false;true;2;
+entrambi;ea05a3a54e8b021c4a5f06898b793d24fea78cc349c78dd19e828fade7b6923e;entrambi;entrambi;entrambi;true;true;3;

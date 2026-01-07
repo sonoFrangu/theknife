@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class AddReviewController {
 
     private static final String NOME_CARTELLA = "doc";
-    private static final String NOME_FILE = "recensioni.csv";
+    private static final String NOME_FILE_RECENSIONI = "recensioni.csv";
     private static final String NOME_FILE_USER = "users.csv";
 
 
@@ -101,7 +101,6 @@ public class AddReviewController {
         } else {
             System.err.println("Errore: nessun ristorante associato alla recensione.");
         }
-
         chiudiFinestra();
     }
 
@@ -123,9 +122,9 @@ public class AddReviewController {
     {
         GestioneRecensioni gestRest =  GestioneRecensioni.getInstance();
         GestioneRistoranti gr =  GestioneRistoranti.getInstance();
-        String Utente     = Session.getInstance().getUsername();
+        String utente     = Session.getInstance().getUsername();
         String indirizzoRistorante = ristoranteDestinazione.getLuogo().getIndirizzo();
-        int idUtente =0;
+        int idUtente =1;
         int  stelle       = votoSelezionato;
         String text      = areaRecensione.getText();
 
@@ -133,18 +132,28 @@ public class AddReviewController {
 
         int idRistorante= r.getId();
 
-        File fileRecensioni = new File(NOME_CARTELLA, NOME_FILE);
-        try (BufferedReader br = new BufferedReader(new FileReader(fileRecensioni, StandardCharsets.UTF_8))) {
+        //Prendere id utente
+        File cartellaDoc = new File(NOME_CARTELLA);
+        if (!cartellaDoc.exists()) {
+            boolean creata = cartellaDoc.mkdirs();
+            if (!creata) {
+                etichettaErrore.setText("Impossibile creare la cartella " + NOME_CARTELLA);
+                return;
+            }
+        }
+        File fileUtenti = new File(cartellaDoc, NOME_FILE_USER);
+        try(BufferedReader br = new BufferedReader(new FileReader(fileUtenti, StandardCharsets.UTF_8))) {
             String linea;
-            while ((linea = br.readLine()) != null) {
+            br.readLine();
+            while ((linea = br.readLine()) != null ) {
 
                 String[] parti = linea.split(";");
 
-                if(parti.length>7)
-                    idUtente= Integer.valueOf(parti[7]);
-                else
-                    idUtente=1;
-
+                if(parti[0].equals(utente))
+                {
+                    idUtente= Integer.valueOf(parti[7].trim());
+                    break;
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -155,23 +164,15 @@ public class AddReviewController {
             return;
         }
 
+        File fileRecensioni = new File(NOME_CARTELLA, NOME_FILE_RECENSIONI);
 
-        // Verifica cartella
-        File cartellaDoc = new File(NOME_CARTELLA);
-        if (!cartellaDoc.exists()) {
-            boolean creata = cartellaDoc.mkdirs();
-            if (!creata) {
-                etichettaErrore.setText("Impossibile creare la cartella " + NOME_CARTELLA);
-                return;
-            }
-        }
 
         Recensione recensione= new Recensione(stelle,text,Integer.valueOf(idUtente),idRistorante);
         gestRest.add(recensione);
-        File fileUtenti = new File(cartellaDoc, NOME_FILE_USER);
+
 
         // Salva su file
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileUtenti, true))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileRecensioni, true))) {
             bw.write(stelle + ";" + text + ";" +
                     LocalDateTime.now() + ";" +
                     idUtente + ";" +
