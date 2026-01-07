@@ -101,7 +101,6 @@ public class AddReviewController {
         } else {
             System.err.println("Errore: nessun ristorante associato alla recensione.");
         }
-
         chiudiFinestra();
     }
 

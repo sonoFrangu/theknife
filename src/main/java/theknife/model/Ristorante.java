@@ -13,7 +13,7 @@ public class Ristorante {
     private String website;
     private String link;
     private double awards;
-    public static int id=0;
+    private static int id=0;
 
 
     public Ristorante(String nome, String numeroTelefono, boolean delivery, boolean booking, double prezzo, LinkedList<String> cucina, Luogo luogo, String website, String link, double awards)
@@ -44,7 +44,7 @@ public class Ristorante {
     public Luogo getLuogo(){return luogo;}
     public String getWebsite() { return website; }
     public String getLink() { return link; }
-    public int getId() { return id;  }
+    public  int getId() { return id;  }
 
     public double getMediaStelle()
     {
