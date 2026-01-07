@@ -518,6 +518,10 @@ public class MainController {
        ALTRE VIEW
        ========================= */
 
+    /**
+     * Author Matteo Franguelli
+     * Author Celestino Resteghini
+     */
     @FXML
     protected void onApplyFilters() {
         String luogo = campoLuogo.getText();
@@ -536,7 +540,9 @@ public class MainController {
         }
         else { ristoranti.clear(); }
     }
-
+    /**
+     * Author Matteo Franguelli
+     */
     @FXML
     private void onResetFilters() {
         if (campoLuogo != null) campoLuogo.clear();
@@ -546,7 +552,9 @@ public class MainController {
 
         System.out.println("[FILTER] Filtri resettati.");
     }
-
+    /**
+     * Author Matteo Franguelli
+     */
     @FXML
     private void onShowMyRestaurants() {
         try {
@@ -561,7 +569,9 @@ public class MainController {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Author Matteo Franguelli
+     */
     @FXML
     private void onShowFavorites() {
         try {
@@ -576,7 +586,9 @@ public class MainController {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Author Matteo Franguelli
+     */
     @FXML
     private void onShowAdvancedFilter() {
         try {
@@ -595,7 +607,9 @@ public class MainController {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Author Matteo Franguelli
+     */
     @FXML
     private void onShowMyReviews() {
         try {
@@ -611,7 +625,9 @@ public class MainController {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Author Matteo Franguelli
+     */
     @FXML
     private void onViewReviews() {
         if (listaRistoranti == null) return;
@@ -635,7 +651,7 @@ public class MainController {
             st.initModality(Modality.APPLICATION_MODAL);
 
             ViewReviewsController ctrl = loader.getController();
-            ctrl.setRestaurant(selezionato);
+            // ctrl.setRestaurant(selezionato);
 
             st.showAndWait();
         } catch (IOException e) { e.printStackTrace(); }
@@ -647,7 +663,9 @@ public class MainController {
        UTILS
        ========================= */
 
-
+    /**
+     * Author Matteo Franguelli
+     */
     private void mostraErrore(String titolo, String messaggio) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Attenzione");
