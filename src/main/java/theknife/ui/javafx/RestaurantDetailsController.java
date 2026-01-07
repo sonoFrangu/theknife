@@ -128,8 +128,10 @@ public class RestaurantDetailsController {
         Alert a = new Alert(Alert.AlertType.INFORMATION);
         a.setTitle("Preferiti");
         a.setHeaderText(null);
-        a.setContentText("Ristorante aggiunto ai preferiti (Mock).");
+        a.setContentText("Ristorante aggiunto ai preferiti (UI).");
         a.showAndWait();
+
+        //TODO: Salvare nei preferiti, gia' creato preferiti.csv
     }
 
     @FXML
@@ -154,7 +156,7 @@ public class RestaurantDetailsController {
         if (vistaSito != null) {
             String html = """
                     <html>
-                      <body style="font-family: Arial; color:#666; padding: 20px; text-align:center;">
+                      <body>
                         <h2>Nessun sito web disponibile</h2>
                         <p>Questo ristorante non ha un sito web specificato.</p>
                       </body>
@@ -179,10 +181,6 @@ public class RestaurantDetailsController {
         return s == null ? "" : s;
     }
 
-    /**
-     * Arrotonda la media all'intero più vicino e imposta le stelle grafiche.
-     * Esempio: 3.7 diventa "★★★★☆ (3.7/5)"
-     */
     private void mostraMediaStelle(double media) {
         if (media <= 0) {
             valoreStelle.setText("Nessuna stella Michelin");

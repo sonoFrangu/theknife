@@ -10,19 +10,15 @@ import javafx.collections.ObservableList;
 
 public class FavoritesController {
 
-    // Lista visibile con i ristoranti preferiti dell'utente
     @FXML private ListView<Ristorante> listaPreferiti;
 
-    // Etichetta mostrata quando non ci sono elementi nella lista
     @FXML private Label etichettaVuota;
 
-    // Lista interna dei preferiti collegata alla ListView
     private final ObservableList<Ristorante> preferiti = FXCollections.observableArrayList();
 
-    /**
-     * Inizializzazione automatica chiamata da JavaFX.
-     * Collega la lista interna alla ListView e aggiorna la grafica.
-     */
+    //TODO: stesso discorso di MyRestaurantController.java, prima devo avere un file da cui prendere i preferiti
+    // se volete farlo e' uguale a MyReviewsController.java
+    // fatemi sapere se bisogna fare anche quale "Elimina" e "Modifica"
     @FXML
     private void initialize() {
         // per ora la lista è vuota → solo grafica
@@ -30,10 +26,6 @@ public class FavoritesController {
         aggiornaMessaggioVuoto();
     }
 
-    /**
-     * Aggiunge un ristorante ai preferiti.
-     * Ignora i duplicati.
-     */
     public void addFavorite(Ristorante ristorante) {
         if (ristorante == null) return;
         if (!preferiti.contains(ristorante)) {
@@ -42,10 +34,6 @@ public class FavoritesController {
         }
     }
 
-    /**
-     * Mostra o nasconde il messaggio “Nessun preferito”
-     * in base allo stato della lista.
-     */
     private void aggiornaMessaggioVuoto() {
         boolean nessunElemento = preferiti.isEmpty();
         etichettaVuota.setVisible(nessunElemento);

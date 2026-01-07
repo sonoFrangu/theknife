@@ -7,26 +7,20 @@ import theknife.model.Ristorante;
 
 public class MyRestaurantsController {
 
-    // Tabella che mostrerà la lista dei ristoranti gestiti dall’utente ristoratore
+
+    //TODO: Finche' non abbiamo modo di tener traccia dei ristoranti inseriti e da chi non posso farla
+    // per ora la tabella la lascio vuota
     @FXML private TableView<Ristorante> tabellaRistoranti;
 
     // Etichetta da mostrare quando la tabella è vuota
     @FXML private Label etichettaVuota;
 
-    /**
-     * Metodo chiamato automaticamente da JavaFX dopo il caricamento della view.
-     * Al momento la tabella non contiene dati: verranno aggiunti in futuro
-     * quando avrai la lista dei ristoranti dell’utente.
-     */
     @FXML
     private void initialize() {
         aggiornaMessaggioVuoto();
     }
 
-    /**
-     * In futuro potrai usare questo metodo per passare i ristoranti dell’utente
-     * e popolare la tabella.
-     */
+
     public void setRestaurants(java.util.List<Ristorante> lista) {
         if (lista == null || lista.isEmpty()) {
             tabellaRistoranti.getItems().clear();
@@ -36,10 +30,6 @@ public class MyRestaurantsController {
         aggiornaMessaggioVuoto();
     }
 
-    /**
-     * Mostra o nasconde il messaggio "Nessun ristorante"
-     * quando la tabella è vuota.
-     */
     private void aggiornaMessaggioVuoto() {
         boolean vuota = tabellaRistoranti.getItems().isEmpty();
         etichettaVuota.setVisible(vuota);
