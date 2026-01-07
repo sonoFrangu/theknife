@@ -621,14 +621,14 @@ public class MainController {
             Alert a = new Alert(Alert.AlertType.WARNING);
             a.setTitle("Nessun ristorante");
             a.setHeaderText(null);
-            a.setContentText("Seleziona un ristorante prima di aggiungere una recensione.");
+            a.setContentText("Seleziona un ristorante prima di vedere le recensioni.");
             a.showAndWait();
             return;
         }
 
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/it/unininsubria/theknifeui/ui/javafx/view/view_reviews.fxml"));
+                    getClass().getResource("/it/unininsubria/theknifeui/ui/javafx/view/view_reviews.fxml")); // Controlla che il path sia giusto
             Stage st = new Stage();
             st.setScene(new Scene(loader.load()));
             st.setTitle("Recensioni");
