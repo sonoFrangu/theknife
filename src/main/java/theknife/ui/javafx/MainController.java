@@ -1,5 +1,6 @@
 package theknife.ui.javafx;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import theknife.model.Luogo;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -46,6 +48,8 @@ public class MainController {
 
     @FXML
     private void initialize() {
+        Label placeholder = new Label("Nessun risultato trovato");
+        listaRistoranti.setPlaceholder(placeholder);
         // Carica i ristoranti dal file CSV
         caricaRistorantiDaCsv();
 
@@ -66,38 +70,50 @@ public class MainController {
      * ogni riga come ristorante nella lista.
      */
     private void caricaRistorantiDaCsv() {
-        InputStream is = null;
+        // Avviamo il thread
+        new Thread(() -> {
+            // Creiamo una lista temporanea per non bloccare la grafica
+            List<Ristorante> bufferTemporaneo = new LinkedList<>();
+            InputStream is = null;
 
-        try {
-            File fileEsterno = new File(NOME_CARTELLA, NOME_FILE_DATI);
+            try {
+                File fileEsterno = new File(NOME_CARTELLA, NOME_FILE_DATI);
 
-            if (fileEsterno.exists()) {
-                System.out.println("Caricamento dati da: " + fileEsterno.getAbsolutePath());
-                is = new FileInputStream(fileEsterno);
-            }
-
-            if (is == null) {
-                System.err.println("ERRORE: " + NOME_FILE_DATI + " non trovato.");
-                return;
-            }
-
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
-                String linea = br.readLine();
-                // Salta la riga di intestazione se contiene se trova name
-                if (linea != null && linea.toLowerCase().contains("name")) {
-                    linea = br.readLine();
+                if (fileEsterno.exists()) {
+                    System.out.println("Caricamento dati da: " + fileEsterno.getAbsolutePath());
+                    is = new FileInputStream(fileEsterno);
                 }
 
-                while (linea != null) {
-                    aggiungiDaRigaCsv(linea);
-                    linea = br.readLine();
+                if (is == null) {
+                    System.err.println("ERRORE: " + NOME_FILE_DATI + " non trovato.");
+                    return;
                 }
-            }
-            is.close();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+                    String linea = br.readLine();
+                    if (linea != null && linea.toLowerCase().contains("name")) {
+                        linea = br.readLine();
+                    }
+
+                    while (linea != null) {
+                        // Passiamo la lista temporanea al metodo
+                        aggiungiDaRigaCsv(linea, bufferTemporaneo);
+                        linea = br.readLine();
+                    }
+                }
+                is.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // Finito il caricamento, aggiorniamo la lista Observable
+            Platform.runLater(() -> {
+                ristoranti.addAll(bufferTemporaneo);
+                gr.listaRistoranti.addAll(bufferTemporaneo);
+            });
+
+        }).start();
     }
 
 
@@ -105,7 +121,7 @@ public class MainController {
      * Converte una singola riga CSV in un oggetto Restaurant
      * e lo aggiunge alla lista dei ristoranti.
      */
-    private void aggiungiDaRigaCsv(String linea) {
+    private void aggiungiDaRigaCsv(String linea, List<Ristorante> destinazione) {
         if (linea == null || linea.isBlank()) return;
 
         String[] parti = dividiCsv(linea);
@@ -148,16 +164,16 @@ public class MainController {
 
         s = parti[10].split(" ");
 
-        double award;
-        String a = s[1].substring(0,4);
+        double award = -1;
+        if(s.length > 1) {
+            String a = s[1].substring(0, 4);
 
-        if(parti[10]!=null && a.equals("Star"))
-        {
-            award = Double.parseDouble(pulisci(s[0]));
-        }else{
-            award = -1;
+            if (parti[10] != null && a.equals("Star")) {
+                award = Double.parseDouble(pulisci(s[0]));
+            } else {
+                award = -1;
+            }
         }
-
         // Se nel CSV non c’è un link, generiamo un link a Google Maps
         if (link == null || link.isBlank()) {
             String maps = "https://www.google.com/maps?q="
@@ -176,9 +192,9 @@ public class MainController {
 
         Ristorante r = new Ristorante(nome, num_tel, delivery, booking, prezzo, tipoCucina, new Luogo(nazione, indirizzo, citta, latitudine, longitudine), website, link, award);
 
-        gr.add(r);
+        //gr.add(r);
 
-        ristoranti.add(r);
+        destinazione.add(r);
     }
 
     /* =========================
@@ -504,30 +520,29 @@ public class MainController {
 
     @FXML
     protected void onApplyFilters() {
-        System.out.println("[FILTER] luogo=" + (campoLuogo != null ? campoLuogo.getText() : "")
-                + " cucina=" + (campoCucina != null ? campoCucina.getText() : ""));
+        String luogo = campoLuogo.getText();
+        if (luogo == null || luogo.isBlank()) {
+            mostraErrore("Campo obbligatorio", "Devi inserire una città per effettuare la ricerca.");
+            campoLuogo.requestFocus(); // Rimette il cursore nel campo vuoto
+            return;
+        }
 
         LinkedList<Ristorante> rist = gr.Filtro(campoLuogo.getText(), campoCucina.getText(), -1,-1, false, false, -1);
 
         if(rist!=null)
         {
-            System.out.println("=== [Lista dei ristoranti] ===");
-            for (Ristorante ristorante : rist) {
-                System.out.println("- " + ristorante);
-            }
+            ristoranti.clear();       // Svuota lista grafica attuale
+            ristoranti.addAll(rist);  // aggiunge risultati filtro
         }
+        else { ristoranti.clear(); }
     }
 
     @FXML
     private void onResetFilters() {
-        // 1. Pulisce i campi di testo grafici
         if (campoLuogo != null) campoLuogo.clear();
         if (campoCucina != null) campoCucina.clear();
 
-        //TODO: Per gestire una volta messi i filtri
-//        if (filteredData != null) {
-//            filteredData.setPredicate(p -> true);
-//        }
+        mostraRistoranti(gr.listaRistoranti);
 
         System.out.println("[FILTER] Filtri resettati.");
     }
@@ -601,6 +616,14 @@ public class MainController {
        UTILS
        ========================= */
 
+
+    private void mostraErrore(String titolo, String messaggio) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Attenzione");
+        alert.setHeaderText(titolo);
+        alert.setContentText(messaggio);
+        alert.showAndWait();
+    }
     /**
      * Rimuove eventuali doppi apici e spazi inutili.
      */
@@ -631,4 +654,12 @@ public class MainController {
         // split che gestisce anche i campi tra doppi apici
         return line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
     }
+
+    public void mostraRistoranti(List<Ristorante> nuovaLista) {
+        ristoranti.clear();
+        if (nuovaLista != null && !nuovaLista.isEmpty()) {
+            ristoranti.addAll(nuovaLista);
+        }
+    }
+
 }

@@ -68,6 +68,12 @@ public class AdvancedFilterController {
         boolean delivery = checkDelivery.isSelected();
         boolean booking = checkBooking.isSelected();
 
+        if (luogo == null || luogo.isBlank()) {
+            mostraErrore("Campo obbligatorio", "Devi inserire una città per effettuare la ricerca.");
+            campoLuogo.requestFocus(); // Rimette il cursore nel campo vuoto
+            return;
+        }
+
         Double prezzoMin = null;
         Double prezzoMax = null;
 
@@ -106,30 +112,11 @@ public class AdvancedFilterController {
         System.out.println("Delivery: " + delivery);
         System.out.println("Booking: " + booking);
 
-
-
-        // 4. Passa i dati al MainController per applicare il filtro
         if (controllerPrincipale != null) {
             GestioneRistoranti gr = GestioneRistoranti.getInstance();
             LinkedList<Ristorante> rist = gr.Filtro(luogo, cucina, (prezzoMin != null ? prezzoMin : -1), (prezzoMax != null ? prezzoMax : -1), delivery, booking, stelleSelezionate);
 
-            if(rist!=null) {
-                System.out.println("=== [Lista dei ristoranti] ===");
-                for (Ristorante ristorante : rist) {
-                    System.out.println("- " + ristorante);
-                }
-            }
-           // controllerPrincipale.onApplyFilters(
-//                    luogo,
-//                    cucina,
-//                    prezzoMin,
-//                    prezzoMax,
-//                    stelleSelezionate,
-//                    delivery,
-//                    booking
-                    //TODO: Modificare chiamata una volta creata la nuova classe
-
-           // );
+            controllerPrincipale.mostraRistoranti(rist);
         }
 
         chiudiFinestra();
