@@ -17,7 +17,7 @@
             </padding>
             <Label fx:id="etichettaTitolo"
                    text="Recensioni"
-                   styleClass="button"/>
+                   styleClass="section-title"/>
             <Label fx:id="etichettaInfo"
                    text="Leggi cosa dicono gli altri utenti"
                    style="-fx-text-fill: #7f8c8d;"/>
