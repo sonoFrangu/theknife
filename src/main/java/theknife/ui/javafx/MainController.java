@@ -635,7 +635,7 @@ public class MainController {
             st.initModality(Modality.APPLICATION_MODAL);
 
             ViewReviewsController ctrl = loader.getController();
-            //ctrl.setRestaurant(selezionato);
+            ctrl.setRestaurant(selezionato);
 
             st.showAndWait();
         } catch (IOException e) { e.printStackTrace(); }

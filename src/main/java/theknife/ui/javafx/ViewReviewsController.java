@@ -18,34 +18,32 @@ public class ViewReviewsController {
     @FXML private ListView<Recensione> listaRecensioni;
 
     private Ristorante ristoranteSelezionato;
-    private ObservableList<Recensione> recensioniData = FXCollections.observableArrayList();
+    private final ObservableList<Recensione> recensioniData = FXCollections.observableArrayList();
 
     private static final String NOME_CARTELLA = "doc";
     private static final String NOME_FILE_RECENSIONI = "recensioni.csv";
 
     @FXML
     private void initialize() {
-        // Collega i dati alla ListView
         listaRecensioni.setItems(recensioniData);
-
-        // Imposta la grafica usando le classi CSS del tuo file
         impostaGraficaCelle();
     }
 
     public void setRestaurant(Ristorante r) {
         this.ristoranteSelezionato = r;
 
-        if (ristoranteSelezionato != null) {
-            etichettaTitolo.setText("Recensioni: " + r.getNome());
+        if (this.ristoranteSelezionato != null) {
+            if (etichettaTitolo != null) {
+                etichettaTitolo.setText("Recensioni: " + r.getNome());
+            }
             caricaRecensioniSpecifiche();
-
         }
     }
 
     private void caricaRecensioniSpecifiche() {
         recensioniData.clear();
-        File file = new File(NOME_CARTELLA, NOME_FILE_RECENSIONI);
 
+        File file = new File(NOME_CARTELLA, NOME_FILE_RECENSIONI);
         if (!file.exists()) return;
 
         try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
@@ -54,22 +52,32 @@ public class ViewReviewsController {
             while ((linea = br.readLine()) != null) {
                 if (linea.isBlank()) continue;
 
-                String[] parti = linea.split(";");
+                // Gestisce sia separatore ; che ,
+                String[] parti;
+                if (linea.contains(";")) parti = linea.split(";");
+                else parti = linea.split(",");
+
                 if (parti.length >= 5) {
                     try {
-                        int idRistCsv = Integer.parseInt(parti[4].trim());
+                        String sStelle = pulisci(parti[0]);
+                        String testo = pulisci(parti[1]);
+                        String sIdUtente = pulisci(parti[3]);
+                        String sIdRistorante = pulisci(parti[4]);
 
-                        // Carica solo se l'ID corrisponde al ristorante selezionato
-                        if (idRistCsv == ristoranteSelezionato.getId()) {
-                            int stelle = Integer.parseInt(parti[0].trim());
-                            String testo = parti[1].trim();
-                            int idUtente = Integer.parseInt(parti[3].trim());
+                        int idRistCsv = Integer.parseInt(sIdRistorante);
+                        int idRistAttuale = ristoranteSelezionato.getId();
+
+                        // Carica solo se gli ID coincidono
+                        if (idRistCsv == idRistAttuale) {
+                            int stelle = Integer.parseInt(sStelle);
+                            int idUtente = Integer.parseInt(sIdUtente);
 
                             Recensione rec = new Recensione(stelle, testo, idUtente, idRistCsv);
                             recensioniData.add(rec);
                         }
-                    } catch (NumberFormatException e) {
-                        // Ignora righe errate
+
+                    } catch (Exception ignored) {
+                        // Ignora righe malformate senza intasare la console
                     }
                 }
             }
@@ -78,11 +86,13 @@ public class ViewReviewsController {
         }
     }
 
-    /**
-     * Applica lo stile definito nel CSS (.review-item, .review-stars, ecc.)
-     */
+    private String pulisci(String s) {
+        if (s == null) return "";
+        return s.trim().replace(";", "");
+    }
+
     private void impostaGraficaCelle() {
-        listaRecensioni.setCellFactory(param -> new ListCell<Recensione>() {
+        listaRecensioni.setCellFactory(param -> new ListCell<>() {
             @Override
             protected void updateItem(Recensione item, boolean empty) {
                 super.updateItem(item, empty);
@@ -90,36 +100,25 @@ public class ViewReviewsController {
                 if (empty || item == null) {
                     setText(null);
                     setGraphic(null);
-                    // Importante: rimuove lo stile se la cella diventa vuota
                     getStyleClass().remove("review-item");
+                    setStyle("");
                 } else {
-                    // Contenitore principale della recensione
                     VBox box = new VBox(5);
-                    // Applica la classe .review-item (sfondo bianco, bordo, ombra)
                     box.getStyleClass().add("review-item");
 
-                    // 1. STELLE
                     StringBuilder stelleStr = new StringBuilder();
                     for(int i=0; i<item.getNumeroStelle(); i++) stelleStr.append("★");
                     for(int i=item.getNumeroStelle(); i<5; i++) stelleStr.append("☆");
 
                     Label lblStelle = new Label(stelleStr.toString());
-                    // Applica la classe .review-stars (colore oro, grassetto)
-                    lblStelle.getStyleClass().add("review-stars");
+                    lblStelle.setStyle("-fx-text-fill: gold; -fx-font-size: 16px; -fx-font-weight: bold;");
 
-                    // 2. TESTO RECENSIONE
                     Label lblTesto = new Label(item.getText());
                     lblTesto.setWrapText(true);
-                    lblTesto.setMaxWidth(420); // Limita la larghezza per evitare scroll orizzontale
-                    // Applica la classe .review-text
-                    lblTesto.getStyleClass().add("review-text");
+                    lblTesto.setMaxWidth(350);
+                    lblTesto.setStyle("-fx-text-fill: #333; -fx-font-size: 14px;");
 
-                    // 3. INFO UTENTE
-                    Label lblInfo = new Label("Utente ID: " + item.getIdUtente());
-                    // Applica la classe .review-user-info (grigio, font piccolo)
-                    lblInfo.getStyleClass().add("review-user-info");
-
-                    box.getChildren().addAll(lblStelle, lblTesto, lblInfo);
+                    box.getChildren().addAll(lblStelle, lblTesto);
                     setGraphic(box);
                 }
             }
