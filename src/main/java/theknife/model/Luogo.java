@@ -31,7 +31,9 @@ public class Luogo {
 
     public boolean equals(Luogo l)
     {
-        return this.nazione.equals(l.nazione) && this.indirizzo.equals(l.indirizzo) && this.citta.equals(l.citta) &&this.latitudine == l.latitudine && this.longitudine == l.longitudine ;
+        if(nazione == null)
+            return this.nazione.equals(l.nazione) && this.indirizzo.equals(l.indirizzo) && this.citta.equals(l.citta) &&this.latitudine == l.latitudine && this.longitudine == l.longitudine ;
+        return false;
     }
 
     public boolean equals(Object obj)

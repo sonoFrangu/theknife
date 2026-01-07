@@ -81,7 +81,7 @@
 
             <HBox spacing="5" alignment="CENTER_LEFT" GridPane.rowIndex="5" GridPane.columnIndex="0">
                 <Label text="⭐" styleClass="emoticon"/>
-                <Label text="Recensioni:" styleClass="details-label"/>
+                <Label text="Stelle Michelin:" styleClass="details-label"/>
             </HBox>
             <Label fx:id="valoreStelle" GridPane.rowIndex="5" GridPane.columnIndex="1" styleClass="details-value"/>
 

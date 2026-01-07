@@ -185,7 +185,7 @@ public class RestaurantDetailsController {
      */
     private void mostraMediaStelle(double media) {
         if (media <= 0) {
-            valoreStelle.setText("☆ Nessuna recensione");
+            valoreStelle.setText("Nessuna stella Michelin");
             valoreStelle.setStyle("-fx-text-fill: gray; -fx-font-size: 14px;"); // Grigio
             return;
         }
@@ -194,7 +194,7 @@ public class RestaurantDetailsController {
         StringBuilder sb = new StringBuilder();
 
         // Costruisce la stringa di stelle
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 3; i++) {
             if (i < stellePiene) {
                 sb.append("★");
             } else {
