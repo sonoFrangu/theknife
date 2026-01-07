@@ -1,5 +1,6 @@
 package theknife.ui.javafx;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,7 +16,9 @@ import theknife.model.Luogo;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -64,39 +67,51 @@ public class MainController {
      * Legge il file CSV dalle risorse del progetto e aggiunge
      * ogni riga come ristorante nella lista.
      */
+
     private void caricaRistorantiDaCsv() {
-        InputStream is = null;
+        // Avviamo il thread
+        new Thread(() -> {
+            // Creiamo una lista temporanea per non bloccare la grafica
+            List<Ristorante> bufferTemporaneo = new LinkedList<>();
+            InputStream is = null;
 
-        try {
-            File fileEsterno = new File(NOME_CARTELLA, NOME_FILE_DATI);
+            try {
+                File fileEsterno = new File(NOME_CARTELLA, NOME_FILE_DATI);
 
-            if (fileEsterno.exists()) {
-                System.out.println("Caricamento dati da: " + fileEsterno.getAbsolutePath());
-                is = new FileInputStream(fileEsterno);
-            }
-
-            if (is == null) {
-                System.err.println("ERRORE: " + NOME_FILE_DATI + " non trovato.");
-                return;
-            }
-
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
-                String linea = br.readLine();
-                // Salta la riga di intestazione se contiene se trova name
-                if (linea != null && linea.toLowerCase().contains("name")) {
-                    linea = br.readLine();
+                if (fileEsterno.exists()) {
+                    System.out.println("Caricamento dati da: " + fileEsterno.getAbsolutePath());
+                    is = new FileInputStream(fileEsterno);
                 }
 
-                while (linea != null) {
-                    aggiungiDaRigaCsv(linea);
-                    linea = br.readLine();
+                if (is == null) {
+                    System.err.println("ERRORE: " + NOME_FILE_DATI + " non trovato.");
+                    return;
                 }
-            }
-            is.close();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+                    String linea = br.readLine();
+                    if (linea != null && linea.toLowerCase().contains("name")) {
+                        linea = br.readLine();
+                    }
+
+                    while (linea != null) {
+                        // Passiamo la lista temporanea (buffer) al metodo
+                        aggiungiDaRigaCsv(linea, bufferTemporaneo);
+                        linea = br.readLine();
+                    }
+                }
+                is.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // Finito il caricamento, aggiorniamo la lista Observable (grafica) nel thread corretto
+            Platform.runLater(() -> {
+                ristoranti.addAll(bufferTemporaneo);
+            });
+
+        }).start();
     }
 
 
@@ -104,7 +119,7 @@ public class MainController {
      * Converte una singola riga CSV in un oggetto Restaurant
      * e lo aggiunge alla lista dei ristoranti.
      */
-    private void aggiungiDaRigaCsv(String linea) {
+    private void aggiungiDaRigaCsv(String linea, List<Ristorante> destinazione) {
         if (linea == null || linea.isBlank()) return;
 
         String[] parti = dividiCsv(linea);
@@ -175,7 +190,7 @@ public class MainController {
 
         Ristorante r = new Ristorante(nome, num_tel, delivery, booking, prezzo, tipoCucina, new Luogo(nazione, indirizzo, citta, latitudine, longitudine), website, link, award);
 
-        ristoranti.add(r);
+        destinazione.add(r);
     }
 
     /* =========================
