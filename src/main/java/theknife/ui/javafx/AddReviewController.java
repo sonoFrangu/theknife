@@ -118,8 +118,7 @@ public class AddReviewController {
     //metodo di toschi da sistemare
     //todo da verificare se scrive su file e se il colelgamento è giusto
     //todo
-    private void onCreate()
-    {
+    private void onCreate() {
         GestioneRecensioni gestRest =  GestioneRecensioni.getInstance();
         GestioneRistoranti gr =  GestioneRistoranti.getInstance();
         String utente     = Session.getInstance().getUsername();
@@ -134,13 +133,6 @@ public class AddReviewController {
 
         //Prendere id utente
         File cartellaDoc = new File(NOME_CARTELLA);
-        if (!cartellaDoc.exists()) {
-            boolean creata = cartellaDoc.mkdirs();
-            if (!creata) {
-                etichettaErrore.setText("Impossibile creare la cartella " + NOME_CARTELLA);
-                return;
-            }
-        }
         File fileUtenti = new File(cartellaDoc, NOME_FILE_USER);
         try(BufferedReader br = new BufferedReader(new FileReader(fileUtenti, StandardCharsets.UTF_8))) {
             String linea;
