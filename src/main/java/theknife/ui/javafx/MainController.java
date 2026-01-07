@@ -108,6 +108,7 @@ public class MainController {
             // Finito il caricamento, aggiorniamo la lista Observable
             Platform.runLater(() -> {
                 ristoranti.addAll(bufferTemporaneo);
+                gr.listaRistoranti.addAll(bufferTemporaneo);
             });
 
         }).start();
