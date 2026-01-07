@@ -140,19 +140,23 @@ public class ViewReviewsController {
                     VBox box = new VBox(5);
                     box.getStyleClass().add("review-item");
                     // Stile di backup
+                    //box.setStyle("-fx-padding: 10; -fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 5;");
 
                     StringBuilder stelleStr = new StringBuilder();
                     for(int i=0; i<item.getNumeroStelle(); i++) stelleStr.append("★");
                     for(int i=item.getNumeroStelle(); i<5; i++) stelleStr.append("☆");
 
                     Label lblStelle = new Label(stelleStr.toString());
+                    lblStelle.setStyle("-fx-text-fill: gold; -fx-font-size: 16px; -fx-font-weight: bold;");
 
                     Label lblTesto = new Label(item.getText());
                     lblTesto.setWrapText(true);
                     lblTesto.setMaxWidth(350);
+                    lblTesto.setStyle("-fx-text-fill: black; -fx-font-size: 14px;");
 
                     // Recupera lo username dal metodo aggiornato
                     Label lblInfo = new Label("Utente: " + ricavaUsername(item.getIdUtente()));
+                    lblInfo.setStyle("-fx-text-fill: gray; -fx-font-size: 12px; -fx-font-style: italic;");
 
                     box.getChildren().addAll(lblStelle, lblTesto, lblInfo);
                     setGraphic(box);
