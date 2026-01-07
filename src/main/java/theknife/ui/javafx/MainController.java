@@ -525,23 +525,19 @@ public class MainController {
 
         if(rist!=null)
         {
-            System.out.println("=== [Lista dei ristoranti] ===");
-            for (Ristorante ristorante : rist) {
-                System.out.println("- " + ristorante);
-            }
+            ristoranti.clear();       // Svuota lista grafica attuale
+            ristoranti.addAll(rist);  // aggiunge risultati filtro
         }
+        else { ristoranti.clear(); }
     }
 
     @FXML
     private void onResetFilters() {
-        // 1. Pulisce i campi di testo grafici
         if (campoLuogo != null) campoLuogo.clear();
         if (campoCucina != null) campoCucina.clear();
 
-        //TODO: Per gestire una volta messi i filtri
-//        if (filteredData != null) {
-//            filteredData.setPredicate(p -> true);
-//        }
+        ristoranti.clear();
+        ristoranti.addAll(gr.listaRistoranti);
 
         System.out.println("[FILTER] Filtri resettati.");
     }
