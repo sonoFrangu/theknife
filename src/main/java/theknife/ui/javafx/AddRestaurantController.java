@@ -97,14 +97,12 @@ public class AddRestaurantController {
 
         File fileUtenti = new File(cartellaDoc, NOME_FILE);
 
-
-        //TODO gestire i char separatori nell'inserimento di tipo cucina e indirizzo
         // Salva su file
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileUtenti, true))) {
-            bw.write(nome + "," + indirizzo + "\\, " + citta + "," +
-                    citta + "\\, " + nazione + "," +
-                    p + "," +
-                    tipo + "," +
+            bw.write(nome + "," + "\"" + indirizzo + ", " + citta + "\"" + "," + "\"" +
+                    citta + ", " + nazione + "\"" + "," +
+                    p + "," + "\"" +
+                    tipo + "\"" + "," +
                     longi + "," +
                     lat + "," +
                     numTel + "," +
@@ -120,14 +118,14 @@ public class AddRestaurantController {
             return;
         }
 
-        //todo: avvisare utente del riuscito salvataggio
+        //Avviso l'utente del successo
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        a.setTitle("Salvataggio effettuato");
+        a.setHeaderText(null);
+        a.setContentText("Ristorante salvato correttamente.");
+        a.showAndWait();
 
-        //todo: salvare nel file il ristorante
-        // Qui in futuro potrai:
-        // - leggere tutti i campi (città, indirizzo, ecc.)
-        // - creare un oggetto Ristorante
-        // - passarlo al controller principale (controllerPrincipale)
-        // Per ora la finestra si limita a chiudersi dopo il controllo.
+        //todo: aggiornare lista ristoranti
 
         chiudiFinestra();
     }
