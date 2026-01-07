@@ -4,6 +4,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import theknife.model.GestioneRecensioni;
+import theknife.model.GestioneRistoranti;
+import theknife.model.Ristorante;
+
+import java.util.LinkedList;
 
 public class AdvancedFilterController {
 
@@ -101,18 +106,20 @@ public class AdvancedFilterController {
         System.out.println("Delivery: " + delivery);
         System.out.println("Booking: " + booking);
 
+
+
         // 4. Passa i dati al MainController per applicare il filtro
         if (controllerPrincipale != null) {
-            controllerPrincipale.onApplyFilters(
-//                    luogo,
-//                    cucina,
-//                    prezzoMin,
-//                    prezzoMax,
-//                    stelleSelezionate,
-//                    delivery,
-//                    booking
-                    //TODO: Modificare chiamata una volta creata la nuova classe
-            );
+            GestioneRistoranti gr = GestioneRistoranti.getInstance();
+            LinkedList<Ristorante> rist = gr.Filtro(luogo, cucina, (prezzoMin != null ? prezzoMin : -1), (prezzoMax != null ? prezzoMax : -1), delivery, booking, stelleSelezionate);
+
+            if(rist!=null) {
+                System.out.println("=== [Lista dei ristoranti] ===");
+                for (Ristorante ristorante : rist) {
+                    System.out.println("- " + ristorante);
+                }
+            }
+           // TODO: mettere i ristoranti anche graficamente
         }
 
         chiudiFinestra();

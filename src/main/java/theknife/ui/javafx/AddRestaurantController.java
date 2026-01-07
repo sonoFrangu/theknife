@@ -4,6 +4,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class AddRestaurantController {
 
     // Campi di testo per inserire i dati del ristorante
@@ -25,6 +30,9 @@ public class AddRestaurantController {
     // Riferimento al controller principale della finestra principale
     private MainController controllerPrincipale;
 
+    private static final String NOME_CARTELLA = "doc";
+    private static final String NOME_FILE = "michelin_my_maps.csv";
+
     /**
      * Imposta il controller principale (la finestra da cui è stata aperta questa finestra).
      * Questo ti permette, in futuro, di passare il nuovo ristorante alla lista principale.
@@ -39,17 +47,85 @@ public class AddRestaurantController {
      */
     @FXML
     private void onSalva() {
+        String nome = campoNome.getText();
+        String nazione = campoNazione.getText();
+        String citta = campoCitta.getText();
+        String indirizzo = campoIndirizzo.getText();
+        String lat = campoLatitudine.getText();
+        String longi = campoLongitudine.getText();
+        double prezzo = Double.valueOf(campoPrezzo.getText());
+        String tipo = campoTipoCucina.getText();
+        boolean delivery = checkConsegna.isSelected();
+        boolean booking = checkPrenotazione.isSelected();
+        String sito = campoSitoWeb.getText();
+        String numTel="+39----------";
+        String stelle="5";
+        //todo aggiungere numero di telefono e stelle
+
+        //Converto il prezzo
+        String p = "";
+        if(prezzo <= 20)
+            p="€";
+        else if(prezzo > 20 && prezzo <= 40)
+            p="€€";
+        else if(prezzo > 40 && prezzo <= 60)
+            p="€€€";
+        else if(prezzo > 60)
+            p="€€€€";
+
         // Controllo base: il nome del ristorante è obbligatorio
-        if (campoNome.getText() == null || campoNome.getText().isBlank()) {
+        if (nome == null || nome.isBlank()) {
             etichettaErrore.setText("Il nome è obbligatorio.");
             return;
         }
 
-        // Qui in futuro potrai:
-        // - leggere tutti i campi (città, indirizzo, ecc.)
-        // - creare un oggetto Ristorante
-        // - passarlo al controller principale (controllerPrincipale)
-        // Per ora la finestra si limita a chiudersi dopo il controllo.
+        //todo: Controllo se il nome del ristorante è gia' presente?
+        /*if (usernameEsiste(username)) {
+            etichettaErrore.setText("Nome già in uso. Scegline un altro.");
+            return;
+        }*/
+
+        // Verifica cartella
+        File cartellaDoc = new File(NOME_CARTELLA);
+        if (!cartellaDoc.exists()) {
+            boolean creata = cartellaDoc.mkdirs();
+            if (!creata) {
+                etichettaErrore.setText("Impossibile creare la cartella " + NOME_CARTELLA);
+                return;
+            }
+        }
+
+        File fileUtenti = new File(cartellaDoc, NOME_FILE);
+
+        // Salva su file
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileUtenti, true))) {
+            bw.write(nome + "," + "\"" + indirizzo + ", " + citta + "\"" + "," + "\"" +
+                    citta + ", " + nazione + "\"" + "," +
+                    p + "," + "\"" +
+                    tipo + "\"" + "," +
+                    longi + "," +
+                    lat + "," +
+                    numTel + "," +
+                    sito + "," +
+                    sito + "," +
+                    stelle + " Stars" + "," +
+                    null + "," + null + "," + null + "," +
+                    delivery + "," + booking);
+            bw.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+            etichettaErrore.setText("Errore nel salvataggio ristorante su file.");
+            return;
+        }
+
+        //Avviso l'utente del successo
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        a.setTitle("Salvataggio effettuato");
+        a.setHeaderText(null);
+        a.setContentText("Ristorante salvato correttamente.");
+        a.showAndWait();
+
+        //todo: aggiornare lista ristoranti
 
         chiudiFinestra();
     }

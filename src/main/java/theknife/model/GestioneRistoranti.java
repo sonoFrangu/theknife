@@ -1,14 +1,27 @@
 package theknife.model;
 
+import javafx.collections.FXCollections;
+
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class GestioneRistoranti {
     public LinkedList<Ristorante> listaRistoranti;
+    private static GestioneRistoranti instance;
     public GestioneRistoranti()
     {
         listaRistoranti = new LinkedList<>();
     }
+
+    public static synchronized GestioneRistoranti getInstance() {
+        if (instance == null) {
+            instance = new GestioneRistoranti();
+        }
+        return instance;
+    }
+
+    public LinkedList<Ristorante> getListaRistoranti() {return listaRistoranti;    }
 
     /**
      * Aggiunge un ristorante
@@ -16,7 +29,7 @@ public class GestioneRistoranti {
      */
     public void add(Ristorante ristorante)
     {
-        if(ristorante != null && !listaRistoranti.contains(ristorante))
+        //if(ristorante != null && !listaRistoranti.contains(ristorante)) //todo: ci sono alcuni luoghi uguali
             listaRistoranti.add(ristorante);
     }
 
@@ -85,18 +98,34 @@ public class GestioneRistoranti {
         return list;
     }
 
-    public LinkedList<Ristorante> Filtro(Luogo luogo, String cucina, double prezzoMinore, double prezzoMaggiore, boolean delivery, boolean prenotazioneOn, double medStelle)
+    public LinkedList<Ristorante> Filtro(String luogo, String cucina, double prezzoMinore, double prezzoMaggiore, boolean delivery, boolean booking, double medStelle)
     {
         LinkedList<Ristorante> r = null;
 
-        if(luogo!=null)
+        if(luogo!=null && luogo.length()>0)
         {
-            //todo: DA CAMBIARE mettendo i ristoranti nelle vicinanze e prendere la lista pubblica
-            r = listaRistoranti.stream().filter(x -> x.getLuogo().equals(luogo)).collect(Collectors.toCollection(LinkedList::new));
-        }
-        else
-        {
-            if (cucina != null)//rimozione dei ristoranti con cucine diverse da quella selezionata
+            //Prendo il primo ristorante della città filtrata
+            Optional<Ristorante> primoRist = listaRistoranti.stream().filter(x -> x.getLuogo().getCitta().equals(luogo)).findFirst();
+
+            if (primoRist.isPresent()) { //Se esiste un ristorante in quella città, prendo lat e long
+                double lat1 = primoRist.get().getLuogo().getLatitudine();
+                double long1 = primoRist.get().getLuogo().getLongitudine();
+
+                //Filtro tutti i ristoranti (anche di altre città) entro 10 km
+                r = listaRistoranti.stream().filter(x -> {
+                    Luogo l = x.getLuogo();
+                    return l.checkDistance10KM(lat1, long1);
+                }).collect(Collectors.toCollection(LinkedList::new));
+            }
+            else
+            {
+                System.out.println("=== [MANCANO RISTORANTI IN QUEL LUOGO] ===");
+            }
+
+            /*todo: Versione senza ristoranti vicini
+            r = listaRistoranti.stream().filter(x -> x.getLuogo().getCitta().equals(luogo)).collect(Collectors.toCollection(LinkedList::new));*/
+
+            if (cucina != null && cucina.length()>0)//rimozione dei ristoranti con cucine diverse da quella selezionata
             {
                 r.removeIf(x -> !x.getCucina().contains(cucina));
             }
@@ -117,17 +146,23 @@ public class GestioneRistoranti {
                 r.removeIf(x -> x.isDelivery() == false);
             }
 
-            if (prenotazioneOn) //rimozione dei ristoranti che non hanno il servizio di booking
+            if (booking) //rimozione dei ristoranti che non hanno il servizio di booking
             {
                 r.removeIf(x -> x.isBooking() == false);
             }
 
-            if (medStelle >= 0) {
-                r.removeIf(x -> x.getMediaStelle() < medStelle);
+            if (medStelle > 0) {
+                r.removeIf(x -> x.getMediaStelle() < medStelle); //rimozione dei ristoranti che non hanno medStelle minore
             }
         }
+        else
+        {
+            System.out.println("=== [MANCA IL LUOGO] ===");
+        }
+
         return r;
     }
+
 
 
 }
