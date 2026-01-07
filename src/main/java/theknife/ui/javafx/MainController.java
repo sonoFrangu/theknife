@@ -524,7 +524,7 @@ public class MainController {
         if (luogo == null || luogo.isBlank()) {
             mostraErrore("Campo obbligatorio", "Devi inserire una città per effettuare la ricerca.");
             campoLuogo.requestFocus(); // Rimette il cursore nel campo vuoto
-            return; // Interrompe il metodo: il filtro NON parte
+            return;
         }
 
         LinkedList<Ristorante> rist = gr.Filtro(campoLuogo.getText(), campoCucina.getText(), -1,-1, false, false, -1);

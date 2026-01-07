@@ -68,6 +68,12 @@ public class AdvancedFilterController {
         boolean delivery = checkDelivery.isSelected();
         boolean booking = checkBooking.isSelected();
 
+        if (luogo == null || luogo.isBlank()) {
+            mostraErrore("Campo obbligatorio", "Devi inserire una città per effettuare la ricerca.");
+            campoLuogo.requestFocus(); // Rimette il cursore nel campo vuoto
+            return;
+        }
+
         Double prezzoMin = null;
         Double prezzoMax = null;
 
