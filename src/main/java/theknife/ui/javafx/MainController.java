@@ -308,7 +308,7 @@ public class MainController {
                     rd.isBooking(),
                     String.join(", ", rd.getCucina()),
                     rd.getWebsite(),
-                    rd.getLink()
+                    rd.getMediaStelle()
             );
             stage.showAndWait();
         } catch (IOException e) {
