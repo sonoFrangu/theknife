@@ -23,7 +23,7 @@ public class ViewReviewsController {
     private static final String NOME_CARTELLA = "doc";
     private static final String NOME_FILE_RECENSIONI = "recensioni.csv";
     private static final String NOME_FILE_UTENTI = "users.csv";
-    private final java.util.Map<Integer, String> cacheUtenti = new java.util.HashMap<>();
+    private final java.util.Map<Integer, String> utentiAttuali = new java.util.HashMap<>();
 
     @FXML
     private void initialize() {
@@ -89,7 +89,7 @@ public class ViewReviewsController {
     }
 
     private String ricavaUsername(int idUtente) {
-        if (cacheUtenti.containsKey(idUtente)) return cacheUtenti.get(idUtente);
+        if (utentiAttuali.containsKey(idUtente)) return utentiAttuali.get(idUtente);
 
         File file = new File(NOME_CARTELLA, NOME_FILE_UTENTI);
         if (!file.exists()) return "Utente " + idUtente;
@@ -110,7 +110,7 @@ public class ViewReviewsController {
 
                         if (currentId == idUtente) {
                             String username = pulisci(parti[0]);
-                            cacheUtenti.put(idUtente, username);
+                            utentiAttuali.put(idUtente, username);
                             return username;
                         }
                     } catch (Exception ignored) {}
@@ -140,23 +140,19 @@ public class ViewReviewsController {
                     VBox box = new VBox(5);
                     box.getStyleClass().add("review-item");
                     // Stile di backup
-                    box.setStyle("-fx-padding: 10; -fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 5;");
 
                     StringBuilder stelleStr = new StringBuilder();
                     for(int i=0; i<item.getNumeroStelle(); i++) stelleStr.append("★");
                     for(int i=item.getNumeroStelle(); i<5; i++) stelleStr.append("☆");
 
                     Label lblStelle = new Label(stelleStr.toString());
-                    lblStelle.setStyle("-fx-text-fill: #f1c40f; -fx-font-size: 16px; -fx-font-weight: bold;");
 
                     Label lblTesto = new Label(item.getText());
                     lblTesto.setWrapText(true);
                     lblTesto.setMaxWidth(350);
-                    lblTesto.setStyle("-fx-text-fill: #333; -fx-font-size: 14px;");
 
                     // Recupera lo username dal metodo aggiornato
                     Label lblInfo = new Label("Utente: " + ricavaUsername(item.getIdUtente()));
-                    lblInfo.setStyle("-fx-text-fill: #999; -fx-font-size: 12px; -fx-font-style: italic;");
 
                     box.getChildren().addAll(lblStelle, lblTesto, lblInfo);
                     setGraphic(box);

@@ -1,6 +1,7 @@
 package theknife.model;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 
 /**
@@ -12,15 +13,21 @@ import java.util.LinkedList;
 public class GestioneFile {
 
     private static String nomeCartella = "doc";
-    private static String nomeFile = "michelin_my_maps.csv";
-    private static final String percorsoFile= System.getProperty("user.dir") + File.separator + nomeCartella + File.separator + nomeFile;
+    private static String nomeFileRistoranti = "michelin_my_maps.csv";
+    private static String nomeFileUtenti = "users.csv";
+
+    // Percorso base per la cartella doc
+    private static final String percorsoBase = System.getProperty("user.dir") + File.separator + nomeCartella + File.separator;
+
+    private static final String percorsoFileRistoranti = percorsoBase + nomeFileRistoranti;
+    private static final String percorsoFileUtenti = percorsoBase + nomeFileUtenti;
 
     /**
-     * Lettura da file csv
+     * Lettura da file csv dei ristoranti
      * @return LinkedList<Ristorante>
      */
     public static LinkedList<Ristorante> leggiFile() {
-        try (BufferedReader br = new BufferedReader(new FileReader(percorsoFile))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(percorsoFileRistoranti))) {
             String riga;
             int numeroRiga = 1;
 
@@ -43,11 +50,10 @@ public class GestioneFile {
     }
 
     /**
-     * Scrittura su file csv
+     * Scrittura su file csv dei ristoranti
      * @param ristorante
      */
     public static void scriviFile(Ristorante ristorante) {
-        // Costruzione dei campi da scrivere nel file
         String name = ristorante.getNome();
         String address = ristorante.getLuogo() != null ? "\"" + ristorante.getLuogo()+", " + ristorante.getLuogo().getIndirizzo() + ", " + ristorante.getLuogo().getCitta() + "\"": "null";
         String location = ristorante.getLuogo() != null ? "\"" + ristorante.getLuogo().getCitta() + ", " + ristorante.getLuogo().getNazione() + "\"": "null";
@@ -59,16 +65,13 @@ public class GestioneFile {
         String domicilio = ristorante.isDelivery() ? "true" : "false";
         String prenotazione = ristorante.isBooking() ? "true" : "false";
 
-        // Non esistente nel costruttore di ristorante
         String url = "null";
         String websiteUrl = "null";
         String award = "null";
         String greenStar = "null";
         String facilitiesAndServices = "null";
+        String description = "null";
 
-        String description = "null"; // non disponibile
-
-        // Costruzione riga CSV
         String[] campi = {
                 name, address, location, price, cuisine, longitude, latitude, phoneNumber, url, websiteUrl, award, greenStar, facilitiesAndServices, description, domicilio, prenotazione
         };
@@ -82,13 +85,66 @@ public class GestioneFile {
             }
         }
 
-        // Scrittura su file
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(percorsoFile, true))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(percorsoFileRistoranti, true))) {
             bw.write(riga.toString());
             bw.newLine();
             System.out.println("Ristorante aggiunto correttamente.");
         } catch (IOException e) {
             System.err.println("Errore nella scrittura del file: " + e.getMessage());
         }
+    }
+
+    // =============================================================
+    // NUOVI METODI AGGIUNTI
+    // =============================================================
+
+    /**
+     * Cerca nel file users.csv l'ID corrispondente a un dato username.
+     * @param usernameCercato Lo username da cercare (es. "clt")
+     * @return int L'ID dell'utente, oppure -1 se non trovato o errore.
+     */
+    public static int trovaIdUtenteDaUsername(String usernameCercato) {
+        File file = new File(percorsoFileUtenti);
+        if (!file.exists()) {
+            System.err.println("File utenti non trovato in: " + percorsoFileUtenti);
+            return -1;
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
+            String linea = br.readLine(); // Salta header (se presente) o leggilo
+
+            while ((linea = br.readLine()) != null) {
+                if (linea.isBlank()) continue;
+
+                // Nota: users.csv usa il punto e virgola come separatore
+                String[] parti = linea.split(";");
+
+                // Controlliamo che ci siano abbastanza colonne (ID è indice 7, Username indice 0)
+                if (parti.length > 7) {
+                    String userNelFile = pulisci(parti[0]);
+
+                    if (userNelFile.equals(usernameCercato)) {
+                        try {
+                            return Integer.parseInt(pulisci(parti[7]));
+                        } catch (NumberFormatException e) {
+                            System.err.println("Errore formato ID per utente " + usernameCercato);
+                            return -1;
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return -1; // Utente non trovato
+    }
+
+    /**
+     * Metodo di utilità per pulire le stringhe lette da CSV.
+     * Rimuove spazi iniziali/finali, doppi apici e punto e virgola.
+     */
+    private static String pulisci(String s) {
+        if (s == null) return "";
+        return s.trim().replace("\"", "").replace(";", "");
     }
 }

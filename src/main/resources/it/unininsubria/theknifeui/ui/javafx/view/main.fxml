@@ -25,7 +25,8 @@
             </ImageView>
             <HBox spacing="10" alignment="CENTER">
                 <HBox alignment="CENTER_LEFT">
-                    <Label text="🍴 TheKnife" styleClass="logo-label"/>
+                    <Label text="🍴" styleClass="emoticon"/>
+                    <Label text="TheKnife" styleClass="logo-label"/>
                 </HBox>
                 <Pane HBox.hgrow="ALWAYS"/>
                 <Label fx:id="etichettaRuolo"/>

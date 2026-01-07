@@ -4,15 +4,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import theknife.model.GestioneRecensioni;
-import theknife.model.GestioneRistoranti;
-
-import theknife.model.Recensione;
-import theknife.model.Ristorante;
+import theknife.model.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 
 public class AddReviewController {
 
@@ -20,6 +18,8 @@ public class AddReviewController {
     private static final String NOME_FILE_RECENSIONI = "recensioni.csv";
     private static final String NOME_FILE_USER = "users.csv";
 
+    private boolean modalitaModifica = false;
+    private MyReviewsController.ReviewRow recensioneOriginale;
 
     @FXML private Label etichettaTitolo;
     @FXML private TextArea areaRecensione;
@@ -81,28 +81,6 @@ public class AddReviewController {
        AZIONI SALVA / ANNULLA
        ========================= */
 
-    @FXML
-    //Metodo vecchio con solo la stampa
-    private void onSalva() {
-        if (areaRecensione.getText() == null || areaRecensione.getText().isBlank()) {
-            etichettaErrore.setText("Il testo della recensione non può essere vuoto.");
-            return;
-        }
-
-        String testo = areaRecensione.getText();
-
-        if (ristoranteDestinazione != null) {
-            System.out.println("[REVIEW NEW] Ristorante: " + ristoranteDestinazione.getNome()
-                    + " | Voto: " + votoSelezionato
-                    + " | Testo: " + testo);
-
-            // TODO: Qui dovrai chiamare il metodo per salvare su CSV
-            // es: GestioneFile.salvaRecensione(ristoranteDestinazione, votoSelezionato, testo);
-        } else {
-            System.err.println("Errore: nessun ristorante associato alla recensione.");
-        }
-        chiudiFinestra();
-    }
 
     @FXML
     private void onAnnulla() {
@@ -119,6 +97,10 @@ public class AddReviewController {
     //todo da verificare se scrive su file e se il colelgamento è giusto
     //todo
     private void onCreate() {
+        if (modalitaModifica) {
+            rimuoviVecchiaEAgungiNuova();
+            return;
+        }
         GestioneRecensioni gestRest =  GestioneRecensioni.getInstance();
         GestioneRistoranti gr =  GestioneRistoranti.getInstance();
         String utente     = Session.getInstance().getUsername();
@@ -175,6 +157,65 @@ public class AddReviewController {
             etichettaErrore.setText("Errore nel salvataggio recensione su file.");
             return;
         }
+
+        chiudiFinestra();
+    }
+
+    //METODO USATO PER MODIFICA RECENSIONE
+    public void setDatiPerModifica(MyReviewsController.ReviewRow recensioneVecchia) {
+        this.modalitaModifica = true;
+        this.recensioneOriginale = recensioneVecchia;
+
+        // Riempi i campi con i dati vecchi
+        areaRecensione.setText(recensioneVecchia.getText());
+        votoSelezionato = recensioneVecchia.getRating();
+        aggiornaGraficaStelle();
+
+        // Cambia titolo
+        if (etichettaTitolo != null) etichettaTitolo.setText("Modifica recensione");
+    }
+
+    private void rimuoviVecchiaEAgungiNuova() {
+        File file = new File(NOME_CARTELLA, NOME_FILE_RECENSIONI);
+        List<String> righe = new LinkedList<>();
+
+        // Recupera i dati base
+        String user = Session.getInstance().getUsername();
+        int mioId = GestioneFile.trovaIdUtenteDaUsername(user);
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.isBlank()) { righe.add(line); continue; }
+
+                // Se la riga corrisponde a quella vecchia, NON aggiungerla (la stiamo cancellando)
+                String[] p = line.split(line.contains(";") ? ";" : ",");
+                if (p.length >= 5) {
+                    try {
+                        int idR = Integer.parseInt(p[4].trim());
+                        int idU = Integer.parseInt(p[3].trim());
+                        String txt = p[1].trim().replace("\"", "");
+
+                        if (idR == recensioneOriginale.getRawRestaurantId() && idU == mioId && txt.equals(recensioneOriginale.getText())) {
+                            continue; // SALTA QUESTA RIGA (è quella vecchia)
+                        }
+                    } catch(Exception e){}
+                }
+                righe.add(line); // Tieni tutte le altre
+            }
+        } catch (IOException e) { e.printStackTrace(); }
+
+        // Aggiungi la NUOVA versione in fondo alla lista
+        String nuovaRiga = votoSelezionato + ";" + areaRecensione.getText().replace(";", "").replace("\n", " ") + ";" + LocalDateTime.now() + ";" + mioId + ";" + recensioneOriginale.getRawRestaurantId();
+        righe.add(nuovaRiga);
+
+        // Riscrivi il file
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
+            for (String r : righe) {
+                bw.write(r);
+                bw.newLine();
+            }
+        } catch (IOException e) {}
 
         chiudiFinestra();
     }
