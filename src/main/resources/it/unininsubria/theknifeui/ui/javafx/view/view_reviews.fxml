@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="theknife.ui.javafx.ViewReviewsController"
+            stylesheets="@style.css"
+            prefWidth="500" prefHeight="600">
+
+    <top>
+        <VBox spacing="10" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 0 0 1 0;">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <Label fx:id="etichettaTitolo"
+                   text="Recensioni"
+                   styleClass="button"/>
+            <Label fx:id="etichettaInfo"
+                   text="Leggi cosa dicono gli altri utenti"
+                   style="-fx-text-fill: #7f8c8d;"/>
+        </VBox>
+    </top>
+
+    <center>
+        <ListView fx:id="listaRecensioni" styleClass="review-list">
+            <placeholder>
+                <Label text="Nessuna recensione presente per questo ristorante."/>
+            </placeholder>
+        </ListView>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #f9f9f9;">
+            <padding>
+                <Insets top="15" right="20" bottom="15" left="20"/>
+            </padding>
+            <Button text="Chiudi"
+                    onAction="#onChiudi"
+                    styleClass="footer-button"
+                    style="-fx-background-color: #95a5a6;"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

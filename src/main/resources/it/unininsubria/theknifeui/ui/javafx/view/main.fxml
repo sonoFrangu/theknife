@@ -82,8 +82,9 @@
     <bottom>
         <HBox spacing="10" styleClass="footer-bar">
             <children>
-                <Label text="TheKnife — lista ristoranti" styleClass="footer-text"/>
+                <Label text="Lista dei ristoranti" styleClass="footer-text"/>
                 <Pane HBox.hgrow="ALWAYS"/>
+                <Button fx:id="bottoneVisualizzaRecensioni" text="Visualizza recensioni" onAction="#onViewReviews" styleClass="footer-button"/>
                 <Button fx:id="bottoneAggiungiRecensione" text="Aggiungi recensione" onAction="#onAddReview" styleClass="footer-button"/>
                 <Button fx:id="bottoneAggiungiRistorante" text="Aggiungi ristorante" onAction="#onAddRestaurant" styleClass="footer-button"/>
             </children>
