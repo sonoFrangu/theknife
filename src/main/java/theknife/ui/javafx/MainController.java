@@ -612,6 +612,37 @@ public class MainController {
         }
     }
 
+    @FXML
+    private void onViewReviews() {
+        if (listaRistoranti == null) return;
+        Ristorante selezionato = listaRistoranti.getSelectionModel().getSelectedItem();
+
+        if (selezionato == null) {
+            Alert a = new Alert(Alert.AlertType.WARNING);
+            a.setTitle("Nessun ristorante");
+            a.setHeaderText(null);
+            a.setContentText("Seleziona un ristorante prima di aggiungere una recensione.");
+            a.showAndWait();
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/it/unininsubria/theknifeui/ui/javafx/view/view_reviews.fxml"));
+            Stage st = new Stage();
+            st.setScene(new Scene(loader.load()));
+            st.setTitle("Recensioni");
+            st.initModality(Modality.APPLICATION_MODAL);
+
+            ViewReviewsController ctrl = loader.getController();
+            ctrl.setRestaurant(selezionato);
+
+            st.showAndWait();
+        } catch (IOException e) { e.printStackTrace(); }
+    }
+
+
+
     /* =========================
        UTILS
        ========================= */
