@@ -48,6 +48,8 @@ public class MainController {
 
     @FXML
     private void initialize() {
+        Label placeholder = new Label("Nessun risultato trovato");
+        listaRistoranti.setPlaceholder(placeholder);
         // Carica i ristoranti dal file CSV
         caricaRistorantiDaCsv();
 
@@ -518,8 +520,12 @@ public class MainController {
 
     @FXML
     protected void onApplyFilters() {
-        System.out.println("[FILTER] luogo=" + (campoLuogo != null ? campoLuogo.getText() : "")
-                + " cucina=" + (campoCucina != null ? campoCucina.getText() : ""));
+        String luogo = campoLuogo.getText();
+        if (luogo == null || luogo.isBlank()) {
+            mostraErrore("Campo obbligatorio", "Devi inserire una città per effettuare la ricerca.");
+            campoLuogo.requestFocus(); // Rimette il cursore nel campo vuoto
+            return; // Interrompe il metodo: il filtro NON parte
+        }
 
         LinkedList<Ristorante> rist = gr.Filtro(campoLuogo.getText(), campoCucina.getText(), -1,-1, false, false, -1);
 
@@ -536,8 +542,7 @@ public class MainController {
         if (campoLuogo != null) campoLuogo.clear();
         if (campoCucina != null) campoCucina.clear();
 
-        ristoranti.clear();
-        ristoranti.addAll(gr.listaRistoranti);
+        mostraRistoranti(gr.listaRistoranti);
 
         System.out.println("[FILTER] Filtri resettati.");
     }
@@ -611,6 +616,14 @@ public class MainController {
        UTILS
        ========================= */
 
+
+    private void mostraErrore(String titolo, String messaggio) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Attenzione");
+        alert.setHeaderText(titolo);
+        alert.setContentText(messaggio);
+        alert.showAndWait();
+    }
     /**
      * Rimuove eventuali doppi apici e spazi inutili.
      */
@@ -641,4 +654,12 @@ public class MainController {
         // split che gestisce anche i campi tra doppi apici
         return line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
     }
+
+    public void mostraRistoranti(List<Ristorante> nuovaLista) {
+        ristoranti.clear();
+        if (nuovaLista != null && !nuovaLista.isEmpty()) {
+            ristoranti.addAll(nuovaLista);
+        }
+    }
+
 }

@@ -113,13 +113,7 @@ public class AdvancedFilterController {
             GestioneRistoranti gr = GestioneRistoranti.getInstance();
             LinkedList<Ristorante> rist = gr.Filtro(luogo, cucina, (prezzoMin != null ? prezzoMin : -1), (prezzoMax != null ? prezzoMax : -1), delivery, booking, stelleSelezionate);
 
-            if(rist!=null) {
-                System.out.println("=== [Lista dei ristoranti] ===");
-                for (Ristorante ristorante : rist) {
-                    System.out.println("- " + ristorante);
-                }
-            }
-           // TODO: mettere i ristoranti anche graficamente
+           controllerPrincipale.mostraRistoranti(rist);
         }
 
         chiudiFinestra();
