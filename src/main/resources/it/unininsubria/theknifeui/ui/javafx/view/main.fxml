@@ -31,6 +31,11 @@
                 <Label fx:id="etichettaRuolo"/>
                 <Button fx:id="bottoneLogin" text="Accedi" onAction="#onShowLogin"/>
                 <Button fx:id="bottoneRegistrati" text="Registrati" onAction="#onShowRegister"/>
+                <Button fx:id="bottoneMieiRistoranti"
+                        text="I miei ristoranti"
+                        visible="false"
+                        managed="false"
+                        onAction="#onShowMyRestaurants"/>
                 <Button fx:id="bottonePreferiti"
                         text="I miei preferiti"
                         visible="false"
