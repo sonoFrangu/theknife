@@ -3,6 +3,10 @@ package theknife.model;
 import java.util.Date;
 import java.util.LinkedList;
 
+/**
+ * @author Celestino Resteghini
+ * @author Matteo Franguelli
+ */
 public class Ristoratore extends UtenteRegistrato{
 
     private LinkedList<Ristorante> ristoranti;
@@ -15,6 +19,11 @@ public class Ristoratore extends UtenteRegistrato{
 
     }
 
+    /**
+     *
+     * @author Celestino Resteghini
+     * @return Restituisce la lista dei ristoranti.
+     */
     public LinkedList<Ristorante> getRistoranti() { return ristoranti;}
 
     @Override
@@ -30,12 +39,16 @@ public class Ristoratore extends UtenteRegistrato{
         return  super.toString()+ s;
     }
 
-
+    /**
+     * @author Celestino Resteghini
+     */
     public void aggiungiRistorante(Ristorante ristorante)
     {
         ristoranti.add(ristorante);
     }
-
+    /**
+     * @author Celestino Resteghini
+     */
     public LinkedList<Recensione> visualizzaRecensioni()
     {
         LinkedList<Recensione> recensioni =new LinkedList<>();
@@ -47,11 +60,16 @@ public class Ristoratore extends UtenteRegistrato{
         return recensioni;
     }
 
+    /**
+     * @deprecated
+     */
     public void rispostaRecensione()
     {
 
     }
-
+    /**
+     * @author Celestino Resteghini
+     */
     public int numeroRecensioni()
     {
         GestioneRecensioni gr = new GestioneRecensioni();
@@ -62,7 +80,9 @@ public class Ristoratore extends UtenteRegistrato{
                     cont++;
         return cont;
     }
-
+    /**
+     * @author Celestino Resteghini
+     */
     public double calcolaMedia()
     {
         GestioneRecensioni gr = new GestioneRecensioni();
@@ -75,7 +95,9 @@ public class Ristoratore extends UtenteRegistrato{
 
         return contStelle/numeroRecensioni();
     }
-
+    /**
+     * @author Celestino Resteghini
+     */
     public String visualizzaRiepilogo(Ristorante ristorante)
     {
         String s = "";
@@ -91,7 +113,9 @@ public class Ristoratore extends UtenteRegistrato{
 
         return s;
     }
-
+    /**
+     * @author Celestino Resteghini
+     */
     public LinkedList<Ristorante> visualizzaPropriRistoranti()
     {
        return getRistoranti();

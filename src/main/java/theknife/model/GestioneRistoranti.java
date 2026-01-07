@@ -6,6 +6,11 @@ import java.util.LinkedList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * @author Celestino Resteghini
+ * @author Matteo Franguelli
+ * @author Elia Toschi
+ */
 public class GestioneRistoranti {
     public LinkedList<Ristorante> listaRistoranti;
     private static GestioneRistoranti instance;
@@ -20,7 +25,9 @@ public class GestioneRistoranti {
         }
         return instance;
     }
-
+    /**
+     * @author Elia Toschi
+     */
     public LinkedList<Ristorante> getListaRistoranti() {return listaRistoranti;    }
 
     /**
@@ -35,7 +42,9 @@ public class GestioneRistoranti {
 
     /**
      * Rimuove un ristorante se presente
+     * @author Matteo Franguelli
      * @param ristorante
+     *
      */
     public void remove(Ristorante ristorante)
     {

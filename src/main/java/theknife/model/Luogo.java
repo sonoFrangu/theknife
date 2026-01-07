@@ -1,6 +1,10 @@
 package theknife.model;
 import static java.lang.Math.*;
-
+/**
+ * @author Celestino Resteghini
+ * @author Matteo Franguelli
+ * @author Elia Toschi
+ */
 public class Luogo {
 
     private final double RAGGIOTERRESTRE_KM= 6371;
@@ -42,6 +46,11 @@ public class Luogo {
             return this.equals((Luogo)obj);
         return false;
     }
+    /**
+     * @author Celestino Resteghini
+     * @author Matteo Franguelli
+     * @author Elia Toschi
+     */
     @Override
     public String toString()
     {
@@ -53,6 +62,10 @@ public class Luogo {
      * @param lat2 latitudine da confrontare
      * @param longi2 longitudine da confrontare
      * @return boolean true se < 10 km
+     */
+    /**
+     * @author Celestino Resteghini
+     * @author Elia Toschi
      */
     public boolean checkDistance10KM(double lat2, double longi2)
     {

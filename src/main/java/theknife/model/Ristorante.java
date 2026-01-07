@@ -2,6 +2,11 @@ package theknife.model;
 
 import java.util.LinkedList;
 
+/**
+ * @author Celestino Resteghini
+ * @author Elia Toschi
+ * @author Matteo Franguelli
+ */
 public class Ristorante {
     private String nome;
     private String numeroTelefono;
@@ -16,7 +21,24 @@ public class Ristorante {
     private  int id;
     private static int contatore=0;
 
-
+    /**
+     *
+     * @param nome
+     * @param numeroTelefono
+     * @param delivery
+     * @param booking
+     * @param prezzo
+     * @param cucina
+     * @param luogo
+     * @param website
+     * @param link
+     * @param awards
+     *
+     *
+     * @author Celestino Resteghini
+     * @author Elia Toschi
+     * @author Matteo Franguelli
+     */
     public Ristorante(String nome, String numeroTelefono, boolean delivery, boolean booking, double prezzo, LinkedList<String> cucina, Luogo luogo, String website, String link, double awards)
     {
         this.nome = nome;
@@ -32,8 +54,6 @@ public class Ristorante {
         this.id =++contatore;
 
     }
-    //temporaneo
-    public Ristorante(){}
 
     //<editor-fold desc="Getter">
     public String getNome(){return nome;}
@@ -47,6 +67,11 @@ public class Ristorante {
     public String getLink() { return link; }
     public  int getId() { return id;  }
 
+    /**
+     * @author Celestino Resteghini
+     * @return Restituisce la media delle stelle Michelin.
+     * versione 1
+     */
     public double getMediaStelle()
     {
         /*GestioneRecensioni gr= new GestioneRecensioni();
@@ -64,10 +89,20 @@ public class Ristorante {
                 +(booking ? "servizio di prenotazione online disponibile" : "servizio di prenotazione online non disponibile")+" "+cucine+" "+luogo.toString()+"\n";
     }
 
+    /**
+     * @author Celestino Resteghini
+     * @param r
+     *
+     */
     public boolean equals(Ristorante r) {
         return this.nome.equals(r.nome) && this.luogo.equals(r.luogo);
     }
 
+    /**
+     * @author Celestino Resteghini
+     * @param r   the reference object with which to compare.
+     * @return
+     */
     @Override
     public boolean equals(Object r) {
         if(r instanceof Ristorante)
