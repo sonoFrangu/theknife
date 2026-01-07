@@ -106,9 +106,6 @@ public class AdvancedFilterController {
         System.out.println("Delivery: " + delivery);
         System.out.println("Booking: " + booking);
 
-
-
-        // 4. Passa i dati al MainController per applicare il filtro
         if (controllerPrincipale != null) {
             GestioneRistoranti gr = GestioneRistoranti.getInstance();
             LinkedList<Ristorante> rist = gr.Filtro(luogo, cucina, (prezzoMin != null ? prezzoMin : -1), (prezzoMax != null ? prezzoMax : -1), delivery, booking, stelleSelezionate);
