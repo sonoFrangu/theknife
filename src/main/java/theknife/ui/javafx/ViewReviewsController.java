@@ -38,6 +38,7 @@ public class ViewReviewsController {
         if (ristoranteSelezionato != null) {
             etichettaTitolo.setText("Recensioni: " + r.getNome());
             caricaRecensioniSpecifiche();
+
         }
     }
 
