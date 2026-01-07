@@ -28,6 +28,9 @@
             <Label text="Indirizzo"/>
             <TextField fx:id="campoIndirizzo" promptText="Via..."/>
 
+            <Label text="Numero di telefono"/>
+            <TextField fx:id="campoTelefono" promptText="es. +39..."/>
+
             <HBox spacing="10">
                 <VBox spacing="5">
                     <Label text="Latitudine"/>

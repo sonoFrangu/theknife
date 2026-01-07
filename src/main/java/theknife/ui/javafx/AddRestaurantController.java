@@ -16,6 +16,7 @@ public class AddRestaurantController {
     @FXML private TextField campoNazione;
     @FXML private TextField campoCitta;
     @FXML private TextField campoIndirizzo;
+    @FXML private TextField campoTelefono;
     @FXML private TextField campoLatitudine;
     @FXML private TextField campoLongitudine;
     @FXML private TextField campoPrezzo;
@@ -58,8 +59,8 @@ public class AddRestaurantController {
         boolean delivery = checkConsegna.isSelected();
         boolean booking = checkPrenotazione.isSelected();
         String sito = campoSitoWeb.getText();
-        String numTel="+39----------";
-        String stelle="5";
+        String numTel = campoTelefono.getText();
+        String stelle="0";
         //todo aggiungere numero di telefono e stelle
 
         //Converto il prezzo
