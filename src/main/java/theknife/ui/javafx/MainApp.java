@@ -16,6 +16,8 @@ import javax.imageio.ImageIO;
  * - inizializzare la Session come ospite
  * - caricare la view principale (main.fxml)
  * - impostare titolo e icona della finestra
+ * @author Matteo Franguelli
+ * @version 2
  */
 public class MainApp extends Application {
 
@@ -64,6 +66,7 @@ public class MainApp extends Application {
 
     /**
      * Metodo main: avvia l'applicazione JavaFX usando MainApp come entry point.
+     * @author Matteo Franguelli
      */
     public static void main(String[] args) {
         launch(args);
