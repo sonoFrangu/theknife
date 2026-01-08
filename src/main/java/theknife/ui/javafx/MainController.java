@@ -651,8 +651,9 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/it/unininsubria/theknifeui/ui/javafx/view/favorites.fxml"));
+            Scene scene = new Scene(loader.load());
             Stage st = new Stage();
-            st.setScene(new Scene(loader.load()));
+            st.setScene(scene);
             st.setTitle("I miei preferiti");
             st.initModality(Modality.APPLICATION_MODAL);
             st.showAndWait();
