@@ -10,7 +10,7 @@ public class Recensione {
     private Date data;
     private int id_utente_reg;
     private int id_ristorante;
-    private  int id;
+    private int id;
     private static int contatore=0;
 
     /**

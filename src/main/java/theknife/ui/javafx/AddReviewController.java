@@ -93,9 +93,8 @@ public class AddReviewController {
     }
 
     @FXML
-    //metodo di toschi da sistemare
-    //todo da verificare se scrive su file e se il colelgamento è giusto
-    //todo
+
+
     private void onCreate() {
         if (modalitaModifica) {
             rimuoviVecchiaEAgungiNuova();
@@ -140,10 +139,8 @@ public class AddReviewController {
 
         File fileRecensioni = new File(NOME_CARTELLA, NOME_FILE_RECENSIONI);
 
-
         Recensione recensione= new Recensione(stelle,text,Integer.valueOf(idUtente),idRistorante);
         gestRest.add(recensione);
-
 
         // Salva su file
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileRecensioni, true))) {

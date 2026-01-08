@@ -61,7 +61,6 @@ public class AddRestaurantController {
         String sito = campoSitoWeb.getText();
         String numTel = campoTelefono.getText();
         String stelle="0";
-        //todo aggiungere numero di telefono e stelle
 
         //Converto il prezzo
         String p = "";
@@ -79,12 +78,6 @@ public class AddRestaurantController {
             etichettaErrore.setText("Il nome è obbligatorio.");
             return;
         }
-
-        //todo: Controllo se il nome del ristorante è gia' presente?
-        /*if (usernameEsiste(username)) {
-            etichettaErrore.setText("Nome già in uso. Scegline un altro.");
-            return;
-        }*/
 
         // Verifica cartella
         File cartellaDoc = new File(NOME_CARTELLA);
@@ -126,7 +119,7 @@ public class AddRestaurantController {
         a.setContentText("Ristorante salvato correttamente.");
         a.showAndWait();
 
-        //todo: aggiornare lista ristoranti
+        //todo: @sonoFrangu aggiornare lista ristoranti
 
         chiudiFinestra();
     }
