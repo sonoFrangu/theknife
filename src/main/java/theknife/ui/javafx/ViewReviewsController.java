@@ -20,6 +20,8 @@ public class ViewReviewsController {
 
     @FXML private Label etichettaTitolo;
     @FXML private ListView<Recensione> listaRecensioni;
+    @FXML private Label etichettaMedia;
+    @FXML private Label etichettaConteggio;
 
     private Ristorante ristoranteSelezionato;
     private final ObservableList<Recensione> recensioniData = FXCollections.observableArrayList();
@@ -49,6 +51,7 @@ public class ViewReviewsController {
                 etichettaTitolo.setText("Recensioni: " + r.getNome());
             }
             caricaRecensioniSpecifiche();
+            calcolaStatistiche();
         }
     }
     /**
@@ -163,8 +166,6 @@ public class ViewReviewsController {
                 } else {
                     VBox box = new VBox(5);
                     box.getStyleClass().add("review-item");
-                    // Stile di backup
-                    //box.setStyle("-fx-padding: 10; -fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 5;");
 
                     StringBuilder stelleStr = new StringBuilder();
                     for(int i=0; i<item.getNumeroStelle(); i++) stelleStr.append("★");
@@ -178,7 +179,6 @@ public class ViewReviewsController {
                     lblTesto.setMaxWidth(350);
                     lblTesto.setStyle("-fx-text-fill: black; -fx-font-size: 14px;");
 
-                    // Recupera lo username dal metodo aggiornato
                     Label lblInfo = new Label("Utente: " + ricavaUsername(item.getIdUtente()));
                     lblInfo.setStyle("-fx-text-fill: gray; -fx-font-size: 12px; -fx-font-style: italic;");
 
@@ -197,5 +197,27 @@ public class ViewReviewsController {
     private void onChiudi() {
         Stage stage = (Stage) etichettaTitolo.getScene().getWindow();
         stage.close();
+    }
+
+    private void calcolaStatistiche() {
+        if (recensioniData.isEmpty()) {
+            if (etichettaMedia != null) etichettaMedia.setText("Media stelle: N/D");
+            if (etichettaConteggio != null) etichettaConteggio.setText("Numero di recensioni: N/D");
+            return;
+        }
+
+        double sommaStelle = 0;
+        for (Recensione rec : recensioniData) {
+            sommaStelle += rec.getNumeroStelle();
+        }
+        double media = sommaStelle / recensioniData.size();
+
+        String mediaFormattata = "0.5";
+        if (etichettaMedia != null) {
+            etichettaMedia.setText("Media stelle: " + mediaFormattata);
+        }
+        if (etichettaConteggio != null) {
+            etichettaConteggio.setText("Numero di recensioni: " + recensioniData.size());
+        }
     }
 }

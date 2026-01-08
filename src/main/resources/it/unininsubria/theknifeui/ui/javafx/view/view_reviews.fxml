@@ -11,23 +11,32 @@
             prefWidth="500" prefHeight="600">
 
     <top>
-        <VBox spacing="10" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 0 0 1 0;">
+        <VBox spacing="5" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 0 0 1 0;">
             <padding>
                 <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
+
             <Label fx:id="etichettaTitolo"
                    text="Recensioni"
                    styleClass="section-title"/>
-            <Label fx:id="etichettaInfo"
-                   text="Leggi cosa dicono gli altri utenti"
-                   style="-fx-text-fill: #7f8c8d;"/>
+
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <Label fx:id="etichettaMedia"
+                       text="Media stelle: -"
+                       styleClass="footer-text"/>
+
+                <Label fx:id="etichettaConteggio"
+                       text="Numero di recensioni: 0"
+                       styleClass="footer-text"/>
+            </HBox>
+
         </VBox>
     </top>
 
     <center>
         <ListView fx:id="listaRecensioni" styleClass="review-list">
             <placeholder>
-                <Label text="Nessuna recensione presente per questo ristorante."/>
+                <Label text="Non ci sono ancora recensioni."/>
             </placeholder>
         </ListView>
     </center>
