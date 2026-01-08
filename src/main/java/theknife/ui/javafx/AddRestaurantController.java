@@ -3,11 +3,14 @@ package theknife.ui.javafx;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import theknife.model.GestioneRistoranti;
+import theknife.model.Luogo;
+import theknife.model.Ristorante;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Controller per la gestione dell'aggiunta di nuovi ristoranti.
@@ -37,6 +40,8 @@ public class AddRestaurantController {
 
     private static final String NOME_CARTELLA = "doc";
     private static final String NOME_FILE = "michelin_my_maps.csv";
+    private static final String NOME_FILE_U = "users.csv";
+    GestioneRistoranti gr = GestioneRistoranti.getInstance();
 
     /**
      * Imposta il controller principale (la finestra da cui è stata aperta questa finestra).
@@ -69,7 +74,6 @@ public class AddRestaurantController {
         String sito = campoSitoWeb.getText();
         String numTel = campoTelefono.getText();
         String stelle="0";
-        //todo aggiungere numero di telefono e stelle
 
         //Converto il prezzo
         String p = "";
@@ -87,12 +91,6 @@ public class AddRestaurantController {
             etichettaErrore.setText("Il nome è obbligatorio.");
             return;
         }
-
-        //todo: Controllo se il nome del ristorante è gia' presente?
-        /*if (usernameEsiste(username)) {
-            etichettaErrore.setText("Nome già in uso. Scegline un altro.");
-            return;
-        }*/
 
         // Verifica cartella
         File cartellaDoc = new File(NOME_CARTELLA);
@@ -127,6 +125,18 @@ public class AddRestaurantController {
             return;
         }
 
+        //todo: aggiornare lista ristoranti GRAFICA
+        LinkedList<String> tipoCucina= new LinkedList<>();
+        String[] s = tipo.split(",");
+        for (String e : s) {
+            tipoCucina.add(e.trim());
+        }
+        Ristorante rist = new Ristorante(nome, numTel, delivery, booking, prezzo, tipoCucina, new Luogo(nazione, indirizzo, citta, Double.valueOf(lat), Double.valueOf(longi)), sito, sito, 0);
+        gr.listaRistoranti.add(rist);
+
+        //inserisco il ristorante nel file users.csv
+        aggiungiMioRistorante(rist.getId());
+
         // Avviso l'utente del successo
         Alert a = new Alert(Alert.AlertType.INFORMATION);
         a.setTitle("Salvataggio effettuato");
@@ -134,7 +144,7 @@ public class AddRestaurantController {
         a.setContentText("Ristorante salvato correttamente.");
         a.showAndWait();
 
-        //todo: aggiornare lista ristoranti
+
 
         chiudiFinestra();
     }
@@ -156,5 +166,70 @@ public class AddRestaurantController {
     private void chiudiFinestra() {
         Stage finestra = (Stage) campoNome.getScene().getWindow();
         finestra.close();
+    }
+
+    public void aggiungiMioRistorante(int id)
+    {
+        String usernameU = Session.getInstance().getUsername();
+        File fileUtenti = new File(NOME_CARTELLA, NOME_FILE_U);
+        if (!fileUtenti.exists()) return;
+        List<String> righe = new LinkedList<>();
+        String primaparte="";
+        String idRistorantiPres="";
+
+        try (BufferedReader lettore = new BufferedReader(new FileReader(fileUtenti, StandardCharsets.UTF_8))) {
+            String linea;
+
+            while ((linea = lettore.readLine()) != null) {
+                if (linea.isBlank()) continue;
+                String[] parti = linea.split(";");
+
+                // Formato CSV atteso: username;hash;nome;cognome;città;isCliente;isRistoratore;RistorantiPreferiti;MieiRistoranti
+                if (parti.length >= 2) {
+                    if (parti[0].equals(usernameU)) {
+
+                        //Salvo la prima parte della riga
+                        if(parti.length > 8)
+                            primaparte = parti[0]+";"+parti[1]+";"+parti[2]+";"+parti[3]+";"+parti[4]+";"+parti[5]+";"+parti[6]+";"+parti[7]+";"+parti[8]+";";
+                        else
+                            primaparte = parti[0]+";"+parti[1]+";"+parti[2]+";"+parti[3]+";"+parti[4]+";"+parti[5]+";"+parti[6]+";"+parti[7]+";"+null+";";
+                        if (parti.length > 9) {
+                            idRistorantiPres = parti[9].trim();
+                            String[] s1 = parti[9].split("-");
+                            //Controllo se il ristorante era già presente nei miei ristoranti
+                            for(String stringa: s1)
+                                if(id == Integer.valueOf(stringa))
+                                {
+                                    System.out.println(" === [Ristorante già nei miei ristoranti] ===");
+                                    return;
+                                }
+                            //Salvo il nuovo ristorante
+                            idRistorantiPres = idRistorantiPres.trim()+"-"+String.valueOf(id);
+                            continue; // SALTA QUESTA RIGA (è quella vecchia)
+                        }
+                        else
+                        {
+                            idRistorantiPres = String.valueOf(id);
+                            continue; // SALTA QUESTA RIGA (è quella vecchia)
+                        }
+                    }
+                }
+                righe.add(linea); // Tieni tutte le altre
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Aggiungi la NUOVA versione in fondo alla lista
+        String nuovaRiga = primaparte + idRistorantiPres;
+        righe.add(nuovaRiga);
+
+        // Riscrivi il file
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileUtenti, StandardCharsets.UTF_8))) {
+            for (String r : righe) {
+                bw.write(r);
+                bw.newLine();
+            }
+        } catch (IOException e) {}
     }
 }
