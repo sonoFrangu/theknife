@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Classe che si occupa della gestione di nuove Recensioni.
  * @author Elia Toschi
  * @author Matteo Franguelli
  * @author Celestino Resteghini

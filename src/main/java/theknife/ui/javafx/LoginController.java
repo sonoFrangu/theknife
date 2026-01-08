@@ -15,6 +15,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Controller della finestra di login.
  * Gestisce l'accesso leggendo i permessi specifici dal CSV doc/users.csv.
+ * @author Matteo Franguelli
  */
 public class LoginController {
 
@@ -27,10 +28,21 @@ public class LoginController {
     private static final String NOME_CARTELLA = "doc";
     private static final String NOME_FILE = "users.csv";
 
+    /**
+     * Esclude la possibilità di agire a comandi su altre finestre
+     * oltre a quella corrente.
+     * @param parentController
+     * @author Matteo Franguelli
+     */
     public void setParentController(MainController parentController) {
         this.controllerPrincipale = parentController;
     }
 
+    /**
+     * Metodo che si occupa della finestra di Login.
+     * @param event
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onLogin(ActionEvent event) {
         String nomeUtente = campoUsername.getText();
@@ -51,6 +63,11 @@ public class LoginController {
         }
     }
 
+    /**
+     * Si occupa di escludere i permessi al utente non registrato.
+     * @param event
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onGuest(ActionEvent event) {
         Session.getInstance().login(null, Session.Role.GUEST);
@@ -65,6 +82,7 @@ public class LoginController {
 
     /**
      * Cerca l'utente nel CSV e imposta la sessione con i permessi corretti.
+     * @author Matteo Franguelli
      */
     private boolean eseguiLogin(String nomeUtente, String password) {
         File fileUtenti = new File(NOME_CARTELLA, NOME_FILE);
@@ -114,6 +132,12 @@ public class LoginController {
         return false;
     }
 
+    /**
+     * Permette di criptare la password per essere memorizzata.
+     * @param testo
+     * @return
+     * @author Matteo Franguelli
+     */
     private String calcolaSha256(String testo) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -124,6 +148,10 @@ public class LoginController {
         } catch (NoSuchAlgorithmException e) { throw new RuntimeException(e); }
     }
 
+    /**
+     * Chiude la finestra di Login.
+     * @author Matteo Franguelli
+     */
     private void chiudiFinestra() {
         ((Stage) campoUsername.getScene().getWindow()).close();
     }

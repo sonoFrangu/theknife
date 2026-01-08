@@ -20,7 +20,19 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+/**
+ * * Controller principale dell'applicazione.
+ *  * <p>
+ *  * Coordina l'interazione tra vista e logica applicativa,
+ *  * gestendo le azioni dell'utente e l'inizializzazione
+ *  * dei componenti principali.
+ *
+ * @author Celestino Resteghini
+ * @author Matteo Franguelli
+ * @author Elia Toschi
+ * @author Tommaso Ossuzio
+ * @version 2
+ */
 public class MainController {
 
     @FXML private ListView<Ristorante> listaRistoranti;
@@ -46,6 +58,13 @@ public class MainController {
     private static final String NOME_FILE_DATI = "michelin_my_maps.csv";
     GestioneRistoranti gr = GestioneRistoranti.getInstance();
 
+    /**
+     * Esegue compiti di inizializzazione:
+     * - Caricare i ristoranti dal file
+     * - Imposta come la lista deve mostrare i ristoranti
+     * - Imposta i pulsanti in base al ruolo (default: Ospite)
+     * @author Matteo Franguelli
+     */
     @FXML
     private void initialize() {
         Label placeholder = new Label("Nessun risultato trovato");
@@ -68,6 +87,8 @@ public class MainController {
     /**
      * Legge il file CSV dalle risorse del progetto e aggiunge
      * ogni riga come ristorante nella lista.
+     * @author Matteo Franguelli
+     * @author Celestino Resteghini
      */
     private void caricaRistorantiDaCsv() {
         // Avviamo il thread
@@ -120,6 +141,7 @@ public class MainController {
     /**
      * Converte una singola riga CSV in un oggetto Restaurant
      * e lo aggiunge alla lista dei ristoranti.
+     * @author Celestino Resteghini
      */
     private void aggiungiDaRigaCsv(String linea, List<Ristorante> destinazione) {
         if (linea == null || linea.isBlank()) return;
@@ -204,6 +226,7 @@ public class MainController {
     /**
      * Imposta come i ristoranti devono essere mostrati dentro la ListView:
      * ogni riga ha nome, indirizzo, sito e tipo di cucina.
+     * @author Celestino Resteghini
      */
     private void inizializzaListaRistoranti() {
         listaRistoranti.setItems(ristoranti);
@@ -225,6 +248,12 @@ public class MainController {
                 box.getChildren().addAll(nomeEtichetta, indirizzoEtichetta, sitoEtichetta, premiEtichetta);
             }
 
+            /**
+             * Aggiorna la visualizzazione dei ristoranti quando aperti in finestra.
+             * @param r
+             * @param empty
+             * @author Matteo Franguelli
+             */
             @Override
             protected void updateItem(Ristorante r, boolean empty) {
                 super.updateItem(r, empty);
@@ -253,7 +282,6 @@ public class MainController {
                     sitoEtichetta.setManaged(false);
                 }
 
-                // Per ora usiamo la label "premi" per mostrare il tipo di cucina
                 String cucina = String.join(", ", r.getCucina());
                 if (cucina != null && !cucina.isBlank()) {
                     premiEtichetta.setText(cucina);
@@ -276,6 +304,8 @@ public class MainController {
 
     /**
      * Apre una nuova finestra con i dettagli del ristorante selezionato.
+     * @author Matteo Franguelli
+     * @author Celestino Resteghini
      */
     private void apriDettagliRistorante(Ristorante rd) {
         try {
@@ -325,6 +355,7 @@ public class MainController {
      * - ospite
      * - cliente
      * - ristoratore
+     * @author Matteo Franguelli
      */
     private void aggiornaInterfaccia() {
         Session s = Session.getInstance();
@@ -382,6 +413,9 @@ public class MainController {
        HANDLER TOP BAR
        ========================= */
 
+    /**
+     * Si occupa di mostrare la finestra per effettuare il login.
+     */
     @FXML
     private void onShowLogin() {
         try {
@@ -400,7 +434,10 @@ public class MainController {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Si occupa di mostrare la finestra di registrazione.
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onShowRegister() {
         try {
@@ -419,7 +456,11 @@ public class MainController {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Si occupa di disconnettere l'utente nel caso di click
+     * sul pulsante logout.
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onLogout() {
         Session.getInstance().logout();
@@ -435,7 +476,10 @@ public class MainController {
     /* =========================
        HANDLER AZIONI
        ========================= */
-
+    /**
+     * Si occupa di aprire, se permesso, la finestra per aggiungere una recensione.
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onAddRestaurant() {
         Session s = Session.getInstance();
@@ -466,7 +510,11 @@ public class MainController {
             st.showAndWait();
         } catch (IOException e) { e.printStackTrace(); }
     }
-
+    /**
+     * Si occupa di aprire, se permesso, la finestra per aggiungere una recensione.
+     * @author Matteo Franguelli
+     * @author Celestino Resteghini
+     */
     @FXML
     private void onAddReview() {
         Session s = Session.getInstance();
@@ -518,6 +566,12 @@ public class MainController {
        ALTRE VIEW
        ========================= */
 
+    /**
+     * Quando viene premuto il pulsante filtro si occupa dell'applicazione dei parametri
+     * di ricerca.
+     * @author Celestino Resteghini
+     * @author Matteo Franguelli
+     */
     @FXML
     protected void onApplyFilters() {
         String luogo = campoLuogo.getText();
@@ -537,6 +591,10 @@ public class MainController {
         else { ristoranti.clear(); }
     }
 
+    /**
+     * Quando viene premuto il pulsante Reset vengono resettati i filtri di ricerca.
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onResetFilters() {
         if (campoLuogo != null) campoLuogo.clear();
@@ -547,6 +605,10 @@ public class MainController {
         System.out.println("[FILTER] Filtri resettati.");
     }
 
+    /**
+     * Quando viene premuto il pulsante "I miei ristoranti" mostra i propri ristoranti.
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onShowMyRestaurants() {
         try {
@@ -562,6 +624,10 @@ public class MainController {
         }
     }
 
+    /**
+     * Quando viene premuto il pulsante Preferiti mostra i ristoranti inseriti nei preferiti.
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onShowFavorites() {
         try {
@@ -577,6 +643,10 @@ public class MainController {
         }
     }
 
+    /**
+     * Quando viene premuto apre la finestra Filtro Avanzato.
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onShowAdvancedFilter() {
         try {
@@ -595,7 +665,10 @@ public class MainController {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Quando viene premuto apre la finestra che mostra le proprie recensioni.
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onShowMyReviews() {
         try {
@@ -612,6 +685,10 @@ public class MainController {
         }
     }
 
+    /**
+     * Permette la visualizzazione di recensioni dopo aver selezionato un ristorante.
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onViewReviews() {
         if (listaRistoranti == null) return;
@@ -647,7 +724,12 @@ public class MainController {
        UTILS
        ========================= */
 
-
+    /**
+     * Metodo generico per mostrare errori.
+     * @param titolo
+     * @param messaggio
+     * @author Matteo Franguelli
+     */
     private void mostraErrore(String titolo, String messaggio) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Attenzione");
@@ -657,6 +739,7 @@ public class MainController {
     }
     /**
      * Rimuove eventuali doppi apici e spazi inutili.
+     * @author Matteo Franguelli
      */
     private String pulisci(String s) {
         if (s == null) return "";
@@ -666,6 +749,7 @@ public class MainController {
     /**
      * Restituisce la stringa se non è null, altrimenti stringa vuota.
      * Utile per evitare NullPointerException nelle concatenazioni.
+     * @author Matteo Franguelli
      */
     private String valoreNonNullo(String s) {
         return s == null ? "" : s;
@@ -673,6 +757,7 @@ public class MainController {
 
     /**
      * Converte uno spazio in '+' per poter usare la stringa in una URL.
+     * @author Matteo Franguelli
      */
     private String inUrl(String s) {
         return s == null ? "" : s.trim().replace(" ", "+");
@@ -680,12 +765,18 @@ public class MainController {
 
     /**
      * Divide una riga CSV in campi, gestendo i campi tra doppi apici.
+     * @author Matteo Franguelli
      */
     private String[] dividiCsv(String line) {
         // split che gestisce anche i campi tra doppi apici
         return line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
     }
 
+    /**
+     * Aggiunge la lista di ristoranti alla grafica
+     * @param nuovaLista
+     * @author Matteo Franguelli
+     */
     public void mostraRistoranti(List<Ristorante> nuovaLista) {
         ristoranti.clear();
         if (nuovaLista != null && !nuovaLista.isEmpty()) {
