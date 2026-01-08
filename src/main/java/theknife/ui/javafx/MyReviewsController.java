@@ -16,7 +16,12 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Controller che gestisce la visualizzazione e la gestione
+ * delle recensioni scritte dall'utente corrente.
+ *
+ * @author Matteo Franguelli
+ */
 public class MyReviewsController {
 
     @FXML private TableView<ReviewRow> tabellaRecensioni;
@@ -30,7 +35,11 @@ public class MyReviewsController {
     private static final String NOME_CARTELLA = "doc";
     private static final String NOME_FILE_RECENSIONI = "recensioni.csv";
     private static final String NOME_FILE_UTENTI = "users.csv";
-
+    /**
+     * Inizializza la tabella, il menu contestuale e carica le recensioni.
+     *
+     * @author Matteo Franguelli
+     */
     @FXML
     private void initialize() {
         colonnaRistorante.setCellValueFactory(new PropertyValueFactory<>("restaurant"));
@@ -47,6 +56,8 @@ public class MyReviewsController {
 
     /**
      * Crea il menu che appare col tasto destro sulla riga
+     *
+     * @author Matteo Franguelli
      */
     private void menuTastoDestro() {
         tabellaRecensioni.setRowFactory(tv -> {
@@ -82,7 +93,11 @@ public class MyReviewsController {
             return row;
         });
     }
-
+    /**
+     * Apre la finestra di modifica per la recensione selezionata.
+     *
+     * @author Matteo Franguelli
+     */
     private void apriModificaRecensione(ReviewRow riga) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unininsubria/theknifeui/ui/javafx/view/add_review.fxml"));
@@ -105,7 +120,11 @@ public class MyReviewsController {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Chiede conferma ed elimina la recensione selezionata.
+     *
+     * @author Matteo Franguelli
+     */
     private void chiediConfermaEdElimina(ReviewRow riga) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Elimina Recensione");
@@ -123,6 +142,8 @@ public class MyReviewsController {
 
     /**
      * Riscrive il CSV ignorando la riga che corrisponde alla recensione eliminata.
+     *
+     * @author Matteo Franguelli
      */
     private void rimuoviRecensioneDalFile(ReviewRow rigaDaEliminare) {
         File file = new File(NOME_CARTELLA, NOME_FILE_RECENSIONI);
@@ -182,7 +203,11 @@ public class MyReviewsController {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Carica dal file tutte le recensioni dell'utente corrente.
+     *
+     * @author Matteo Franguelli
+     */
     private void caricaLeMieRecensioni() {
         dati.clear();
         Session session = Session.getInstance();
@@ -222,7 +247,11 @@ public class MyReviewsController {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Restituisce l'id dell'utente a partire dallo username.
+     *
+     * @author Matteo Franguelli
+     */
     private int trovaIlMioIdDaUsername(String usernameCercato) {
         File file = new File(NOME_CARTELLA, NOME_FILE_UTENTI);
         if (!file.exists()) return -1;
@@ -240,7 +269,11 @@ public class MyReviewsController {
         } catch (IOException e) { e.printStackTrace(); }
         return -1;
     }
-
+    /**
+     * Restituisce il nome del ristorante dato il suo id.
+     *
+     * @author Matteo Franguelli
+     */
     private String trovaNomeRistorante(int idRistorante) {
         GestioneRistoranti gr = GestioneRistoranti.getInstance();
         for (Ristorante r : gr.getListaRistoranti()) {
@@ -248,12 +281,20 @@ public class MyReviewsController {
         }
         return "Ristorante ID: " + idRistorante;
     }
-
+    /**
+     * Pulisce una stringa da caratteri non desiderati.
+     *
+     * @author Matteo Franguelli
+     */
     private String pulisci(String s) {
         if (s == null) return "";
         return s.trim().replace(";", "").replace("\"", "");
     }
-
+    /**
+     * Aggiorna la visibilità della tabella e del messaggio di lista vuota.
+     *
+     * @author Matteo Franguelli
+     */
     private void aggiornaMessaggioVuoto() {
         boolean vuota = dati.isEmpty();
         if (etichettaVuota != null) { etichettaVuota.setVisible(vuota); etichettaVuota.setManaged(vuota); }
@@ -263,6 +304,11 @@ public class MyReviewsController {
 
 
     // --- MODELLO DATI AGGIORNATO ---
+    /**
+     * Modello dati per la visualizzazione di una recensione nella tabella.
+     *
+     * @author Matteo Franguelli
+     */
     public static class ReviewRow {
         private final String restaurant;
         private final int rating;

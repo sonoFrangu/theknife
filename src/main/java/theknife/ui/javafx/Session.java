@@ -4,6 +4,7 @@ package theknife.ui.javafx;
  * Gestisce lo stato dell'utente attualmente loggato nell'applicazione.
  * È un singleton: esiste una sola Session per tutta l'app.
  * Mantiene sia il ruolo principale (per visualizzazione) che i permessi specifici.
+ * @author Matteo Franguelli
  */
 public class Session {
 
@@ -12,6 +13,7 @@ public class Session {
      * CLIENTE → utente standard
      * RISTORATORE → gestore di ristoranti
      * GUEST → utente non autenticato
+     * @author Matteo Franguelli
      */
     public enum Role {
         CLIENTE,
@@ -34,6 +36,7 @@ public class Session {
 
     /**
      * Costruttore privato: la sessione parte come "ospite" senza permessi.
+     * @author Matteo Franguelli
      */
     private Session() {
         this.ruolo = Role.GUEST;
@@ -44,6 +47,7 @@ public class Session {
     /**
      * Restituisce l'unica istanza della Session,
      * creandola se non esiste ancora.
+     * @author Matteo Franguelli
      */
     public static Session getInstance() {
         if (instance == null) {
@@ -56,6 +60,7 @@ public class Session {
      * Effettua il login impostando username e ruolo principale.
      * I permessi specifici vengono resettati in base al ruolo,
      * ma è consigliabile usare setPermessi() subito dopo per precisione.
+     * @author Matteo Franguelli
      */
     public void login(String username, Role ruolo) {
         this.username = username;
@@ -82,6 +87,7 @@ public class Session {
      *
      * @param isCliente true se l'utente può lasciare recensioni e avere preferiti
      * @param isRistoratore true se l'utente può aggiungere ristoranti
+     * @author Matteo Franguelli
      */
     public void setPermessi(boolean isCliente, boolean isRistoratore) {
         this.permessiCliente = isCliente;
@@ -90,6 +96,7 @@ public class Session {
 
     /**
      * Restituisce true se l'utente ha i permessi da Cliente (es. recensioni).
+     * @author Matteo Franguelli
      */
     public boolean isCliente() {
         return permessiCliente;
@@ -97,6 +104,7 @@ public class Session {
 
     /**
      * Restituisce true se l'utente ha i permessi da Ristoratore (es. aggiunta ristoranti).
+     * @author Matteo Franguelli
      */
     public boolean isRistoratore() {
         return permessiRistoratore;
@@ -104,6 +112,7 @@ public class Session {
 
     /**
      * Effettua il logout e torna allo stato di ospite.
+     * @author Matteo Franguelli
      */
     public void logout() {
         this.username = null;
@@ -114,6 +123,7 @@ public class Session {
 
     /**
      * Ritorna true se l’utente è un ospite (non loggato).
+     * @author Matteo Franguelli
      */
     public boolean isGuest() {
         return ruolo == Role.GUEST;
@@ -121,6 +131,7 @@ public class Session {
 
     /**
      * Ritorna true se l’utente NON è ospite.
+     * @author Matteo Franguelli
      */
     public boolean isAuthenticated() {
         return ruolo != Role.GUEST;
@@ -130,6 +141,7 @@ public class Session {
      * Imposta lo stato "autenticato / non autenticato".
      * Se impostato a false → logout.
      * Se impostato a true e il ruolo attuale è GUEST → diventa CLIENTE.
+     * @author Matteo Franguelli
      */
     public void setAuthenticated(boolean autenticato) {
         if (!autenticato) {
@@ -145,6 +157,7 @@ public class Session {
 
     /**
      * Aggiorna lo username dell’utente loggato.
+     * @author Matteo Franguelli
      */
     public void setUsername(String username) {
         this.username = username;
@@ -152,6 +165,7 @@ public class Session {
 
     /**
      * Aggiorna solo il ruolo principale dell’utente loggato.
+     * @author Matteo Franguelli
      */
     public void setRole(Role ruolo) {
         this.ruolo = (ruolo == null ? Role.GUEST : ruolo);
@@ -159,6 +173,7 @@ public class Session {
 
     /**
      * Restituisce lo username dell'utente attualmente loggato.
+     * @author Matteo Franguelli
      */
     public String getUsername() {
         return username;
@@ -166,6 +181,7 @@ public class Session {
 
     /**
      * Restituisce il ruolo principale dell'utente.
+     * @author Matteo Franguelli
      */
     public Role getRole() {
         return ruolo;
