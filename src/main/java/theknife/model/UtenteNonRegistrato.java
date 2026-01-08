@@ -4,6 +4,12 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
+/**
+ * Classe per la gestione dell'utente non registrato.
+ * @author Celestino Resteghini
+ * @author Elia Toschi
+ * @author Matteo Franguelli
+ */
 public class UtenteNonRegistrato extends Utente {
     public UtenteNonRegistrato() {}
 
@@ -32,12 +38,22 @@ public class UtenteNonRegistrato extends Utente {
         System.out.println("Registrazione effettuata con successo");
     }
 
+    /**
+     *
+     * @param ristorante
+     * @return
+     */
     @Override
     public LinkedList<Recensione> visualizzaRecensioni(Ristorante ristorante) {
         //implementa metodo
         return new  LinkedList<Recensione>();
     }
 
+    /**
+     *
+     * @param ristorante
+     * @return
+     */
     @Override
     public String visualizzaRistorante(Ristorante ristorante ) {
         //implementa metodo

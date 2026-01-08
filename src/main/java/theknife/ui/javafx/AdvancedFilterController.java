@@ -10,6 +10,10 @@ import theknife.model.Ristorante;
 
 import java.util.LinkedList;
 
+/**
+ * Classe che si occupa della gestione del Filtro Avanzato.
+ * @author Celestino Resteghini
+ */
 public class AdvancedFilterController {
 
     @FXML private TextField campoLuogo;
@@ -31,6 +35,11 @@ public class AdvancedFilterController {
 
     /* --- GESTIONE STELLE --- */
 
+    /**
+     * Si occupa di aggiornare le stelle in base a quante sono cliccate.
+     * @author Celestino Resteghini
+     * @param event
+     */
     @FXML
     private void onStarClicked(ActionEvent event) {
         Button btn = (Button) event.getSource();
@@ -39,12 +48,20 @@ public class AdvancedFilterController {
         aggiornaGraficaStelle();
     }
 
+    /**
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onResetStars() {
         stelleSelezionate = 0;
         aggiornaGraficaStelle();
     }
 
+    /**
+     * Permette di aggiornare le stelle visualizzabili in base a quelle selezionate.
+     * @author Celestino Resteghini
+     * @author Matteo Franguelli
+     */
     private void aggiornaGraficaStelle() {
         Button[] stars = {star1, star2, star3, star4, star5};
         for (int i = 0; i < stars.length; i++) {
@@ -58,7 +75,12 @@ public class AdvancedFilterController {
         }
     }
 
-
+    /**
+     * Effettua il controllo del modulo di Filtro Avanzato
+     * per verificare se rispetta i parametri.
+     * @author Matteo Franguelli
+     * @author Celestino Resteghini
+     */
     @FXML
     private void onApply() {
         String luogo = campoLuogo.getText();
@@ -122,6 +144,12 @@ public class AdvancedFilterController {
         chiudiFinestra();
     }
 
+    /**
+     * Si occupa di mostrare l'errore nel caso di inserimento.
+     * @param titolo
+     * @param messaggio
+     * @author Matteo Franguelli
+     */
     private void mostraErrore(String titolo, String messaggio) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Errore nell'inserimento");
@@ -129,12 +157,19 @@ public class AdvancedFilterController {
         alert.setContentText(messaggio);
         alert.showAndWait();
     }
-
+    /**
+     * Richiama il metodo per chiudere la finestra.
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onCancel() {
         chiudiFinestra();
     }
 
+    /**
+     * Chiude la finestra Filtro Avanzato.
+     * @author Matteo Franguelli
+     */
     private void chiudiFinestra() {
         Stage stage = (Stage) campoLuogo.getScene().getWindow();
         stage.close();

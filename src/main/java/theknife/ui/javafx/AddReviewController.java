@@ -12,6 +12,11 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author Elia Toschi
+ * @author Matteo Franguelli
+ * @author Celestino Resteghini
+ */
 public class AddReviewController {
 
     private static final String NOME_CARTELLA = "doc";
@@ -33,16 +38,27 @@ public class AddReviewController {
     // Variabile per tenere traccia del voto (default 5 stelle)
     private int votoSelezionato = 5;
 
+    /**
+     * @author Celestino Resteghini
+     * @param restaurant
+     */
     public void setRestaurant(Ristorante restaurant) {
         this.ristoranteDestinazione = restaurant;
     }
 
+    /**
+     * @author Matteo Franguelli
+     * @param nomeRistorante
+     */
     public void setRestaurantName(String nomeRistorante) {
         if (etichettaTitolo != null && nomeRistorante != null && !nomeRistorante.isBlank()) {
             etichettaTitolo.setText("Recensisci: " + nomeRistorante);
         }
     }
 
+    /**
+     * @author Matteo Franguelli
+     */
     @FXML
     private void initialize() {
         // Appena si apre la finestra, coloriamo le stelle in base al default (5)
@@ -53,6 +69,10 @@ public class AddReviewController {
        GESTIONE STELLE
        ========================= */
 
+    /**
+     * @author Matteo Franguelli
+     * @param event
+     */
     @FXML
     private void onStarClicked(ActionEvent event) {
         Button btn = (Button) event.getSource();
@@ -63,6 +83,9 @@ public class AddReviewController {
         aggiornaGraficaStelle();
     }
 
+    /**
+     * @author Matteo Franguelli
+     */
     private void aggiornaGraficaStelle() {
         Button[] stars = {star1, star2, star3, star4, star5};
 
@@ -81,17 +104,26 @@ public class AddReviewController {
        AZIONI SALVA / ANNULLA
        ========================= */
 
-
+    /**
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onAnnulla() {
         chiudiFinestra();
     }
 
+    /**
+     * @author Matteo Franguelli
+     */
     private void chiudiFinestra() {
         Stage finestra = (Stage) areaRecensione.getScene().getWindow();
         finestra.close();
     }
 
+    /**
+     * @author Elia Toschi
+     * @author Matteo Franguelli
+     */
     @FXML
 
 
@@ -158,7 +190,12 @@ public class AddReviewController {
         chiudiFinestra();
     }
 
-    //METODO USATO PER MODIFICA RECENSIONE
+    /**
+     * Metodo usato per modificare una recensione.
+     * @author Celestino Resteghini
+     * @author Matteo Franguelli
+     */
+
     public void setDatiPerModifica(MyReviewsController.ReviewRow recensioneVecchia) {
         this.modalitaModifica = true;
         this.recensioneOriginale = recensioneVecchia;
@@ -172,6 +209,9 @@ public class AddReviewController {
         if (etichettaTitolo != null) etichettaTitolo.setText("Modifica recensione");
     }
 
+    /**
+     * @author Matteo Franguelli
+     */
     private void rimuoviVecchiaEAgungiNuova() {
         File file = new File(NOME_CARTELLA, NOME_FILE_RECENSIONI);
         List<String> righe = new LinkedList<>();
