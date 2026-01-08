@@ -49,6 +49,7 @@ public class AdvancedFilterController {
     }
 
     /**
+     * resetta le stelle selezionate
      * @author Matteo Franguelli
      */
     @FXML

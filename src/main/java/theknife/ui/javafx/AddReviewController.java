@@ -39,6 +39,7 @@ public class AddReviewController {
     private int votoSelezionato = 5;
 
     /**
+     * Seleziona il ristorante
      * @author Celestino Resteghini
      * @param restaurant
      */
@@ -47,6 +48,7 @@ public class AddReviewController {
     }
 
     /**
+     * Seleziona il ristorante dal nome
      * @author Matteo Franguelli
      * @param nomeRistorante
      */
@@ -57,6 +59,7 @@ public class AddReviewController {
     }
 
     /**
+     * Inizializza le stelle impostate a 5
      * @author Matteo Franguelli
      */
     @FXML
@@ -70,6 +73,7 @@ public class AddReviewController {
        ========================= */
 
     /**
+     * Gestisce l'azione click delle stelle
      * @author Matteo Franguelli
      * @param event
      */
@@ -84,6 +88,7 @@ public class AddReviewController {
     }
 
     /**
+     * Modifica il numero di stelle selezionate nella grafica
      * @author Matteo Franguelli
      */
     private void aggiornaGraficaStelle() {
@@ -99,12 +104,12 @@ public class AddReviewController {
             }
         }
     }
-
     /* =========================
        AZIONI SALVA / ANNULLA
        ========================= */
 
     /**
+     * gestisce l'operazione di annullamento
      * @author Matteo Franguelli
      */
     @FXML
@@ -113,6 +118,7 @@ public class AddReviewController {
     }
 
     /**
+     * Chiude la finestra
      * @author Matteo Franguelli
      */
     private void chiudiFinestra() {
@@ -121,12 +127,11 @@ public class AddReviewController {
     }
 
     /**
+     * Aggiunge e sceive la recensione su file
      * @author Elia Toschi
      * @author Matteo Franguelli
      */
     @FXML
-
-
     private void onCreate() {
         if (modalitaModifica) {
             rimuoviVecchiaEAgungiNuova();
@@ -145,24 +150,8 @@ public class AddReviewController {
         int idRistorante= r.getId();
 
         //Prendere id utente
-        File cartellaDoc = new File(NOME_CARTELLA);
-        File fileUtenti = new File(cartellaDoc, NOME_FILE_USER);
-        try(BufferedReader br = new BufferedReader(new FileReader(fileUtenti, StandardCharsets.UTF_8))) {
-            String linea;
-            br.readLine();
-            while ((linea = br.readLine()) != null ) {
+       idUtente=GestioneFile.recuperaId(utente);
 
-                String[] parti = linea.split(";");
-
-                if(parti[0].equals(utente))
-                {
-                    idUtente= Integer.valueOf(parti[7].trim());
-                    break;
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         if (stelle == 0 || idUtente== 0 || areaRecensione.getText().isEmpty() || idRistorante== 0) {
             etichettaErrore.setText("Inserire tutti i campi");
@@ -195,7 +184,6 @@ public class AddReviewController {
      * @author Celestino Resteghini
      * @author Matteo Franguelli
      */
-
     public void setDatiPerModifica(MyReviewsController.ReviewRow recensioneVecchia) {
         this.modalitaModifica = true;
         this.recensioneOriginale = recensioneVecchia;
@@ -210,6 +198,7 @@ public class AddReviewController {
     }
 
     /**
+     * Modifica una recensione
      * @author Matteo Franguelli
      */
     private void rimuoviVecchiaEAgungiNuova() {
@@ -218,7 +207,8 @@ public class AddReviewController {
 
         // Recupera i dati base
         String user = Session.getInstance().getUsername();
-        int mioId = GestioneFile.trovaIdUtenteDaUsername(user);
+        int mioId = GestioneFile.recuperaId(user);
+
 
         try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             String line;

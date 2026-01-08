@@ -16,6 +16,9 @@ public class GestioneFile {
     private static String nomeFileRistoranti = "michelin_my_maps.csv";
     private static String nomeFileUtenti = "users.csv";
 
+    private static final String NOME_CARTELLA_DOC = "doc";
+
+
     // Percorso base per la cartella doc
     private static final String percorsoBase = System.getProperty("user.dir") + File.separator + nomeCartella + File.separator;
 
@@ -147,4 +150,29 @@ public class GestioneFile {
         if (s == null) return "";
         return s.trim().replace("\"", "").replace(";", "");
     }
+
+    public static int recuperaId(String username)
+    {
+        File cartellaDoc = new File(NOME_CARTELLA_DOC);
+        File fileUtenti = new File(cartellaDoc, nomeFileUtenti);
+        int id=0;
+        try(BufferedReader br = new BufferedReader(new FileReader(fileUtenti, StandardCharsets.UTF_8))) {
+            String linea;
+            br.readLine();
+            while ((linea = br.readLine()) != null ) {
+
+                String[] parti = linea.split(";");
+
+                if(parti[0].equals(username))
+                {
+                    id= Integer.valueOf(parti[7].trim());
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
 }
