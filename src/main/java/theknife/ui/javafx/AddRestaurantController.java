@@ -9,6 +9,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Controller per la gestione dell'aggiunta di nuovi ristoranti.
+ * @author Celestino Resteghini
+ */
 public class AddRestaurantController {
 
     // Campi di testo per inserire i dati del ristorante
@@ -37,6 +41,7 @@ public class AddRestaurantController {
     /**
      * Imposta il controller principale (la finestra da cui è stata aperta questa finestra).
      * Questo ti permette, in futuro, di passare il nuovo ristorante alla lista principale.
+     * @author Matteo Franguelli
      */
     public void setControllerPrincipale(MainController controllerPrincipale) {
         this.controllerPrincipale = controllerPrincipale;
@@ -45,6 +50,7 @@ public class AddRestaurantController {
     /**
      * Metodo chiamato quando l’utente preme il pulsante "Salva".
      * Qui facciamo un controllo minimo sui dati e poi chiudiamo la finestra.
+     * @author Celestino Resteghini
      */
     @FXML
     private void onSalva() {
@@ -119,7 +125,7 @@ public class AddRestaurantController {
             return;
         }
 
-        //Avviso l'utente del successo
+        // Avviso l'utente del successo
         Alert a = new Alert(Alert.AlertType.INFORMATION);
         a.setTitle("Salvataggio effettuato");
         a.setHeaderText(null);
@@ -134,6 +140,7 @@ public class AddRestaurantController {
     /**
      * Metodo chiamato quando l’utente preme il pulsante "Annulla".
      * Non salva niente, semplicemente chiude la finestra.
+     * @author Celestino Resteghini
      */
     @FXML
     private void onAnnulla() {
@@ -142,6 +149,7 @@ public class AddRestaurantController {
 
     /**
      * Chiude la finestra corrente.
+     * @author Celestino Resteghini
      */
     private void chiudiFinestra() {
         Stage finestra = (Stage) campoNome.getScene().getWindow();
