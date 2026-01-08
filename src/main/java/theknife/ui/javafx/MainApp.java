@@ -32,7 +32,7 @@ public class MainApp extends Application {
         }
 
         FXMLLoader caricatore = new FXMLLoader(urlFxml);
-        Scene scena = new Scene(caricatore.load());
+        Scene scena = new Scene(caricatore.load(),1024, 768);
 
         finestra.setTitle("TheKnife");
 
