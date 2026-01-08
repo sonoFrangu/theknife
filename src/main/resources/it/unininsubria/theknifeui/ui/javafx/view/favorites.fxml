@@ -14,8 +14,12 @@
     </top>
 
     <center>
-        <ListView fx:id="listaPreferiti"
-                  style="-fx-padding: 10;"/>
+        <TableView fx:id="tabellaPreferiti">
+            <columns>
+                <TableColumn fx:id="colonnaRistorante" text="Nome ristorante" prefWidth="180"/>
+                <TableColumn fx:id="colonnaLuogo" text="Luogo" prefWidth="80"/>
+            </columns>
+        </TableView>
     </center>
 
     <bottom>
