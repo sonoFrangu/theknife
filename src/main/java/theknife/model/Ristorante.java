@@ -75,7 +75,11 @@ public class Ristorante {
     public double getMediaStelle()
     {
         //todo : calcolare media stelle estreando il file dalle recensioni
-        return awards;
+        double mediaStelle=0;
+
+
+
+        return mediaStelle;
     }
 
     public double getAward()

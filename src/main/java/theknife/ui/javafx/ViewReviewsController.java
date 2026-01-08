@@ -103,6 +103,7 @@ public class ViewReviewsController {
             e.printStackTrace();
         }
     }
+
     /**
      * Restituisce lo username associato all'id utente.
      * @author Matteo Franguelli
