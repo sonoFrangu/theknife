@@ -1,5 +1,8 @@
 package theknife.model;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
@@ -49,10 +52,7 @@ public class GestioneFile {
         }
     }
 
-    /**
-     * Scrittura su file csv dei ristoranti
-     * @param ristorante
-     */
+
     public static void scriviFile(Ristorante ristorante) {
         String name = ristorante.getNome();
         String address = ristorante.getLuogo() != null ? "\"" + ristorante.getLuogo()+", " + ristorante.getLuogo().getIndirizzo() + ", " + ristorante.getLuogo().getCitta() + "\"": "null";

@@ -73,7 +73,6 @@ public class Ristorante {
     public LinkedList<String> getCucina(){return cucina;}
     public Luogo getLuogo(){return luogo;}
     public String getWebsite() { return website; }
-    public String getLink() { return link; }
     public  int getId() { return id;  }
 
     /**
@@ -83,7 +82,6 @@ public class Ristorante {
      */
     public double getMediaStelle()
     {
-        //todo : calcolare media stelle estreando il file dalle recensioni
         int cont=0;
         double sommaVoti=0;
 

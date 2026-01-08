@@ -60,7 +60,9 @@ public class AddRestaurantController {
         String indirizzo = campoIndirizzo.getText();
         String lat = campoLatitudine.getText();
         String longi = campoLongitudine.getText();
-        double prezzo = Double.valueOf(campoPrezzo.getText());
+        double prezzo = 0;
+        if(!campoPrezzo.getText().isEmpty())
+            prezzo = Double.valueOf(campoPrezzo.getText());
         String tipo = campoTipoCucina.getText();
         boolean delivery = checkConsegna.isSelected();
         boolean booking = checkPrenotazione.isSelected();
