@@ -140,6 +140,31 @@ public class GestioneFile {
     }
 
     /**
+     * Cerca nel file users.csv la città associata allo username.
+     * @author Matteo Franguelli
+     */
+    public static String recuperaCittaUtente(String usernameTarget) {
+        File file = new File("doc", "users.csv");
+        if (!file.exists()) return null;
+        try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
+            String linea = br.readLine(); // Salta header
+            while ((linea = br.readLine()) != null) {
+                if (linea.isBlank()) continue;
+
+                String[] parti = linea.split(";");
+                if (parti.length > 0 && pulisci(parti[0]).equalsIgnoreCase(usernameTarget)) {
+                    if (parti.length > 4) {
+                        return pulisci(parti[4]);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * Metodo di utilità per pulire le stringhe lette da CSV.
      * Rimuove spazi iniziali/finali, doppi apici e punto e virgola.
      */
