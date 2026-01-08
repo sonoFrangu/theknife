@@ -1,6 +1,15 @@
 package theknife.model;
 
+import theknife.ui.javafx.Session;
+
+import javax.swing.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Celestino Resteghini
@@ -75,11 +84,34 @@ public class Ristorante {
     public double getMediaStelle()
     {
         //todo : calcolare media stelle estreando il file dalle recensioni
-        double mediaStelle=0;
+        int cont=0;
+        double sommaVoti=0;
 
+        File file = new File("doc", "recensioni.csv");
 
+        // Recupera voti delle recensioni
+        try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.isBlank()) { continue; }
 
-        return mediaStelle;
+                String[] p = line.split(line.contains(";") ? ";" : ",");
+                if (p.length >= 5) {
+                    try {
+                        if (id == Integer.valueOf(p[4]))
+                        {
+                            sommaVoti += Double.valueOf(p[0]);
+                            cont++;
+                        }
+                    } catch(Exception e){}
+                }
+            }
+        } catch (IOException e) { e.printStackTrace(); }
+
+        if(sommaVoti>0)
+            return sommaVoti/cont;
+        else
+            return -1;
     }
 
     public double getAward()
