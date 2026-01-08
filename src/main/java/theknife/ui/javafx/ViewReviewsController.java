@@ -213,6 +213,8 @@ public class ViewReviewsController {
         }
         double media = sommaStelle / recensioniData.size();
 
+
+        //todo mettere getMediaStelle
         String mediaFormattata = "0.5";
         if (etichettaMedia != null) {
             etichettaMedia.setText("Media stelle: " + mediaFormattata);
