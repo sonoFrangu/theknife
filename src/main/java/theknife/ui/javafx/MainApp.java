@@ -21,6 +21,14 @@ import javax.imageio.ImageIO;
  */
 public class MainApp extends Application {
 
+    /**
+     * Avvia l'applicazione JavaFX inizializzando la sessione come ospite
+     * e caricando l'interfaccia grafica principale.
+     *
+     * @param finestra finestra principale dell'applicazione
+     * @throws Exception se il caricamento della scena fallisce
+     * @author Matteo Franguelli
+     */
     @Override
     public void start(Stage finestra) throws Exception {
         // Quando parte l'app: utente impostato come "ospite"

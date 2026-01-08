@@ -14,6 +14,8 @@ import java.security.NoSuchAlgorithmException;
  * Controller della finestra di registrazione.
  * Gestisce la creazione di un nuovo utente (cliente e/o ristoratore)
  * e il salvataggio delle credenziali nel file doc/users.csv.
+ *
+ * @author Matteo Franguelli
  */
 public class RegisterController {
 
@@ -32,23 +34,39 @@ public class RegisterController {
 
     private static final String NOME_CARTELLA = "doc";
     private static final String NOME_FILE = "users.csv";
-
+    /**
+     * Imposta il controller principale come riferimento.
+     *
+     * @author Matteo Franguelli
+     */
     public void setParentController(MainController parentController) {
         this.controllerPrincipale = parentController;
     }
-
+    /**
+     * Inizializza i valori di default della schermata.
+     *
+     * @author Matteo Franguelli
+     */
     @FXML
     private void initialize() {
         if (checkCliente != null) {
             checkCliente.setSelected(true);
         }
     }
-
+    /**
+     * Gestisce il ritorno alla schermata precedente.
+     *
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onBack(ActionEvent event) {
         chiudiFinestra();
     }
-
+    /**
+     * Gestisce la creazione di un nuovo utente.
+     *
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onCreate(ActionEvent event) {
         String nome         = campoNome.getText();
@@ -131,6 +149,8 @@ public class RegisterController {
     /**
      * Legge il file users.csv per verificare se lo username è già presente.
      * Restituisce true se lo trova, false altrimenti.
+     *
+     * @author Matteo Franguelli
      */
     private boolean usernameEsiste(String usernameDaCercare) {
         File fileUtenti = new File(NOME_CARTELLA, NOME_FILE);
@@ -158,12 +178,20 @@ public class RegisterController {
         }
         return false;
     }
-
+    /**
+     * Chiude la finestra di registrazione.
+     *
+     * @author Matteo Franguelli
+     */
     private void chiudiFinestra() {
         Stage stage = (Stage) campoUsername.getScene().getWindow();
         stage.close();
     }
-
+    /**
+     * Calcola l'hash SHA-256 di una stringa.
+     *
+     * @author Matteo Franguelli
+     */
     private String calcolaSha256(String input) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -175,7 +203,11 @@ public class RegisterController {
             throw new RuntimeException(e);
         }
     }
-
+    /**
+     * Calcola il prossimo ID disponibile per un nuovo utente.
+     *
+     * @author Matteo Franguelli
+     */
     private int calcolaProssimoId(File fileUtenti) {
         if (!fileUtenti.exists()) {     return 1;   }
 
@@ -200,7 +232,11 @@ public class RegisterController {
         }
         return maxId + 1;
     }
-
+    /**
+     * Restituisce una stringa non nulla per il salvataggio.
+     *
+     * @author Matteo Franguelli
+     */
     private String valoreNonNullo(String s) {
         return s == null ? "" : s.trim();
     }

@@ -10,7 +10,11 @@ import javafx.stage.Stage;
 
 import java.awt.Desktop;
 import java.net.URI;
-
+/**
+ * Controller che gestisce la visualizzazione dei dettagli di un ristorante.
+ *
+ * @author Matteo Franguelli
+ */
 public class RestaurantDetailsController {
 
 
@@ -35,6 +39,24 @@ public class RestaurantDetailsController {
     private double longitudine;
     private String googleMapsUrl;
 
+    /**
+     * Imposta e visualizza tutte le informazioni del ristorante selezionato.
+     * @param name
+     * @param nation
+     * @param city
+     * @param address
+     * @param latitude
+     * @param longitude
+     * @param price
+     * @param phoneNumber
+     * @param delivery
+     * @param booking
+     * @param cuisine
+     * @param website
+     * @param mediaStelle
+     * @author Matteo Franguelli
+     *
+     */
     public void setRestaurantData(String name,
                                   String nation,
                                   String city,
@@ -89,7 +111,11 @@ public class RestaurantDetailsController {
         // Gestione bottone Preferiti in base al ruolo
         aggiornaVisibilitaPreferiti();
     }
-
+    /**
+     * Prepara l'URL per l'apertura del ristorante su Google Maps.
+     *
+     * @author Matteo Franguelli
+     */
     private void preparaGoogleMapsUrl() {
         String urlFinale = " ";
 
@@ -107,12 +133,20 @@ public class RestaurantDetailsController {
             else bottoneApriMaps.setText("Apri in Maps");
         }
     }
-
+    /**
+     * Apre la posizione del ristorante in Google Maps.
+     *
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onApriMaps() {
         if (googleMapsUrl != null) apriNelBrowser(googleMapsUrl);
     }
-
+    /**
+     * Aggiorna la visibilità del bottone Preferiti in base al ruolo utente.
+     *
+     * @author Matteo Franguelli
+     */
     private void aggiornaVisibilitaPreferiti() {
         Session s = Session.getInstance();
         // Visibile se ha permessi da CLIENTE (quindi anche se è Ristoratore+Cliente)
@@ -122,7 +156,11 @@ public class RestaurantDetailsController {
             bottonePreferiti.setManaged(visibile);
         }
     }
-
+    /**
+     * Gestisce l'aggiunta del ristorante ai preferiti.
+     *
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onAggiungiAiPreferiti() {
         Alert a = new Alert(Alert.AlertType.INFORMATION);
@@ -133,7 +171,11 @@ public class RestaurantDetailsController {
 
         //TODO: Salvare nei preferiti, gia' creato preferiti.csv
     }
-
+    /**
+     * Chiude la finestra dei dettagli del ristorante.
+     *
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onChiudi() {
         Stage st = (Stage) etichettaNome.getScene().getWindow();
@@ -141,7 +183,11 @@ public class RestaurantDetailsController {
     }
 
     // --- LOGICA WEBVIEW ---
-
+    /**
+     * Carica il sito web del ristorante nella WebView.
+     *
+     * @author Matteo Franguelli
+     */
     private void apriInWebView(String url) {
         if (vistaSito != null && url != null && !url.isBlank()) {
             // Aggiungi http:// se manca, altrimenti la WebView potrebbe non caricare
@@ -151,7 +197,11 @@ public class RestaurantDetailsController {
             vistaSito.getEngine().load(url);
         }
     }
-
+    /**
+     * Mostra un messaggio informativo se il sito web non è disponibile.
+     *
+     * @author Matteo Franguelli
+     */
     private void mostraMessaggioNessunSito() {
         if (vistaSito != null) {
             String html = """
@@ -165,7 +215,11 @@ public class RestaurantDetailsController {
             vistaSito.getEngine().loadContent(html);
         }
     }
-
+    /**
+     * Apre un URL nel browser di sistema.
+     *
+     * @author Matteo Franguelli
+     */
     private void apriNelBrowser(String url) {
         if (url == null || url.isBlank()) return;
         try {
@@ -176,11 +230,19 @@ public class RestaurantDetailsController {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Restituisce una stringa non nulla per l'output grafico.
+     *
+     * @author Matteo Franguelli
+     */
     private String valoreNonNullo(String s) {
         return s == null ? "" : s;
     }
-
+    /**
+     * Mostra la media delle stelle Michelin in formato grafico.
+     *
+     * @author Matteo Franguelli
+     */
     private void mostraMediaStelle(double media) {
         if (media <= 0) {
             valoreStelle.setText("Nessuna stella Michelin");

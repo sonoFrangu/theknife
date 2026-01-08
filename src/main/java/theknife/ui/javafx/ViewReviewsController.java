@@ -12,6 +12,10 @@ import theknife.model.Ristorante;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Controller della vista che mostra le recensioni di un ristorante selezionato.
+ * @author Matteo Franguelli
+ */
 public class ViewReviewsController {
 
     @FXML private Label etichettaTitolo;
@@ -24,13 +28,19 @@ public class ViewReviewsController {
     private static final String NOME_FILE_RECENSIONI = "recensioni.csv";
     private static final String NOME_FILE_UTENTI = "users.csv";
     private final java.util.Map<Integer, String> utentiAttuali = new java.util.HashMap<>();
-
+    /**
+     * Inizializza la lista delle recensioni e la grafica delle celle.
+     * @author Matteo Franguelli
+     */
     @FXML
     private void initialize() {
         listaRecensioni.setItems(recensioniData);
         impostaGraficaCelle();
     }
-
+    /**
+     * Imposta il ristorante corrente e carica le relative recensioni.
+     * @author Matteo Franguelli
+     */
     public void setRestaurant(Ristorante r) {
         this.ristoranteSelezionato = r;
 
@@ -41,7 +51,10 @@ public class ViewReviewsController {
             caricaRecensioniSpecifiche();
         }
     }
-
+    /**
+     * Carica dal file solo le recensioni associate al ristorante selezionato.
+     * @author Matteo Franguelli
+     */
     private void caricaRecensioniSpecifiche() {
         recensioniData.clear();
 
@@ -87,7 +100,10 @@ public class ViewReviewsController {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Restituisce lo username associato all'id utente.
+     * @author Matteo Franguelli
+     */
     private String ricavaUsername(int idUtente) {
         if (utentiAttuali.containsKey(idUtente)) return utentiAttuali.get(idUtente);
 
@@ -120,12 +136,20 @@ public class ViewReviewsController {
 
         return "Utente ID: " + idUtente;
     }
-
+    /**
+     * Pulisce una stringa rimuovendo spazi e separatori non desiderati.
+     *
+     * @author Matteo Franguelli
+     */
     private String pulisci(String s) {
         if (s == null) return "";
         return s.trim().replace(";", "");
     }
-
+    /**
+     * Imposta la grafica personalizzata delle celle della lista recensioni.
+     *
+     * @author Matteo Franguelli
+     */
     private void impostaGraficaCelle() {
         listaRecensioni.setCellFactory(param -> new ListCell<>() {
             @Override
@@ -164,7 +188,11 @@ public class ViewReviewsController {
             }
         });
     }
-
+    /**
+     * Chiude la finestra corrente.
+     *
+     * @author Matteo Franguelli
+     */
         @FXML
     private void onChiudi() {
         Stage stage = (Stage) etichettaTitolo.getScene().getWindow();
