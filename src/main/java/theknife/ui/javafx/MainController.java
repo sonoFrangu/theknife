@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import theknife.model.GestioneFile;
 import theknife.model.GestioneRistoranti;
 import theknife.model.Ristorante;
 import theknife.model.Luogo;
@@ -407,6 +408,20 @@ public class MainController {
     // chiamato da login e da register
     public void onLoginSuccess() {
         aggiornaInterfaccia();
+        Session session = Session.getInstance();
+        if (session.isAuthenticated()) {
+
+            String cittaUtente = GestioneFile.recuperaCittaUtente(session.getUsername());
+            if (cittaUtente != null && !cittaUtente.isBlank()) {
+                session.setCitta(cittaUtente);
+
+                if (campoLuogo != null) {
+                    campoLuogo.setText(cittaUtente);
+                    onApplyFilters();
+                    System.out.println("Filtro applicato automaticamente per città: " + cittaUtente);
+                }
+            }
+        }
     }
 
     /* =========================
@@ -471,6 +486,9 @@ public class MainController {
         alert.setHeaderText(null);
         alert.setContentText("Logout effettuato.");
         alert.showAndWait();
+
+        onResetFilters();
+
     }
 
     /* =========================

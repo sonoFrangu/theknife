@@ -26,6 +26,7 @@ public class Session {
 
     // Nome utente attualmente loggato (null se ospite)
     private String username;
+    private String citta;
 
     // Ruolo principale dell'utente loggato (per visualizzazione)
     private Role ruolo;
@@ -56,6 +57,10 @@ public class Session {
         return instance;
     }
 
+    public String getCitta() {
+        return citta;
+    }
+
     /**
      * Effettua il login impostando username e ruolo principale.
      * I permessi specifici vengono resettati in base al ruolo,
@@ -75,8 +80,6 @@ public class Session {
             this.permessiCliente = true;
             this.permessiRistoratore = false;
         } else if (this.ruolo == Role.RISTORATORE) {
-            // Di base un ristoratore ha i suoi permessi,
-            // ma se è anche cliente lo si deve impostare con setPermessi
             this.permessiRistoratore = true;
         }
     }
@@ -92,6 +95,10 @@ public class Session {
     public void setPermessi(boolean isCliente, boolean isRistoratore) {
         this.permessiCliente = isCliente;
         this.permessiRistoratore = isRistoratore;
+    }
+
+    public void setCitta(String citta) {
+        this.citta = citta;
     }
 
     /**
@@ -119,6 +126,7 @@ public class Session {
         this.ruolo = Role.GUEST;
         this.permessiCliente = false;
         this.permessiRistoratore = false;
+        this.citta=null;
     }
 
     /**
