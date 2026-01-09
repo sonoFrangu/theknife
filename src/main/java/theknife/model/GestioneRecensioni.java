@@ -76,23 +76,4 @@ public class GestioneRecensioni {
      */
     public LinkedList<Recensione> getRecensioni() { return recensioni; }
 
-    /**
-     * Restituisce la media delle stelle di un ristorante
-     * @author Elia Toschi
-     * @param idRistorante
-     * @return
-     */
-    public double mediaStelle(int idRistorante)
-    {
-        int somma=0;
-        int count=0;
-        for(Recensione r : recensioni)
-            if(r.get_id_Ristorante() == idRistorante) {
-                count++;
-                somma+=r.getNumeroStelle();
-            }
-        return somma/count;
-    }
-
-
 }

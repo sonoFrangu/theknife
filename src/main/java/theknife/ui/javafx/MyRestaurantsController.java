@@ -1,9 +1,21 @@
 package theknife.ui.javafx;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import theknife.model.GestioneRecensioni;
+import theknife.model.GestioneRistoranti;
 import theknife.model.Ristorante;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Si occupa della gestione dei ristoranti di cui l'utente è proprietario.
@@ -16,30 +28,108 @@ public class MyRestaurantsController {
 
     //TODO: Finche' non abbiamo modo di tener traccia dei ristoranti inseriti e da chi non posso farla
     // per ora la tabella la lascio vuota
-    @FXML private TableView<Ristorante> tabellaRistoranti;
+    @FXML private TableColumn<RistoranteRow, String> colonnaNome;
+    @FXML private TableColumn<RistoranteRow, String> colonnaCitta;
+    @FXML private TableColumn<RistoranteRow, String> colonnaIndirizzo;
+    @FXML private TableColumn<RistoranteRow, String> colonnaCucina;
+    @FXML private TableColumn<RistoranteRow, String> colonnaStelle;
+    @FXML private TableColumn<RistoranteRow, String> colonnaRecensioni;
+
+    @FXML private TableView<RistoranteRow> tabellaRistoranti;
+
+    private final ObservableList<RistoranteRow> rist = FXCollections.observableArrayList();
+    GestioneRistoranti gr = GestioneRistoranti.getInstance();
 
     // Etichetta da mostrare quando la tabella è vuota
     @FXML private Label etichettaVuota;
 
     @FXML
     private void initialize() {
+        colonnaNome.setCellValueFactory(
+                new PropertyValueFactory<>("nome")
+        );
+
+        colonnaCitta.setCellValueFactory(
+                new PropertyValueFactory<>("citta")
+        );
+
+        colonnaIndirizzo.setCellValueFactory(
+                new PropertyValueFactory<>("indirizzo")
+        );
+
+        colonnaCucina.setCellValueFactory(
+                new PropertyValueFactory<>("cucina")
+        );
+
+        colonnaStelle.setCellValueFactory(
+                new PropertyValueFactory<>("stelle")
+        );
+
+        colonnaRecensioni.setCellValueFactory(
+                new PropertyValueFactory<>("recensioni")
+        );
+
+        tabellaRistoranti.setItems(rist);
+
+        setRestaurants();
+
         aggiornaMessaggioVuoto();
     }
 
     /**
      * Aggiorna il contenuto della tabella dei ristoranti nella vista.
-     * @param lista
      * @author Celestino Resteghini
      * @author Matteo Franguelli
      * @deprecated
      */
-    public void setRestaurants(java.util.List<Ristorante> lista) {
-        if (lista == null || lista.isEmpty()) {
-            tabellaRistoranti.getItems().clear();
-        } else {
-            tabellaRistoranti.getItems().setAll(lista);
+    public void setRestaurants() {
+        rist.clear();
+
+        Session session = Session.getInstance();
+        if (session.isGuest()) return;
+
+        String mioUsername = session.getUsername();
+        int idRistorante=0;
+
+        File file = new File("doc", "users.csv");
+        if (!file.exists()) return;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
+            String linea = br.readLine();
+
+            while ((linea = br.readLine()) != null) {
+                if (linea.isBlank()) continue;
+                String[] parti = linea.contains(";") ? linea.split(";") : linea.split(",");
+
+                if (parti.length >= 0) {
+                    try {
+                        String userN = parti[0].trim();
+                        //Se coincide lo username, prendo i miei ristoranti
+                        if (userN.equals(mioUsername)) {
+                            if (parti.length > 9 && !parti[9].isEmpty()) {
+                                String[] s = parti[9].split("-");
+                                for (String st : s) {
+                                    idRistorante = Integer.valueOf(st);
+                                    int id = idRistorante;
+                                    Ristorante r = gr.listaRistoranti.stream().filter(x -> x.getId() == id).findFirst().orElse(null);
+                                    if (r != null) {
+                                        String ste;
+                                        if(r.getMediaStelle()==-1)
+                                            ste= "Nessuna recensione";
+                                        else
+                                            ste = String.valueOf(r.getMediaStelle()) + " ⭐";
+                                        rist.add(new RistoranteRow(r.getNome(), r.getLuogo().getCitta(), r.getLuogo().getIndirizzo(), r.getStringaCucina(), ste, String.valueOf(r.getNumRecensioni()), idRistorante));
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    } catch (Exception ignored) {}
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        aggiornaMessaggioVuoto();
     }
 
     /**
@@ -51,8 +141,38 @@ public class MyRestaurantsController {
      * @author Matteo Franguelli
      */
     private void aggiornaMessaggioVuoto() {
-        boolean vuota = tabellaRistoranti.getItems().isEmpty();
-        etichettaVuota.setVisible(vuota);
-        etichettaVuota.setManaged(vuota);
+        boolean nessunElemento = rist.isEmpty();
+
+        etichettaVuota.setVisible(nessunElemento);
+        etichettaVuota.setManaged(nessunElemento);
+        tabellaRistoranti.setVisible(!nessunElemento);
+    }
+
+    public static class RistoranteRow {
+        private final String nome;
+        private final String citta;
+        private final String indirizzo;
+        private final String cucina;
+        private final String stelle;
+        private final String recensioni;
+        private final int rawRestaurantId; // Serve per l'eliminazione
+
+        public RistoranteRow(String nome, String citta, String indirizzo, String cucina, String stelle, String recensioni, int rawRestaurantId) {
+            this.nome = nome;
+            this.citta = citta;
+            this.indirizzo = indirizzo;
+            this.cucina = cucina;
+            this.stelle = stelle;
+            this.recensioni = recensioni;
+            this.rawRestaurantId = rawRestaurantId;
+        }
+
+        public String getNome() { return nome; }
+        public String getCitta() { return citta; }
+        public String getIndirizzo() { return indirizzo; }
+        public String getCucina() { return cucina; }
+        public String getStelle() { return stelle; }
+        public String getRecensioni() { return recensioni; }
+        public int getRawRestaurantId() { return rawRestaurantId; }
     }
 }

@@ -13,10 +13,12 @@
     <center>
         <TableView fx:id="tabellaRistoranti">
             <columns>
-                <TableColumn text="Nome" prefWidth="180"/>
-                <TableColumn text="Città" prefWidth="120"/>
-                <TableColumn text="Indirizzo" prefWidth="180"/>
-                <TableColumn text="Cucina" prefWidth="120"/>
+                <TableColumn fx:id="colonnaNome" text="Nome" prefWidth="180"/>
+                <TableColumn fx:id="colonnaCitta" text="Città" prefWidth="120"/>
+                <TableColumn fx:id="colonnaIndirizzo" text="Indirizzo" prefWidth="180"/>
+                <TableColumn fx:id="colonnaCucina" text="Cucina" prefWidth="120"/>
+                <TableColumn fx:id="colonnaStelle" text="Valutazione media" prefWidth="120"/>
+                <TableColumn fx:id="colonnaRecensioni" text="Numero recensioni" prefWidth="120"/>
             </columns>
         </TableView>
     </center>
