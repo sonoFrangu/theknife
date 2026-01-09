@@ -3,6 +3,7 @@ package theknife.ui.javafx;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -704,6 +705,11 @@ public class MainController {
         }
     }
 
+    public void onReplyReviews() {
+        //todo completare
+    }
+
+
     /**
      * Permette la visualizzazione di recensioni dopo aver selezionato un ristorante.
      * @author Matteo Franguelli
@@ -802,5 +808,4 @@ public class MainController {
             ristoranti.addAll(nuovaLista);
         }
     }
-
 }
