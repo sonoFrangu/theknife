@@ -98,6 +98,12 @@ public class RestaurantDetailsController {
         aggiornaVisibilitaPreferiti();
     }
 
+    /**
+     * Costruisce l'URL per Google Maps utilizzando le coordinate di latitudine e longitudine
+     * del ristorante.
+     *
+     * @author Matteo Franguelli
+     */
     private void preparaGoogleMapsUrl() {
         String urlFinale = " ";
 
@@ -116,11 +122,22 @@ public class RestaurantDetailsController {
         }
     }
 
+    /**
+     * Gestisce l'evento di click sul pulsante "Apri in Maps".
+     * Apre il link generato nel browser predefinito del sistema.
+     *
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onApriMaps() {
         if (googleMapsUrl != null) apriNelBrowser(googleMapsUrl);
     }
 
+    /**
+     * Controlla se l'utente corrente ha i permessi da Cliente per visualizzare il pulsante "Aggiungi ai preferiti".
+     *
+     * @author Matteo Franguelli
+     */
     private void aggiornaVisibilitaPreferiti() {
         Session s = Session.getInstance();
         boolean visibile = s.isCliente();
@@ -130,6 +147,13 @@ public class RestaurantDetailsController {
         }
     }
 
+    /**
+     * Gestisce l'azione di aggiunta del ristorante corrente alla lista dei preferiti.
+     * Recupera l'ID del ristorante e invoca il salvataggio su file CSV.
+     * Mostra un avviso in caso di successo o errore (ristorante non trovato).
+     *
+     * @author Celestino Resteghini
+     */
     @FXML
     private void onAggiungiAiPreferiti() {
         //Prendo id ristorante
@@ -163,17 +187,26 @@ public class RestaurantDetailsController {
         }
     }
 
+    /**
+     * Chiude la finestra corrente dei dettagli del ristorante.
+     *
+     * @author Matteo Franguelli
+     */
     @FXML
     private void onChiudi() {
         Stage st = (Stage) etichettaNome.getScene().getWindow();
         st.close();
     }
 
-    // --- LOGICA WEBVIEW ---
-
+    /**
+     * Carica un URL specifico all'interno del componente WebView.
+     * Aggiunge automaticamente il protocollo http:// se mancante.
+     *
+     * @param url L'indirizzo web da caricare.
+     * @author Matteo Franguelli
+     */
     private void apriInWebView(String url) {
         if (vistaSito != null && url != null && !url.isBlank()) {
-            // Aggiungi http:// se manca, altrimenti la WebView potrebbe non caricare
             if (!url.startsWith("http://") && !url.startsWith("https://")) {
                 url = "http://" + url;
             }
@@ -181,6 +214,11 @@ public class RestaurantDetailsController {
         }
     }
 
+    /**
+     * Visualizza un messaggio HTML se un ristorante non possiede un sito web, in modo da poter mantenere coerente la grafica.
+     *
+     * @author Matteo Franguelli
+     */
     private void mostraMessaggioNessunSito() {
         if (vistaSito != null) {
             String html = """
@@ -195,6 +233,12 @@ public class RestaurantDetailsController {
         }
     }
 
+    /**
+     * Apre un URL esterno utilizzando il browser predefinito del sistema operativo
+     *
+     * @param url
+     * @author Matteo Franguelli
+     */
     private void apriNelBrowser(String url) {
         if (url == null || url.isBlank()) return;
         try {
@@ -206,14 +250,27 @@ public class RestaurantDetailsController {
         }
     }
 
+    /**
+     * Restituisce la stringa in input oppure una stringa vuota se l'input è null.
+     *
+     * @param s
+     * @return La stringa originale o "" se null.
+     * @author Matteo Franguelli
+     */
     private String valoreNonNullo(String s) {
         return s == null ? "" : s;
     }
 
+    /**
+     * Visualizza graficamente il numero di stelle Michelin (da 1 a 3) aggiornando il testo e lo stile dell'etichetta.
+     *
+     * @param media
+     * @author Matteo Franguelli
+     */
     private void mostraMediaStelle(double media) {
         if (media <= 0) {
             valoreStelle.setText("Nessuna stella Michelin");
-            valoreStelle.setStyle("-fx-text-fill: gray; -fx-font-size: 14px;"); // Grigio
+            valoreStelle.setStyle("-fx-text-fill: gray; -fx-font-size: 14px;");
             return;
         }
         long stellePiene = Math.round(media);
@@ -230,11 +287,17 @@ public class RestaurantDetailsController {
         }
 
         valoreStelle.setText(sb.toString());
-
-        // Imposta colore ORO e font più grande
         valoreStelle.setStyle("-fx-text-fill: gold; -fx-font-size: 18px; -fx-font-weight: bold;");
     }
 
+    /**
+     * Aggiunge l'ID del ristorante alla lista dei preferiti dell'utente nel file CSV.
+     * Legge il file, individua la riga dell'utente loggato, aggiorna la colonna dei preferiti evitando duplicati, e riscrive il file aggiornato.
+     *
+     * @param idRistorante
+     * @return true se l'operazione è andata a buon fine, false se il ristorante era già presente o se c'è stato un errore I/O.
+     * @author Celestino Resteghini
+     */
     private boolean aggiungiRistoranteSuCSV(int idRistorante) {
         String usernameU = Session.getInstance().getUsername();
         File fileUtenti = new File(NOME_CARTELLA, NOME_FILE);
