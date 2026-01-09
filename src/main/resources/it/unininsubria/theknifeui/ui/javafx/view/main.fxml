@@ -47,6 +47,11 @@
                         visible="false"
                         managed="false"
                         onAction="#onShowMyReviews"/>
+                <Button fx:id="bottoneRispondiRecensioni"
+                        text="Rispondi alle recensioni"
+                        onAction="#onReplyReviews"
+                        visible="false"
+                        managed="false"/>
                 <Button fx:id="bottoneLogout" text="Logout" onAction="#onLogout" visible="false"/>
             </HBox>
         </VBox>
@@ -85,7 +90,6 @@
             <children>
                 <Label text="Lista dei ristoranti" styleClass="footer-text"/>
                 <Pane HBox.hgrow="ALWAYS"/>
-                <Button fx:id="bottoneRispondiRecensioni" text="Rispondi alle recensioni" onAction="#onReplyReviews" styleClass="footer-button"/>
                 <Button fx:id="bottoneVisualizzaRecensioni" text="Visualizza recensioni" onAction="#onViewReviews" styleClass="footer-button"/>
                 <Button fx:id="bottoneAggiungiRecensione" text="Aggiungi recensione" onAction="#onAddReview" styleClass="footer-button"/>
                 <Button fx:id="bottoneAggiungiRistorante" text="Aggiungi ristorante" onAction="#onAddRestaurant" styleClass="footer-button"/>

@@ -45,7 +45,8 @@ public class MainController {
     @FXML private Label etichettaRuolo;
     @FXML private Button bottonePreferiti;
     @FXML private Button bottoneMieRecensioni;
-    @FXML private Button bottoneMieiRistoranti; // se nel tuo FXML non c’è, puoi toglierlo
+    @FXML private Button bottoneMieiRistoranti;
+    @FXML private Button bottoneRispondiRecensioni;
 
     @FXML private Button bottoneAggiungiRecensione;
     @FXML private Button bottoneAggiungiRistorante;
@@ -395,6 +396,12 @@ public class MainController {
         if (bottoneMieiRistoranti != null) {
             bottoneMieiRistoranti.setVisible(puoAggiungereRisto);
             bottoneMieiRistoranti.setManaged(puoAggiungereRisto);
+        }
+
+        // Il tasto per rispondere alle recensioni si vede solo se sei ristoratore
+        if (bottoneRispondiRecensioni != null) {
+            bottoneRispondiRecensioni.setVisible(puoAggiungereRisto);
+            bottoneRispondiRecensioni.setManaged(puoAggiungereRisto);
         }
 
         // Abilitazione Azioni (Footer)
