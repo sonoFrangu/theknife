@@ -85,7 +85,7 @@ public class Ristorante {
         int cont=0;
         double sommaVoti=0;
 
-        File file = new File("doc", "recensioni.csv");
+        File file = new File("data", "recensioni.csv");
 
         // Recupera voti delle recensioni
         try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
@@ -121,7 +121,7 @@ public class Ristorante {
     {
         int cont=0;
 
-        File file = new File("doc", "recensioni.csv");
+        File file = new File("data", "recensioni.csv");
 
         // Recupera voti delle recensioni
         try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {

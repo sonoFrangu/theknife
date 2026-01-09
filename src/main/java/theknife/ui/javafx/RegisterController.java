@@ -13,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Controller della finestra di registrazione.
  * Gestisce la creazione di un nuovo utente (cliente e/o ristoratore)
- * e il salvataggio delle credenziali nel file doc/users.csv.
+ * e il salvataggio delle credenziali nel file data/users.csv.
  *
  * @author Matteo Franguelli
  */
@@ -32,7 +32,7 @@ public class RegisterController {
 
     private MainController controllerPrincipale;
 
-    private static final String NOME_CARTELLA = "doc";
+    private static final String NOME_CARTELLA = "data";
     private static final String NOME_FILE = "users.csv";
     /**
      * Imposta il controller principale come riferimento.

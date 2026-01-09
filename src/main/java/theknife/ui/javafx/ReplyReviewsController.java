@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ReplyReviewsController {
 
-    private static final String NOME_CARTELLA = "doc";
+    private static final String NOME_CARTELLA = "data";
     private static final String NOME_FILE_RECENSIONI = "recensioni.csv";
 
     @FXML private ListView<Recensione> listaRecensioni;
@@ -37,7 +37,7 @@ public class ReplyReviewsController {
         if (!session.isRistoratore()) return;
 
         String username = session.getUsername();
-        File fileUsers = new File("doc", "users.csv");
+        File fileUsers = new File("data", "users.csv");
 
         try (java.io.BufferedReader br = new java.io.BufferedReader(new java.io.FileReader(fileUsers))) {
             String linea;
@@ -138,7 +138,7 @@ public class ReplyReviewsController {
     }
 
     private void salvaRisposta(Recensione recensione, String testoRisposta) {
-        File fileRisposte = new File("doc", "recensioni.csv");
+        File fileRisposte = new File("data", "recensioni.csv");
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileRisposte, true))) {
             String riga = recensione.get_id_Ristorante() + ";" +

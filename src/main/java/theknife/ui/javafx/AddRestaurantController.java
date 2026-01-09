@@ -38,7 +38,7 @@ public class AddRestaurantController {
     // Riferimento al controller principale della finestra principale
     private MainController controllerPrincipale;
 
-    private static final String NOME_CARTELLA = "doc";
+    private static final String NOME_CARTELLA = "data";
     private static final String NOME_FILE = "michelin_my_maps.csv";
     private static final String NOME_FILE_U = "users.csv";
     GestioneRistoranti gr = GestioneRistoranti.getInstance();

@@ -83,7 +83,7 @@ public class MyRestaurantsController {
         String mioUsername = session.getUsername();
         int idRistorante=0;
 
-        File file = new File("doc", "users.csv");
+        File file = new File("data", "users.csv");
         if (!file.exists()) return;
 
         try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {

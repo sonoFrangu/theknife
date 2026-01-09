@@ -14,7 +14,7 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * Controller della finestra di login.
- * Gestisce l'accesso leggendo i permessi specifici dal CSV doc/users.csv.
+ * Gestisce l'accesso leggendo i permessi specifici dal CSV data/users.csv.
  * @author Matteo Franguelli
  */
 public class LoginController {
@@ -25,7 +25,7 @@ public class LoginController {
 
     private MainController controllerPrincipale;
 
-    private static final String NOME_CARTELLA = "doc";
+    private static final String NOME_CARTELLA = "data";
     private static final String NOME_FILE = "users.csv";
 
     /**

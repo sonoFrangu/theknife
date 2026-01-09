@@ -16,11 +16,11 @@ import java.util.List;
  */
 public class GestioneFile {
 
-    private static String nomeCartella = "doc";
+    private static String nomeCartella = "data";
     private static String nomeFileUtenti = "users.csv";
     private static String nomeFileRecensioni = "recensioni.csv";
 
-    private static final String NOME_CARTELLA_DOC = "doc";
+    private static final String NOME_CARTELLA_DOC = "data";
 
     private static final String percorsoBase = System.getProperty("user.dir") + File.separator + nomeCartella + File.separator;
     private static final String percorsoFileRecensioni = percorsoBase + nomeFileRecensioni;
@@ -30,7 +30,7 @@ public class GestioneFile {
      * @author Matteo Franguelli
      */
     public static String recuperaCittaUtente(String usernameTarget) {
-        File file = new File("doc", "users.csv");
+        File file = new File("data", "users.csv");
         if (!file.exists()) return null;
         try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             String linea = br.readLine(); // Salta header

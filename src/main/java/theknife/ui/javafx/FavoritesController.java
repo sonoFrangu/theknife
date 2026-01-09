@@ -66,7 +66,7 @@ public class FavoritesController {
         String mioUsername = session.getUsername();
         int idRistorante=0;
 
-        File file = new File("doc", "users.csv");
+        File file = new File("data", "users.csv");
         if (!file.exists()) return;
 
         try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
@@ -107,7 +107,7 @@ public class FavoritesController {
      * @param idDaRimuovere
      */
     private void rimuoviPreferitoDalFile(int idDaRimuovere) {
-        File file = new File("doc", "users.csv");
+        File file = new File("data", "users.csv");
         if (!file.exists()) return;
 
         List<String> righeDaSalvare = new LinkedList<>();

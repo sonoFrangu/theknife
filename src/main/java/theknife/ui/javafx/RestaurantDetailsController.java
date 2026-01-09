@@ -38,7 +38,7 @@ public class RestaurantDetailsController {
     @FXML private Button bottoneApriMaps;
     @FXML private Button bottonePreferiti;
 
-    private static final String NOME_CARTELLA = "doc";
+    private static final String NOME_CARTELLA = "data";
     private static final String NOME_FILE = "users.csv";
 
     private double latitudine;

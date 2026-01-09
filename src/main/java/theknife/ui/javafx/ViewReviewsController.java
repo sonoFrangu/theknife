@@ -28,7 +28,7 @@ public class ViewReviewsController {
     private Ristorante ristoranteSelezionato;
     private final ObservableList<Recensione> recensioniData = FXCollections.observableArrayList();
 
-    private static final String NOME_CARTELLA = "doc";
+    private static final String NOME_CARTELLA = "data";
     private static final String NOME_FILE_RECENSIONI = "recensioni.csv";
     private static final String NOME_FILE_UTENTI = "users.csv";
     private final java.util.Map<Integer, String> utentiAttuali = new java.util.HashMap<>();

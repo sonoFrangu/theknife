@@ -54,7 +54,7 @@ public class MainController {
 
     // Lista dei ristoranti usata dal codice (dati) collegata alla ListView
     private final ObservableList<Ristorante> ristoranti = FXCollections.observableArrayList();
-    private static final String NOME_CARTELLA = "doc";
+    private static final String NOME_CARTELLA = "data";
     private static final String NOME_FILE_DATI = "michelin_my_maps.csv";
     GestioneRistoranti gr = GestioneRistoranti.getInstance();
 

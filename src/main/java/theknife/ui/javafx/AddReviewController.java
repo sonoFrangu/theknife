@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class AddReviewController {
 
-    private static final String NOME_CARTELLA = "doc";
+    private static final String NOME_CARTELLA = "data";
     private static final String NOME_FILE_RECENSIONI = "recensioni.csv";
     private static final String NOME_FILE_USER = "users.csv";
 
