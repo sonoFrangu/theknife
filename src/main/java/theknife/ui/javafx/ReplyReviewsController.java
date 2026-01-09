@@ -255,10 +255,9 @@ public class ReplyReviewsController {
 
                 String stringaRisposta = "";
 
-                if (r.getRisposta().getTextString() != null) {
+                if (r.getRisposta() != null && r.getRisposta().getTextString() != null) {
                     stringaRisposta = r.getRisposta().getTextString();
                 }
-
                 bw.write(r.getNumeroStelle() + ";" +
                         r.getText() + ";" +
                         ldt.toString() + ";" +
