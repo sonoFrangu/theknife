@@ -85,7 +85,6 @@ public class ViewReviewsController {
                         int idRistCsv = Integer.parseInt(sIdRistorante);
                         int idRistAttuale = ristoranteSelezionato.getId();
 
-                        // Carica solo se gli ID coincidono
                         if (idRistCsv == idRistAttuale) {
                             int stelle = Integer.parseInt(sStelle);
                             int idUtente = Integer.parseInt(sIdUtente);
@@ -104,42 +103,6 @@ public class ViewReviewsController {
         }
     }
 
-    /**
-     * Restituisce lo username associato all'id utente.
-     * @author Matteo Franguelli
-     */
-    private String ricavaUsername(int idUtente) {
-        if (utentiAttuali.containsKey(idUtente)) return utentiAttuali.get(idUtente);
-
-        File file = new File(NOME_CARTELLA, NOME_FILE_UTENTI);
-        if (!file.exists()) return "Utente " + idUtente;
-
-        try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
-            String linea = br.readLine(); // Salta l'header
-
-            while ((linea = br.readLine()) != null) {
-                if (linea.isBlank()) continue;
-
-                // Il file usa il punto e virgola
-                String[] parti = linea.split(";");
-
-                // IdUtente è all'indice 7, Username all'indice 0
-                if (parti.length > 7) {
-                    try {
-                        int currentId = Integer.parseInt(pulisci(parti[7]));
-
-                        if (currentId == idUtente) {
-                            String username = pulisci(parti[0]);
-                            utentiAttuali.put(idUtente, username);
-                            return username;
-                        }
-                    } catch (Exception ignored) {}
-                }
-            }
-        } catch (IOException e) { e.printStackTrace(); }
-
-        return "Utente ID: " + idUtente;
-    }
     /**
      * Pulisce una stringa rimuovendo spazi e separatori non desiderati.
      *
