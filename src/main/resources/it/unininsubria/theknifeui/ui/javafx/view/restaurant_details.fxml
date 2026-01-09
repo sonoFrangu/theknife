@@ -11,7 +11,8 @@
       fx:controller="theknife.ui.javafx.RestaurantDetailsController"
       stylesheets="@style.css"
       styleClass="details-root"
-      spacing="12">
+      spacing="12"
+      prefHeight="700">
     <padding>
         <Insets top="16" right="16" bottom="16" left="16"/>
     </padding>

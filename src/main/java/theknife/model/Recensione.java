@@ -13,6 +13,8 @@ public class Recensione {
     private int id;
     private static int contatore=0;
 
+    private Risposta risposta;
+
     /**
      * @author Elia Toschi
      * @param numeroStelle
@@ -38,7 +40,18 @@ public class Recensione {
     public Date getData() {return data;}
     public int getIdUtente() {return id_utente_reg;}
     public int get_id_Ristorante() {return id_ristorante;}
-    //</editor-fold>
+    public Risposta getRisposta() {return risposta;}
+        //</editor-fold>
+
+    public void setData(Date date)
+    {
+        this.data= date;
+    }
+
+    public void setRisposta(Risposta risposta) {
+        this.risposta = risposta;
+    }
+
     /**
      * @author Elia Toschi
      */
