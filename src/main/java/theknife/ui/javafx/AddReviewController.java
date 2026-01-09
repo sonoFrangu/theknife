@@ -25,7 +25,6 @@ public class AddReviewController {
 
     private static final String NOME_CARTELLA = "doc";
     private static final String NOME_FILE_RECENSIONI = "recensioni.csv";
-    private static final String NOME_FILE_USER = "users.csv";
 
     private boolean modalitaModifica = false;
     private MyReviewsController.ReviewRow recensioneOriginale;
@@ -33,13 +32,10 @@ public class AddReviewController {
     @FXML private Label etichettaTitolo;
     @FXML private TextArea areaRecensione;
     @FXML private Label etichettaErrore;
-
-    // Riferimenti ai 5 bottoni stella
     @FXML private Button star1, star2, star3, star4, star5;
 
     private Ristorante ristoranteDestinazione;
 
-    // Variabile per tenere traccia del voto (default 5 stelle)
     private int votoSelezionato = 5;
 
     /**
@@ -68,23 +64,18 @@ public class AddReviewController {
      */
     @FXML
     private void initialize() {
-        // Appena si apre la finestra, coloriamo le stelle in base al default (5)
         aggiornaGraficaStelle();
     }
 
-    /* =========================
-       GESTIONE STELLE
-       ========================= */
 
     /**
-     * Gestisce l'azione click delle stelle
+     * Gestisce graficamente la selezione di una stella
      * @author Matteo Franguelli
      * @param event
      */
     @FXML
     private void onStarClicked(ActionEvent event) {
         Button btn = (Button) event.getSource();
-        // Leggiamo "1", "2"... dallo userData definito nell'FXML
         String val = (String) btn.getUserData();
         votoSelezionato = Integer.parseInt(val);
 
@@ -92,15 +83,12 @@ public class AddReviewController {
     }
 
     /**
-     * Modifica il numero di stelle selezionate nella grafica
+     * Modifica il numero di stelle selezionate nella grafica.
      * @author Matteo Franguelli
      */
     private void aggiornaGraficaStelle() {
         Button[] stars = {star1, star2, star3, star4, star5};
-
         for (int i = 0; i < stars.length; i++) {
-            // Se l'indice è inferiore al voto selezionato, la stella è Oro
-            // Es. voto 3: indici 0, 1, 2 sono Oro.
             if (i < votoSelezionato) {
                 stars[i].setStyle("-fx-background-color: transparent; -fx-font-size: 30px; -fx-cursor: hand; -fx-padding: 0; -fx-text-fill: gold;"); // Oro
             } else {
@@ -108,12 +96,9 @@ public class AddReviewController {
             }
         }
     }
-    /* =========================
-       AZIONI SALVA / ANNULLA
-       ========================= */
 
     /**
-     * gestisce l'operazione di annullamento
+     * Gestisce l'operazione di annullamento
      * @author Matteo Franguelli
      */
     @FXML
@@ -131,9 +116,8 @@ public class AddReviewController {
     }
 
     /**
-     * Aggiunge e sceive la recensione su file
+     * Una volta premuto il button, viene creata la recensione nel file
      * @author Elia Toschi
-     * @author Matteo Franguelli
      */
     @FXML
     private void onCreate() {
@@ -182,7 +166,7 @@ public class AddReviewController {
     }
 
     /**
-     * Metodo usato per modificare una recensione.
+     * Metodo usato per la modifica una recensione, riempie i campi con i dati precendenti riutilizzando la stessa view
      * @author Celestino Resteghini
      * @author Matteo Franguelli
      */
@@ -200,10 +184,9 @@ public class AddReviewController {
     }
 
     /**
-     * Modifica una recensione
+     * Rimuove la recensione precendente aggiungedo quella nuova
      * @author Matteo Franguelli
      */
-    //Todo va aggiunta anche la riscrittura della risposta
     private void rimuoviVecchiaEAgungiNuova() {
         File file = new File(NOME_CARTELLA, NOME_FILE_RECENSIONI);
         List<String> righe = new LinkedList<>();
@@ -218,7 +201,7 @@ public class AddReviewController {
             while ((line = br.readLine()) != null) {
                 if (line.isBlank()) { righe.add(line); continue; }
 
-                // Se la riga corrisponde a quella vecchia, NON aggiungerla (la stiamo cancellando)
+                // Se la riga corrisponde a quella vecchia non viene aggiunta
                 String[] p = line.split(line.contains(";") ? ";" : ",");
                 if (p.length >= 5) {
                     try {
@@ -235,15 +218,14 @@ public class AddReviewController {
                         }
                     } catch(Exception e){}
                 }
-                righe.add(line); // Tieni tutte le altre
+                righe.add(line);
             }
         } catch (IOException e) { e.printStackTrace(); }
 
-        // Aggiungi la NUOVA versione in fondo alla lista
         String nuovaRiga = votoSelezionato + ";" + areaRecensione.getText().replace(";", "").replace("\n", " ") + ";" + LocalDateTime.now() + ";" + mioId + ";" + recensioneOriginale.getRawRestaurantId() + ";" + risposta;
         righe.add(nuovaRiga);
 
-        // Riscrivi il file
+        // Riscrive il file
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8, false))) {
             for (String r : righe) {
                 bw.write(r);
@@ -253,6 +235,11 @@ public class AddReviewController {
 
         chiudiFinestra();
     }
+
+    /**
+     * Permette a un ristoratore di rispondere alle recensioni lasciate ai suoi ristoranti
+     * @author Matteo Franguelli
+     */
  //todo verifica e avvia
     public void rispondiRecensione()
     {

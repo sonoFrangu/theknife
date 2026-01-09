@@ -3,7 +3,6 @@ package theknife.ui.javafx;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -20,7 +19,6 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * * Controller principale dell'applicazione.
@@ -54,7 +52,6 @@ public class MainController {
     @FXML private TextField campoLuogo;
     @FXML private TextField campoCucina;
 
-
     // Lista dei ristoranti usata dal codice (dati) collegata alla ListView
     private final ObservableList<Ristorante> ristoranti = FXCollections.observableArrayList();
     private static final String NOME_CARTELLA = "doc";
@@ -72,24 +69,16 @@ public class MainController {
     private void initialize() {
         Label placeholder = new Label("Nessun risultato trovato");
         listaRistoranti.setPlaceholder(placeholder);
-        // Carica i ristoranti dal file CSV
+
         caricaRistorantiDaCsv();
-
-        // Imposta come la lista deve mostrare ogni ristorante (card grafica)
         inizializzaListaRistoranti();
-
-        // Imposta i pulsanti in base al ruolo (parte come "ospite")
         aggiornaInterfaccia();
 
     }
 
-    /* =========================
-       CARICAMENTO CSV
-       ========================= */
-
     /**
-     * Legge il file CSV dalle risorse del progetto e aggiunge
-     * ogni riga come ristorante nella lista.
+     * Crea un thread dove crea una lista temporanea dove vengono inseriti tutti i ristoranti,
+     * una volta finito vengono caricati nella grafica
      * @author Matteo Franguelli
      * @author Celestino Resteghini
      */
@@ -131,7 +120,7 @@ public class MainController {
                 e.printStackTrace();
             }
 
-            // Finito il caricamento, aggiorniamo la lista Observable
+            // Finito il caricamento viene aggiorata la lista Observable
             Platform.runLater(() -> {
                 ristoranti.addAll(bufferTemporaneo);
                 gr.listaRistoranti.addAll(bufferTemporaneo);
@@ -222,10 +211,6 @@ public class MainController {
         destinazione.add(r);
     }
 
-    /* =========================
-       LIST VIEW / CARD
-       ========================= */
-
     /**
      * Imposta come i ristoranti devono essere mostrati dentro la ListView:
      * ogni riga ha nome, indirizzo, sito e tipo di cucina.
@@ -233,7 +218,6 @@ public class MainController {
      */
     private void inizializzaListaRistoranti() {
         listaRistoranti.setItems(ristoranti);
-        // Aggiunge una classe CSS per lo stile della lista
         listaRistoranti.getStyleClass().add("restaurant-list");
 
         listaRistoranti.setCellFactory(lv -> new ListCell<>() {
@@ -265,16 +249,13 @@ public class MainController {
                     return;
                 }
 
-                // Nome del ristorante
                 nomeEtichetta.setText(valoreNonNullo(r.getNome()));
-
-                // Indirizzo completo (indirizzo + città)
                 indirizzoEtichetta.setText(
                         (valoreNonNullo(r.getLuogo().getIndirizzo()) + ", " + valoreNonNullo(r.getLuogo().getCitta()))
                                 .replaceAll(", $", "")
                 );
 
-                // Sito web (se presente lo mostriamo, altrimenti nascondiamo il link)
+                // Sito web (se presente viene mostrato, altrimenti viene nascosto il link)
                 String sitoWeb = r.getWebsite();
                 if (sitoWeb != null && !sitoWeb.isBlank() && !sitoWeb.equals("null")) {
                     sitoEtichetta.setText(sitoWeb);
@@ -316,7 +297,6 @@ public class MainController {
                     "/it/unininsubria/theknifeui/ui/javafx/view/restaurant_details.fxml"));
             Scene scene = new Scene(loader.load());
 
-            // Carica lo stylesheet se esiste
             var cssUrl = getClass().getResource("/style.css");
             if (cssUrl != null) {
                 scene.getStylesheets().add(cssUrl.toExternalForm());
@@ -349,9 +329,6 @@ public class MainController {
         }
     }
 
-    /* =========================
-       UI / RUOLI
-       ========================= */
 
     /**
      * Aggiorna la visibilità dei pulsanti in base al ruolo dell’utente:
@@ -365,8 +342,8 @@ public class MainController {
 
         // Recuperiamo i permessi esatti
         boolean isGuest = s.isGuest();
-        boolean puoRecensire = s.isCliente();       // Vero se nel CSV è Cliente
-        boolean puoAggiungereRisto = s.isRistoratore();  // Vero se nel CSV è ristoratore
+        boolean puoRecensire = s.isCliente();
+        boolean puoAggiungereRisto = s.isRistoratore();
         boolean isLogged = !isGuest;
 
         // Login / Logout / Registrati
@@ -382,7 +359,7 @@ public class MainController {
             else etichettaRuolo.setText("Cliente: " + valoreNonNullo(s.getUsername()));
         }
 
-        // Pulsanti Personali (Preferiti / Mie Recensioni): visibili se PUOI recensire
+        // Pulsanti Personali
         if (bottonePreferiti != null) {
             bottonePreferiti.setVisible(puoRecensire);
             bottonePreferiti.setManaged(puoRecensire);
@@ -392,28 +369,29 @@ public class MainController {
             bottoneMieRecensioni.setManaged(puoRecensire);
         }
 
-        // Pulsante "Miei Ristoranti": visibile se PUOI aggiungere ristoranti
         if (bottoneMieiRistoranti != null) {
             bottoneMieiRistoranti.setVisible(puoAggiungereRisto);
             bottoneMieiRistoranti.setManaged(puoAggiungereRisto);
         }
 
-        // Il tasto per rispondere alle recensioni si vede solo se sei ristoratore
         if (bottoneRispondiRecensioni != null) {
             bottoneRispondiRecensioni.setVisible(puoAggiungereRisto);
             bottoneRispondiRecensioni.setManaged(puoAggiungereRisto);
         }
 
-        // Abilitazione Azioni (Footer)
         if (bottoneAggiungiRecensione != null) {
-            bottoneAggiungiRecensione.setDisable(!puoRecensire); // Disabilita se non sei cliente
+            bottoneAggiungiRecensione.setDisable(!puoRecensire);
         }
         if (bottoneAggiungiRistorante != null) {
-            bottoneAggiungiRistorante.setDisable(!puoAggiungereRisto); // Disabilita se non sei ristoratore
+            bottoneAggiungiRistorante.setDisable(!puoAggiungereRisto);
         }
     }
 
-    // chiamato da login e da register
+    /**
+     * Metodo chiamato sia da login che da register, permette l'aggiornamento dell'interfaccia
+     * basandosi sulla Session
+     * @author Matteo Franguelli
+     */
     public void onLoginSuccess() {
         aggiornaInterfaccia();
         Session session = Session.getInstance();
@@ -432,12 +410,9 @@ public class MainController {
         }
     }
 
-    /* =========================
-       HANDLER TOP BAR
-       ========================= */
-
     /**
      * Si occupa di mostrare la finestra per effettuare il login.
+     * @author Matteo Franguelli
      */
     @FXML
     private void onShowLogin() {
@@ -499,18 +474,14 @@ public class MainController {
 
     }
 
-    /* =========================
-       HANDLER AZIONI
-       ========================= */
     /**
-     * Si occupa di aprire, se permesso, la finestra per aggiungere una recensione.
+     * Si occupa di aprire, se permesso, la finestra per aggiungere un ristorante.
      * @author Matteo Franguelli
      */
     @FXML
     private void onAddRestaurant() {
         Session s = Session.getInstance();
 
-        // Verifica se l'utente ha il permesso di aggiungere ristoranti
         if (!s.isRistoratore()) {
             Alert a = new Alert(Alert.AlertType.WARNING);
             a.setTitle("Permesso negato");
@@ -545,7 +516,6 @@ public class MainController {
     private void onAddReview() {
         Session s = Session.getInstance();
 
-        // Verifica se l'utente ha il permesso di recensire
         if (!s.isCliente()) {
             Alert a = new Alert(Alert.AlertType.WARNING);
             a.setTitle("Permesso negato");
@@ -588,10 +558,6 @@ public class MainController {
         } catch (IOException e) { e.printStackTrace(); }
     }
 
-    /* =========================
-       ALTRE VIEW
-       ========================= */
-
     /**
      * Quando viene premuto il pulsante filtro si occupa dell'applicazione dei parametri
      * di ricerca.
@@ -618,11 +584,11 @@ public class MainController {
     }
 
     /**
-     * Quando viene premuto il pulsante Reset vengono resettati i filtri di ricerca.
+     * Metodo che permette di inizializzare i metodi di ricerca
      * @author Matteo Franguelli
      */
     @FXML
-    private void onResetFilters() {
+    public void onResetFilters() {
         if (campoLuogo != null) campoLuogo.clear();
         if (campoCucina != null) campoCucina.clear();
 
@@ -692,6 +658,7 @@ public class MainController {
             e.printStackTrace();
         }
     }
+
     /**
      * Quando viene premuto apre la finestra che mostra le proprie recensioni.
      * @author Matteo Franguelli
@@ -712,6 +679,11 @@ public class MainController {
         }
     }
 
+    /**
+     * Quando viene premuto apre la finestra che permette ai ristoratori di rispondere alle recensioni
+     * fatte al proprio ristorante
+     * @author Matteo Franguelli
+     */
     @FXML
     public void onReplyReviews() {
         try {
@@ -732,6 +704,7 @@ public class MainController {
     /**
      * Permette la visualizzazione di recensioni dopo aver selezionato un ristorante.
      * @author Matteo Franguelli
+     * @author Celestino Resteghini
      */
     @FXML
     private void onViewReviews() {
@@ -762,11 +735,6 @@ public class MainController {
         } catch (IOException e) { e.printStackTrace(); }
     }
 
-
-
-    /* =========================
-       UTILS
-       ========================= */
 
     /**
      * Metodo generico per mostrare errori.

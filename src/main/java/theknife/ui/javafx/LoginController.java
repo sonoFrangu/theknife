@@ -81,7 +81,7 @@ public class LoginController {
     }
 
     /**
-     * Cerca l'utente nel CSV e imposta la sessione con i permessi corretti.
+     * Cerca l'utente nel CSV e, se presente, imposta la sessione con i permessi corretti.
      * @author Matteo Franguelli
      */
     private boolean eseguiLogin(String nomeUtente, String password) {
@@ -100,28 +100,19 @@ public class LoginController {
                 if (parti.length >= 2) {
                     if (parti[0].equals(nomeUtente) && parti[1].equals(hashPassword)) {
 
-                        boolean isCliente = true;     // default
-                        boolean isRistoratore = false; // default
+                        boolean isCliente = true;
+                        boolean isRistoratore = false;
 
-                        // Parsing colonne 5 e 6 (nuovo formato)
                         if (parti.length >= 7) {
                             isCliente = Boolean.parseBoolean(parti[5]);
                             isRistoratore = Boolean.parseBoolean(parti[6]);
                         }
-                        // Compatibilità vecchio formato (6 colonne)
                         else if (parti.length >= 6) {
                             isRistoratore = Boolean.parseBoolean(parti[5]);
                         }
-
-                        // Determiniamo il "Ruolo Principale" per l'etichetta grafica
                         Session.Role ruoloMain = isRistoratore ? Session.Role.RISTORATORE : Session.Role.CLIENTE;
-
-                        // 1. Impostiamo ruolo base e username
                         Session.getInstance().login(nomeUtente, ruoloMain);
-
-                        // 2. Impostiamo i permessi specifici (FONDAMENTALE)
                         Session.getInstance().setPermessi(isCliente, isRistoratore);
-
                         return true;
                     }
                 }

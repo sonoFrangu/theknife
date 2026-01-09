@@ -34,8 +34,8 @@ public class FavoritesController {
     GestioneRistoranti gr = GestioneRistoranti.getInstance();
 
     /**
-     * Inizializza la lista vuota.
-     * @author Matteo Franguelli
+     * Inizializza la grafica della lista
+     * @author Celestino Resteghini
      */
     @FXML
     private void initialize() {
@@ -48,18 +48,14 @@ public class FavoritesController {
         );
 
         tabellaPreferiti.setItems(preferiti);
-
         menuTastoDestro();
-
         addFavorite();
-
         aggiornaMessaggioVuoto();
     }
 
     /**
      * Si occupa di aggiungere il ristorante passato ai preferiti.
      * @author Celestino Resteghini
-     * @author Matteo Franguelli
      */
     public void addFavorite() {
         preferiti.clear();
@@ -108,7 +104,7 @@ public class FavoritesController {
     /**
      * Rimuove un ID dalla lista dei preferiti nel file users.csv e riscrive il file.
      * @author Matteo Franguelli
-     * @param idDaRimuovere L'ID del ristorante da cancellare.
+     * @param idDaRimuovere
      */
     private void rimuoviPreferitoDalFile(int idDaRimuovere) {
         File file = new File("doc", "users.csv");
@@ -156,7 +152,6 @@ public class FavoritesController {
             return;
         }
 
-        // Sovrascrivo il file con le righe aggiornate
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             for (String riga : righeDaSalvare) {
                 bw.write(riga);
@@ -198,6 +193,7 @@ public class FavoritesController {
 
     /**
      * Crea il menu contestuale (tasto destro) con la sola opzione Elimina.
+     * @author Matteo Franguelli
      */
     private void menuTastoDestro() {
         tabellaPreferiti.setRowFactory(tv -> {
@@ -225,7 +221,8 @@ public class FavoritesController {
     }
 
     /**
-     * Chiede conferma e rimuove la riga dalla tabella.
+     * Chiede, tramite un popup di conferma, se la rimozione e' volontaria
+     * @author Matteo Franguelli
      */
     private void chiediConfermaERimuovi(RestaurantRow riga) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

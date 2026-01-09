@@ -54,11 +54,12 @@ public class AddRestaurantController {
 
     /**
      * Metodo chiamato quando l’utente preme il pulsante "Salva".
-     * Qui facciamo un controllo minimo sui dati e poi chiudiamo la finestra.
+     * Qui facciamo un controllo sui dati e poi chiudiamo la finestra.
      * @author Celestino Resteghini
      */
     @FXML
     private void onSalva() {
+        MainController controller = new MainController();
         String nome = campoNome.getText();
         String nazione = campoNazione.getText();
         String citta = campoCitta.getText();
@@ -125,7 +126,6 @@ public class AddRestaurantController {
             return;
         }
 
-        //todo: aggiornare lista ristoranti GRAFICA
         LinkedList<String> tipoCucina= new LinkedList<>();
         String[] s = tipo.split(",");
         for (String e : s) {
@@ -144,8 +144,7 @@ public class AddRestaurantController {
         a.setContentText("Ristorante salvato correttamente.");
         a.showAndWait();
 
-
-
+        controller.onResetFilters();
         chiudiFinestra();
     }
 
@@ -168,6 +167,11 @@ public class AddRestaurantController {
         finestra.close();
     }
 
+    /**
+     * Aggiunge il ristorante sia nel file che graficamente
+     * @author Celestino Resteghini
+     * @param id
+     */
     public void aggiungiMioRistorante(int id)
     {
         String usernameU = Session.getInstance().getUsername();

@@ -31,10 +31,8 @@ public class MainApp extends Application {
      */
     @Override
     public void start(Stage finestra) throws Exception {
-        // Quando parte l'app: utente impostato come "ospite"
+        // Utente impostato come "ospite" di default
         Session.getInstance().login(null, Session.Role.GUEST);
-
-        // Carichiamo il file FXML principale (interfaccia grafica)
         URL urlFxml = MainApp.class.getResource(
                 "/it/unininsubria/theknifeui/ui/javafx/view/main.fxml");
         if (urlFxml == null) {
@@ -50,10 +48,9 @@ public class MainApp extends Application {
         URL urlIcona = MainApp.class.getResource(
                 "/it/unininsubria/theknifeui/ui/javafx/img/logo_theknife.png");
         if (urlIcona != null) {
-            // Icona per la finestra JavaFX (funziona ovunque)
+            // Icona per la finestra JavaFX
             Image iconaFx = new Image(urlIcona.toExternalForm());
             finestra.getIcons().add(iconaFx);
-
             // Icona per la taskbar/dock (se supportata dal sistema)
             try {
                 if (Taskbar.isTaskbarSupported()) {
@@ -64,7 +61,6 @@ public class MainApp extends Application {
                     }
                 }
             } catch (Exception ignored) {
-                // Se qualcosa va storto qui, non blocchiamo l'app
             }
         }
 

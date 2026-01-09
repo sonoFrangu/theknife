@@ -33,7 +33,6 @@ public class AdvancedFilterController {
         this.controllerPrincipale = parent;
     }
 
-    /* --- GESTIONE STELLE --- */
 
     /**
      * Si occupa di aggiornare le stelle in base a quante sono cliccate.
@@ -67,10 +66,8 @@ public class AdvancedFilterController {
         Button[] stars = {star1, star2, star3, star4, star5};
         for (int i = 0; i < stars.length; i++) {
             if (i < stelleSelezionate) {
-                // Stella accesa (Oro)
                 stars[i].setStyle("-fx-background-color: transparent; -fx-font-size: 24px; -fx-text-fill: gold; -fx-cursor: hand; -fx-padding: 0;");
             } else {
-                // Stella spenta (Grigio chiaro)
                 stars[i].setStyle("-fx-background-color: transparent; -fx-font-size: 24px; -fx-text-fill: lightgray; -fx-cursor: hand; -fx-padding: 0;");
             }
         }
@@ -93,7 +90,7 @@ public class AdvancedFilterController {
 
         if (luogo == null || luogo.isBlank()) {
             mostraErrore("Campo obbligatorio", "Devi inserire una città per effettuare la ricerca.");
-            campoLuogo.requestFocus(); // Rimette il cursore nel campo vuoto
+            campoLuogo.requestFocus();
             return;
         }
 
@@ -102,7 +99,6 @@ public class AdvancedFilterController {
 
         try {
             if (pMinStr != null && !pMinStr.isBlank()) {
-                // Sostituisce la virgola con il punto per evitare errori e converte
                 prezzoMin = Double.parseDouble(pMinStr.replace(",", "."));
             }
         } catch (NumberFormatException e) {
@@ -119,21 +115,10 @@ public class AdvancedFilterController {
             return;
         }
 
-        // Controllo logico per prezzo
         if (prezzoMin != null && prezzoMax != null && prezzoMin > prezzoMax) {
             mostraErrore("Intervallo non valido", "Il prezzo minimo non può essere maggiore del massimo.");
             return;
         }
-
-
-        System.out.println("=== [DEBUG ADVANCED FILTER] ===");
-        System.out.println("Luogo: " + (luogo != null ? luogo : ""));
-        System.out.println("Cucina: " + (cucina != null ? cucina : ""));
-        System.out.println("Prezzo Min: " + prezzoMin);
-        System.out.println("Prezzo Max: " + prezzoMax);
-        System.out.println("Stelle: " + stelleSelezionate);
-        System.out.println("Delivery: " + delivery);
-        System.out.println("Booking: " + booking);
 
         if (controllerPrincipale != null) {
             GestioneRistoranti gr = GestioneRistoranti.getInstance();
