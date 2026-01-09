@@ -4,23 +4,26 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import theknife.model.GestioneFile;
-import theknife.model.GestioneRistoranti;
-import theknife.model.Recensione;
-import theknife.model.Ristorante;
+import theknife.model.*;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ReplyReviewsController {
 
+    private static final String NOME_CARTELLA = "doc";
+    private static final String NOME_FILE_RECENSIONI = "recensioni.csv";
+
     @FXML private ListView<Recensione> listaRecensioni;
 
     private List<Integer> mieiRistorantiIds = new ArrayList<>();
+
 
     @FXML
     private void initialize() {
@@ -111,6 +114,8 @@ public class ReplyReviewsController {
                             return;
                         }
 
+                        rispondiRecensione(lblRistorante,lblTesto,areaRisposta,r);
+
                         // stampa per toschi
                         System.out.println("--------------------------------------------------");
                         System.out.println("RECENSIONE A CUI SI RISPONDE: " + r.getText());
@@ -160,4 +165,98 @@ public class ReplyReviewsController {
         Stage stage = (Stage) listaRecensioni.getScene().getWindow();
         stage.close();
     }
+
+    public void rispondiRecensione(Label rist, Label text, TextArea reply, Recensione rec) {
+        GestioneRistoranti gr = GestioneRistoranti.getInstance();
+        File fileRecensioni = new File(NOME_CARTELLA, NOME_FILE_RECENSIONI);
+        if (!fileRecensioni.exists()) {
+            System.err.println("File utenti non trovato ");
+            return;
+        }
+
+        int targetStelle = rec.getNumeroStelle();
+        String targetTesto = rec.getText();
+        int targetIdUtente = rec.getIdUtente();
+        int targetIdRist = rec.get_id_Ristorante();
+        Date targetData = rec.getData();
+        String nuovaRisposta = reply.getText().replace(";", ",").replace("\n", " ");
+
+        LinkedList<Recensione> lista = new LinkedList<>();
+        String header = "";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(fileRecensioni, StandardCharsets.UTF_8))) {
+            header = br.readLine();
+            String linea;
+
+            while ((linea = br.readLine()) != null) {
+                if (linea.isBlank()) continue;
+
+                String[] parti = linea.split(";");
+
+                if (parti.length > 4) {
+                    int currentStelle = Integer.parseInt(parti[0].trim());
+                    String currentTesto = parti[1].trim();
+                    LocalDateTime ldt = LocalDateTime.parse(parti[2].trim());
+                    Date currentData = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
+                    int currentIdUtente = Integer.parseInt(parti[3].trim());
+                    int currentIdRistorante = Integer.parseInt(parti[4].trim());
+
+                    if (currentStelle == targetStelle &&
+                            currentTesto.equals(targetTesto) &&
+                            currentIdUtente == targetIdUtente &&
+                            currentIdRistorante == targetIdRist) {
+
+                        if (targetData == null) targetData = currentData;
+                        continue;
+                    }
+
+                    Recensione rec_temp = new Recensione(currentStelle, currentTesto, currentIdUtente, currentIdRistorante);
+                    rec_temp.setData(currentData);
+
+                    if (parti.length > 5 && !parti[5].isBlank()) {
+                        rec_temp.setRisposta(new Risposta(parti[5].trim()));
+                    }
+                    lista.add(rec_temp);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+
+        Recensione recensioneModificata = new Recensione(targetStelle, targetTesto, targetIdUtente, targetIdRist);
+        recensioneModificata.setData(targetData != null ? targetData : new Date());
+        recensioneModificata.setRisposta(new Risposta(nuovaRisposta));
+        lista.add(recensioneModificata);
+
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileRecensioni, false))) {
+            if (header != null && !header.isBlank()) {
+                bw.write(header);
+                bw.newLine();
+            }
+
+            for (Recensione r : lista) {
+                LocalDateTime ldt = r.getData().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+                String stringaRisposta = "";
+
+                if (r.getRisposta().getText() != null) {
+                    stringaRisposta = r.getRisposta().getText();
+                }
+
+                bw.write(r.getNumeroStelle() + ";" +
+                        r.getText() + ";" +
+                        ldt.toString() + ";" +
+                        r.getIdUtente() + ";" +
+                        r.get_id_Ristorante() + ";" +
+                        stringaRisposta);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
+

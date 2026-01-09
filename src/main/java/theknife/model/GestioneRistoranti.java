@@ -79,6 +79,17 @@ public class GestioneRistoranti {
         return null;
     }
 
+    public Ristorante getRistoranteDaNome(String nome)
+    {
+        for (Ristorante r : listaRistoranti) {
+            if (nome.equalsIgnoreCase(r.getNome())) {
+                return r;
+            }
+        }
+        return null;
+
+    }
+
     /**
      * Restituisce un ristorante avendo l'id
      * @param id
@@ -171,4 +182,6 @@ public class GestioneRistoranti {
         }
         return r;
     }
+
+
 }

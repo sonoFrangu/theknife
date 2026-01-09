@@ -6,21 +6,20 @@ package theknife.model;
  */
 public class Risposta {
 
-    int idRistoratore;
     String text;
 
     /**
      *
-     * @param idRistoratore
      * @param text
      * @author Elia Toschi
      */
-    public Risposta(int idRistoratore, String text)
+    public Risposta( String text)
     {
-        this.idRistoratore = idRistoratore;
         this.text = text;
     }
 
+    public String getText()
+    {return text;}
     /**
      * stampa
      * @return stringa
@@ -28,7 +27,7 @@ public class Risposta {
      */
     @Override
     public String toString() {
-        return "Recensione: "+ idRistoratore+" "+text+"\n";
+        return "Recensione: "+text+"\n";
     }
 
     /**
@@ -38,7 +37,7 @@ public class Risposta {
      * @author Elia Toschi
      */
     public boolean equals(Risposta r) {
-        return this.idRistoratore==r.idRistoratore && this.text ==(r.text);
+        return  this.text ==(r.text);
     }
 
     /**

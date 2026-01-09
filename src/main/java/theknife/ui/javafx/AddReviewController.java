@@ -203,7 +203,6 @@ public class AddReviewController {
      * Modifica una recensione
      * @author Matteo Franguelli
      */
-    //Todo va aggiunta anche la riscrittura della risposta
     private void rimuoviVecchiaEAgungiNuova() {
         File file = new File(NOME_CARTELLA, NOME_FILE_RECENSIONI);
         List<String> righe = new LinkedList<>();
@@ -248,87 +247,5 @@ public class AddReviewController {
 
         chiudiFinestra();
     }
- //todo verifica e avvia
-    public void rispondiRecensione()
-    {
-        GestioneRecensioni gestRest =  GestioneRecensioni.getInstance();
-
-        File fileRecensioni = new File(NOME_CARTELLA, NOME_FILE_RECENSIONI);
-        if (!fileRecensioni.exists()) {
-            System.err.println("File utenti non trovato ");
-
-        }
-        int stelle=0;
-        String text="";
-        Date datatemp=null;
-        int idUtente=0;
-        int idRistorante=0;
-        String risposta="";
-
-        risposta = "risposta bella";
-
-
-
-        try (BufferedReader br = new BufferedReader(new FileReader(fileRecensioni, StandardCharsets.UTF_8))) {
-            String linea = br.readLine(); // Salta header (se presente) o leggilo
-
-            while ((linea = br.readLine()) != null) {
-                if (linea.isBlank()) continue;
-
-                // Nota: users.csv usa il punto e virgola come separatore
-                String[] parti = linea.split(";");
-
-
-                // Controlliamo che ci siano abbastanza colonne
-                if (parti.length > 4) {
-
-                    if(parti[0].trim()=="-1" |parti[1] ==null|parti[2]== null|parti[3]==null| parti[4]==null)
-                        continue;
-
-                    stelle=Integer.valueOf(parti[0].trim());
-                    text=parti[1].trim();
-
-                    LocalDateTime localDateTime = LocalDateTime.parse(parti[2].trim());
-                    datatemp =Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-                    LocalDateTime data = datatemp.toInstant()
-                            .atZone(ZoneId.systemDefault())
-                            .toLocalDateTime();
-
-                    idUtente = Integer.valueOf(parti[3].trim());
-                    idRistorante= Integer.valueOf(parti[4].trim());
-                    // non reinserisco la linea attuale
-                     try {
-                            int idR = Integer.parseInt(parti[4].trim());
-                            int idU = Integer.parseInt(parti[3].trim());
-                            String txt = parti[1].trim().replace("\"", "");
-
-                            if (idR == recensioneOriginale.getRawRestaurantId() && idU ==idUtente  && txt.equals(recensioneOriginale.getText())) {
-                                continue; // SALTA QUESTA RIGA (è quella vecchia)
-                            }
-                        } catch(Exception e){}
-
-
-                    try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileRecensioni, false))) {
-                        bw.write(stelle + ";" + text + ";" +
-                                data+ ";" +
-                                idUtente + ";" +
-                                idRistorante+";"+ risposta);
-                        bw.newLine();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        etichettaErrore.setText("Errore nel salvataggio recensione su file.");
-                        return;
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-
-
 
 }
