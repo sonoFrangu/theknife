@@ -22,7 +22,6 @@ public class Risposta {
     }
 
     /**
-     * stampa
      * @return stringa
      * @author Elia Toschi
      */
@@ -35,12 +34,15 @@ public class Risposta {
      * @author Elia Toschi
      * @param r
      * @return boolean
-     * @author Elia Toschi
      */
     public boolean equals(Risposta r) {
         return this.idRistoratore==r.idRistoratore && this.text ==(r.text);
     }
 
+    /**
+     * @author Matteo Franguelli
+     * @return text
+     */
     public String getText() {
         return text;
     }

@@ -25,13 +25,11 @@ public class Luogo {
         this.latitudine = latitudine;
         this.longitudine = longitudine;
     }
-    //<editor-fold desc="Get">
     public String getNazione() { return nazione;}
     public String getIndirizzo() { return indirizzo;}
     public String getCitta() { return citta;}
     public double getLatitudine() { return latitudine;}
     public double getLongitudine() { return longitudine;}
-    //</editor-fold>
 
     public boolean equals(Luogo l)
     {
@@ -62,8 +60,6 @@ public class Luogo {
      * @param lat2 latitudine da confrontare
      * @param longi2 longitudine da confrontare
      * @return boolean true se < 10 km
-     */
-    /**
      * @author Celestino Resteghini
      * @author Elia Toschi
      */
