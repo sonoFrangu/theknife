@@ -92,10 +92,8 @@ public class RestaurantDetailsController {
             linkSitoWeb.setDisable(true);
             mostraMessaggioNessunSito();
         }
-
-        // Bottono "Apri in Maps"
+        // "Apri in Maps"
         preparaGoogleMapsUrl();
-
         // Gestione bottone Preferiti in base al ruolo
         aggiornaVisibilitaPreferiti();
     }
@@ -125,7 +123,6 @@ public class RestaurantDetailsController {
 
     private void aggiornaVisibilitaPreferiti() {
         Session s = Session.getInstance();
-        // Visibile se ha permessi da CLIENTE (quindi anche se è Ristoratore+Cliente)
         boolean visibile = s.isCliente();
         if (bottonePreferiti != null) {
             bottonePreferiti.setVisible(visibile);
