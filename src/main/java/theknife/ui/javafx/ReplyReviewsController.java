@@ -166,6 +166,14 @@ public class ReplyReviewsController {
         stage.close();
     }
 
+    /**
+     * permette di scrivere la risposta ad una recensione
+     * @param rist
+     * @param text
+     * @param reply
+     * @param rec
+     * @author Elia Toschi
+     */
     public void rispondiRecensione(Label rist, Label text, TextArea reply, Recensione rec) {
         GestioneRistoranti gr = GestioneRistoranti.getInstance();
         File fileRecensioni = new File(NOME_CARTELLA, NOME_FILE_RECENSIONI);
@@ -213,8 +221,10 @@ public class ReplyReviewsController {
                     Recensione rec_temp = new Recensione(currentStelle, currentTesto, currentIdUtente, currentIdRistorante);
                     rec_temp.setData(currentData);
 
+                    String usernameRist= Session.getInstance().getUsername();
+                    int idRistoratore=GestioneFile.recuperaId(usernameRist);
                     if (parti.length > 5 && !parti[5].isBlank()) {
-                        rec_temp.setRisposta(new Risposta(parti[5].trim()));
+                        rec_temp.setRisposta(new Risposta(idRistoratore,parti[5].trim()));
                     }
                     lista.add(rec_temp);
                 }
@@ -224,10 +234,13 @@ public class ReplyReviewsController {
             return;
         }
 
+        String usernameRist= Session.getInstance().getUsername();
+
+        int idRistoratore=GestioneFile.recuperaId(usernameRist);
 
         Recensione recensioneModificata = new Recensione(targetStelle, targetTesto, targetIdUtente, targetIdRist);
         recensioneModificata.setData(targetData != null ? targetData : new Date());
-        recensioneModificata.setRisposta(new Risposta(nuovaRisposta));
+        recensioneModificata.setRisposta(new Risposta(idRistoratore,  nuovaRisposta));
         lista.add(recensioneModificata);
 
 
@@ -242,8 +255,8 @@ public class ReplyReviewsController {
 
                 String stringaRisposta = "";
 
-                if (r.getRisposta().getText() != null) {
-                    stringaRisposta = r.getRisposta().getText();
+                if (r.getRisposta().getTextString() != null) {
+                    stringaRisposta = r.getRisposta().getTextString();
                 }
 
                 bw.write(r.getNumeroStelle() + ";" +

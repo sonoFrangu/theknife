@@ -30,7 +30,8 @@ public class ViewReviewsController {
 
     private static final String NOME_CARTELLA = "doc";
     private static final String NOME_FILE_RECENSIONI = "recensioni.csv";
-
+    private static final String NOME_FILE_UTENTI = "users.csv";
+    private final java.util.Map<Integer, String> utentiAttuali = new java.util.HashMap<>();
     /**
      * Inizializza la lista delle recensioni e la grafica delle celle.
      * @author Matteo Franguelli
@@ -172,7 +173,7 @@ public class ViewReviewsController {
                         lblTitolo.getStyleClass().add("footer-text");
                         lblTitolo.setStyle("-fx-font-weight: bold;");
 
-                        Label lblRisposta = new Label(item.getRisposta().getText());
+                        Label lblRisposta = new Label(item.getRisposta().getTextString());
                         lblRisposta.setWrapText(true);
                         lblRisposta.setMaxWidth(330);
 

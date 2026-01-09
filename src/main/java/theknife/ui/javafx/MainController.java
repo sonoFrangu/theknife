@@ -615,7 +615,7 @@ public class MainController {
      * @author Matteo Franguelli
      */
     @FXML
-    private void onResetFilters() {
+    public void onResetFilters() {
         if (campoLuogo != null) campoLuogo.clear();
         if (campoCucina != null) campoCucina.clear();
 

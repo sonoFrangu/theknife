@@ -144,7 +144,7 @@ public class AddRestaurantController {
         a.setContentText("Ristorante salvato correttamente.");
         a.showAndWait();
 
-        controller.onResetFilters();
+        controllerPrincipale.onResetFilters();
         chiudiFinestra();
     }
 
