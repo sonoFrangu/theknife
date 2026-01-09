@@ -1,4 +1,4 @@
 #!/bin/bash
 cd "$(dirname "$0")"
 # Punta alla cartella target
-java -jar TheKnife-4.0.jar &
+java -jar bin/TheKnife-4.0.jar &
