@@ -9,6 +9,8 @@ import theknife.model.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -158,12 +160,14 @@ public class AddReviewController {
 
         File fileRecensioni = new File(NOME_CARTELLA, NOME_FILE_RECENSIONI);
         Recensione recensione= new Recensione(stelle,text,Integer.valueOf(idUtente),idRistorante);
+        LocalDateTime oraLocale= LocalDateTime.now();
+        recensione.setData(Date.from(oraLocale.atZone(ZoneId.systemDefault()).toInstant()));
         gestRest.add(recensione);
 
         // Salva su file
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileRecensioni, true))) {
             bw.write(stelle + ";" + text + ";" +
-                    LocalDateTime.now() + ";" +
+                     oraLocale+ ";" +
                     idUtente + ";" +
                     idRistorante);
             bw.newLine();
