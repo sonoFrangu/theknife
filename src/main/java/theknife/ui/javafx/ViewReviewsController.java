@@ -180,10 +180,7 @@ public class ViewReviewsController {
                     lblTesto.setMaxWidth(350);
                     lblTesto.setStyle("-fx-text-fill: black; -fx-font-size: 14px;");
 
-                    Label lblInfo = new Label("Utente: " + ricavaUsername(item.getIdUtente()));
-                    lblInfo.setStyle("-fx-text-fill: gray; -fx-font-size: 12px; -fx-font-style: italic;");
-
-                    box.getChildren().addAll(lblStelle, lblTesto, lblInfo);
+                    box.getChildren().addAll(lblStelle, lblTesto);
                     setGraphic(box);
                 }
             }

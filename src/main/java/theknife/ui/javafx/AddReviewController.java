@@ -145,14 +145,11 @@ public class AddReviewController {
         int idUtente =1;
         int  stelle       = votoSelezionato;
         String text      = areaRecensione.getText();
-
         Ristorante r = gr.getRistoranteDaIndirizzo(indirizzoRistorante);
-
         int idRistorante= r.getId();
 
         //Prendere id utente
-       idUtente=GestioneFile.recuperaId(utente);
-
+        idUtente=GestioneFile.recuperaId(utente);
 
         if (stelle == 0 || idUtente== 0 || areaRecensione.getText().isEmpty() || idRistorante== 0) {
             etichettaErrore.setText("Inserire tutti i campi");
@@ -160,7 +157,6 @@ public class AddReviewController {
         }
 
         File fileRecensioni = new File(NOME_CARTELLA, NOME_FILE_RECENSIONI);
-
         Recensione recensione= new Recensione(stelle,text,Integer.valueOf(idUtente),idRistorante);
         gestRest.add(recensione);
 
@@ -202,6 +198,7 @@ public class AddReviewController {
      * Modifica una recensione
      * @author Matteo Franguelli
      */
+    //Todo la modifica funzione ma non l'eliminazione
     private void rimuoviVecchiaEAgungiNuova() {
         File file = new File(NOME_CARTELLA, NOME_FILE_RECENSIONI);
         List<String> righe = new LinkedList<>();
@@ -209,7 +206,6 @@ public class AddReviewController {
         // Recupera i dati base
         String user = Session.getInstance().getUsername();
         int mioId = GestioneFile.recuperaId(user);
-
 
         try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             String line;
