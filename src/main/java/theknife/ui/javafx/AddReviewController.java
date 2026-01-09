@@ -211,6 +211,7 @@ public class AddReviewController {
         // Recupera i dati base
         String user = Session.getInstance().getUsername();
         int mioId = GestioneFile.recuperaId(user);
+        String risposta = "";
 
         try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             String line;
@@ -225,8 +226,12 @@ public class AddReviewController {
                         int idU = Integer.parseInt(p[3].trim());
                         String txt = p[1].trim().replace("\"", "");
 
+
                         if (idR == recensioneOriginale.getRawRestaurantId() && idU == mioId && txt.equals(recensioneOriginale.getText())) {
-                            continue; // SALTA QUESTA RIGA (è quella vecchia)
+                            if(p.length >=6) {
+                                risposta = p[5].trim();
+                            }
+                            continue;
                         }
                     } catch(Exception e){}
                 }
@@ -235,7 +240,7 @@ public class AddReviewController {
         } catch (IOException e) { e.printStackTrace(); }
 
         // Aggiungi la NUOVA versione in fondo alla lista
-        String nuovaRiga = votoSelezionato + ";" + areaRecensione.getText().replace(";", "").replace("\n", " ") + ";" + LocalDateTime.now() + ";" + mioId + ";" + recensioneOriginale.getRawRestaurantId();
+        String nuovaRiga = votoSelezionato + ";" + areaRecensione.getText().replace(";", "").replace("\n", " ") + ";" + LocalDateTime.now() + ";" + mioId + ";" + recensioneOriginale.getRawRestaurantId() + ";" + risposta;
         righe.add(nuovaRiga);
 
         // Riscrivi il file
