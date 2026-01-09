@@ -2,8 +2,9 @@ package theknife.ui.javafx;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import theknife.model.GestioneRistoranti;
 import theknife.model.Luogo;
 import theknife.model.Ristorante;
@@ -26,6 +27,8 @@ import java.nio.charset.StandardCharsets;
  */
 public class FavoritesController {
 
+    @FXML private TableColumn<RestaurantRow, String> colonnaRistorante;
+    @FXML private TableColumn<RestaurantRow, String> colonnaLuogo;
     @FXML private TableView<RestaurantRow> tabellaPreferiti;
 
     @FXML private Label etichettaVuota;
@@ -43,6 +46,14 @@ public class FavoritesController {
      */
     @FXML
     private void initialize() {
+        colonnaRistorante.setCellValueFactory(
+                new PropertyValueFactory<>("nome")
+        );
+
+        colonnaLuogo.setCellValueFactory(
+                new PropertyValueFactory<>("luogo")
+        );
+
         tabellaPreferiti.setItems(preferiti);
 
         addFavorite();
@@ -87,7 +98,8 @@ public class FavoritesController {
                                     idRistorante = Integer.valueOf(st);
                                     int id = idRistorante;
                                     Ristorante r = gr.listaRistoranti.stream().filter(x -> x.getId() == id).findFirst().orElse(null);
-                                    preferiti.add(new RestaurantRow(r.getNome(), r.getLuogo().toString(), idRistorante));
+                                    if (r != null)
+                                        preferiti.add(new RestaurantRow(r.getNome(), r.getLuogo().toString(), idRistorante));
                                 }
                                 break;
                             }
@@ -106,10 +118,10 @@ public class FavoritesController {
      */
     private void aggiornaMessaggioVuoto() {
         boolean nessunElemento = preferiti.isEmpty();
+
         etichettaVuota.setVisible(nessunElemento);
         etichettaVuota.setManaged(nessunElemento);
-        if (etichettaVuota != null) { etichettaVuota.setVisible(nessunElemento); etichettaVuota.setManaged(nessunElemento); }
-        if (tabellaPreferiti != null) { tabellaPreferiti.setVisible(!nessunElemento); }
+        tabellaPreferiti.setVisible(!nessunElemento);
     }
 
     public static class RestaurantRow {
