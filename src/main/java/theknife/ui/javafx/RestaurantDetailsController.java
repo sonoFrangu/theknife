@@ -144,18 +144,23 @@ public class RestaurantDetailsController {
         {
             idRistorante = risto.get().getId();
         } else {
-            System.out.println(" === [Ristorante non trovato] ===");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Attenzione");
+            alert.setHeaderText(null);
+            alert.setContentText("Ristorante non trovato.");
+            alert.showAndWait();
+            return;
         }
 
         //Salvo il ristorante nel file user.csv
-        aggiungiRistoranteSuCSV(idRistorante);
-
-        //Confermo L'aggiunta del ristorante
-        Alert a = new Alert(Alert.AlertType.INFORMATION);
-        a.setTitle("Preferiti");
-        a.setHeaderText(null);
-        a.setContentText("Ristorante aggiunto ai preferiti.");
-        a.showAndWait();
+        if(aggiungiRistoranteSuCSV(idRistorante)) {
+            //Confermo L'aggiunta del ristorante
+            Alert a = new Alert(Alert.AlertType.INFORMATION);
+            a.setTitle("Preferiti");
+            a.setHeaderText(null);
+            a.setContentText("Ristorante aggiunto ai preferiti.");
+            a.showAndWait();
+        }
     }
 
     @FXML
@@ -230,10 +235,10 @@ public class RestaurantDetailsController {
         valoreStelle.setStyle("-fx-text-fill: gold; -fx-font-size: 18px; -fx-font-weight: bold;");
     }
 
-    private void aggiungiRistoranteSuCSV(int idRistorante) {
+    private boolean aggiungiRistoranteSuCSV(int idRistorante) {
         String usernameU = Session.getInstance().getUsername();
         File fileUtenti = new File(NOME_CARTELLA, NOME_FILE);
-        if (!fileUtenti.exists()) return;
+        if (!fileUtenti.exists()) return false;
         List<String> righe = new LinkedList<>();
         String primaparte="";
         String mieiRist="";
@@ -261,8 +266,12 @@ public class RestaurantDetailsController {
                             //Controllo se il ristorante era già presente nei preferiti
                             for(String stringa: s1)
                                 if (idRistorante == Integer.valueOf(stringa)) {
-                                    System.out.println(" === [Ristorante già nei preferiti] ===");
-                                    return;
+                                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                                    alert.setTitle("Attenzione");
+                                    alert.setHeaderText(null);
+                                    alert.setContentText("Ristorante già nei preferiti.");
+                                    alert.showAndWait();
+                                    return false;
                                 }
 
                             //Salvo il nuovo ristorante
@@ -297,5 +306,6 @@ public class RestaurantDetailsController {
                 bw.newLine();
             }
         } catch (IOException e) {}
+        return true;
     }
 }
