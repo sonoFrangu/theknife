@@ -1,14 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="CONTROLLER_NAME"
-            prefHeight="400.0" prefWidth="600.0">
+            fx:controller="theknife.ui.javafx.ReplyReviewsController"
+            stylesheets="@style.css"
+            prefWidth="600" prefHeight="700">
 
-</AnchorPane>
+    <top>
+        <VBox spacing="5" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 0 0 1 0;">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <Label text="Gestione Recensioni"
+                   styleClass="section-title"/>
+
+            <Label text="Qui puoi rispondere alle recensioni ricevute nei tuoi ristoranti."
+                   style="-fx-text-fill: #7f8c8d; -fx-font-size: 14px;"/>
+        </VBox>
+    </top>
+
+    <center>
+        <ListView fx:id="listaRecensioni" styleClass="review-list">
+            <placeholder>
+                <Label text="Non hai ancora ricevuto recensioni."/>
+            </placeholder>
+        </ListView>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #f9f9f9;">
+            <padding>
+                <Insets top="15" right="20" bottom="15" left="20"/>
+            </padding>
+            <Button text="Chiudi"
+                    onAction="#onChiudi"
+                    styleClass="footer-button"
+                    style="-fx-background-color: #95a5a6;"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

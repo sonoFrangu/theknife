@@ -6,9 +6,9 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="theknife.ui.javafx.ReplyReviewsController"
+            fx:controller="theknife.ui.javafx.ViewReviewsController"
             stylesheets="@style.css"
-            prefWidth="600" prefHeight="700">
+            prefWidth="500" prefHeight="600">
 
     <top>
         <VBox spacing="5" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 0 0 1 0;">
@@ -16,18 +16,29 @@
                 <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
 
-            <Label text="Gestione Recensioni"
+            <Label fx:id="etichettaTitolo"
+                   text="Recensioni"
                    styleClass="section-title"/>
 
-            <Label text="Qui puoi rispondere alle recensioni ricevute nei tuoi ristoranti."
-                   style="-fx-text-fill: #7f8c8d; -fx-font-size: 14px;"/>
+
+
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <Label fx:id="etichettaMedia"
+                       text="Media stelle: -"
+                       styleClass="footer-text"/>
+
+                <Label fx:id="etichettaConteggio"
+                       text="Numero di recensioni: 0"
+                       styleClass="footer-text"/>
+            </HBox>
         </VBox>
+
     </top>
 
     <center>
         <ListView fx:id="listaRecensioni" styleClass="review-list">
             <placeholder>
-                <Label text="Non hai ancora ricevuto recensioni."/>
+                <Label text="Non ci sono ancora recensioni."/>
             </placeholder>
         </ListView>
     </center>
@@ -41,6 +52,7 @@
                     onAction="#onChiudi"
                     styleClass="footer-button"
                     style="-fx-background-color: #95a5a6;"/>
+
         </HBox>
     </bottom>
 
