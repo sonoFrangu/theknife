@@ -71,6 +71,7 @@ public class Ristorante {
     public boolean isDelivery() { return delivery; }
     public boolean isBooking() { return booking; }
     public LinkedList<String> getCucina(){return cucina;}
+    public String getStringaCucina(){String s="";for(String c: cucina){s+=c+" ";}return s;}
     public Luogo getLuogo(){return luogo;}
     public String getWebsite() { return website; }
     public  int getId() { return id;  }
@@ -110,6 +111,34 @@ public class Ristorante {
             return sommaVoti/cont;
         else
             return -1;
+    }
+
+    public int getNumRecensioni()
+    {
+        int cont=0;
+
+        File file = new File("doc", "recensioni.csv");
+
+        // Recupera voti delle recensioni
+        try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.isBlank()) { continue; }
+
+                String[] p = line.split(line.contains(";") ? ";" : ",");
+                if (p.length >= 5) {
+                    try {
+                        if (id == Integer.valueOf(p[4]))
+                        {
+                            cont++;
+                        }
+                    } catch(Exception e){}
+                }
+            }
+        } catch (IOException e) { e.printStackTrace(); }
+
+
+        return cont;
     }
 
     public double getAward()

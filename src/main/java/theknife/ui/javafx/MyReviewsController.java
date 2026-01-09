@@ -178,28 +178,6 @@ public class MyReviewsController {
         }
     }
     /**
-     * Restituisce l'id dell'utente a partire dallo username.
-     *
-     * @author Matteo Franguelli
-     */
-    private int trovaIlMioIdDaUsername(String usernameCercato) {
-        File file = new File(NOME_CARTELLA, NOME_FILE_UTENTI);
-        if (!file.exists()) return -1;
-        try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
-            String linea = br.readLine();
-            while ((linea = br.readLine()) != null) {
-                if (linea.isBlank()) continue;
-                String[] parti = linea.split(";");
-                if (parti.length > 7) {
-                    if (pulisci(parti[0]).equals(usernameCercato)) {
-                        try { return Integer.parseInt(pulisci(parti[7])); } catch (Exception e) { return -1; }
-                    }
-                }
-            }
-        } catch (IOException e) { e.printStackTrace(); }
-        return -1;
-    }
-    /**
      * Restituisce il nome del ristorante dato il suo id.
      *
      * @author Matteo Franguelli
