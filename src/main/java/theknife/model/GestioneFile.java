@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Elia Toschi
@@ -18,6 +19,7 @@ public class GestioneFile {
     private static String nomeCartella = "doc";
     private static String nomeFileRistoranti = "michelin_my_maps.csv";
     private static String nomeFileUtenti = "users.csv";
+    private static String nomeFileRecensioni = "recensioni.csv";
 
     private static final String NOME_CARTELLA_DOC = "doc";
 
@@ -27,6 +29,7 @@ public class GestioneFile {
 
     private static final String percorsoFileRistoranti = percorsoBase + nomeFileRistoranti;
     private static final String percorsoFileUtenti = percorsoBase + nomeFileUtenti;
+    private static final String percorsoFileRecensioni = percorsoBase + nomeFileRecensioni;
 
     /**
      * Lettura da file csv dei ristoranti
@@ -198,6 +201,106 @@ public class GestioneFile {
             e.printStackTrace();
         }
         return id;
+    }
+
+    /**
+     * Legge le recensioni dal file.
+     * NOTA: Poiché la classe Recensione imposta la data a "adesso" nel costruttore,
+     * la data storica presente nel file CSV viene ignorata in fase di caricamento.
+     */
+    public static LinkedList<Recensione> leggiRecensioni() {
+        LinkedList<Recensione> lista = new LinkedList<>();
+        File file = new File(percorsoFileRecensioni);
+
+        if (!file.exists()) return lista;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                if (linea.isBlank() || linea.toLowerCase().startsWith("n_stelle")) continue;
+
+                String[] parti = linea.contains(";") ? linea.split(";") : linea.split(",");
+
+                if (parti.length >= 5) {
+                    try {
+                        int stelle = Integer.parseInt(pulisci(parti[0]));
+                        String testo = pulisci(parti[1]);
+                        // parti[2] era data
+                        int idUtente = Integer.parseInt(pulisci(parti[3]));
+                        int idRistorante = Integer.parseInt(pulisci(parti[4]));
+
+                        Recensione r = new Recensione(stelle, testo, idUtente, idRistorante);
+                        lista.add(r);
+
+                    } catch (Exception e) {
+                        System.err.println("Errore lettura riga: " + linea);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
+    /**
+     * Rimuove la recensione dal file CSV confrontando Utente, Ristorante, Voto e Testo.
+     * La data viene ignorata nel confronto.
+     */
+    public static void rimuoviRecensione(int idUtente, int idRistorante, int voto, String testo) {
+        File file = new File(percorsoFileRecensioni);
+        List<String> righeDaSalvare = new LinkedList<>();
+        boolean trovata = false;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                if (linea.isBlank() || linea.toLowerCase().startsWith("n_stelle")) {
+                    righeDaSalvare.add(linea);
+                    continue;
+                }
+                String[] parti = linea.contains(";") ? linea.split(";") : linea.split(",");
+                boolean daEliminare = false;
+
+                if (parti.length >= 5) {
+                    try {
+                        int rVoto = Integer.parseInt(pulisci(parti[0]));
+                        String rTesto = pulisci(parti[1]);
+                        int rIdUtente = Integer.parseInt(pulisci(parti[3]));
+                        int rIdRistorante = Integer.parseInt(pulisci(parti[4]));
+
+                        if (!trovata &&
+                                rIdUtente == idUtente &&
+                                rIdRistorante == idRistorante &&
+                                rVoto == voto &&
+                                rTesto.equals(testo)) {
+
+                            daEliminare = true;
+                            trovata = true;
+                        }
+                    } catch (Exception e) {
+                    }
+                }
+
+                if (!daEliminare) {
+                    righeDaSalvare.add(linea);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        if (trovata) {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
+                for (String riga : righeDaSalvare) {
+                    bw.write(riga);
+                    bw.newLine();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

@@ -9,7 +9,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import theknife.model.GestioneFile;
 import theknife.model.GestioneRistoranti;
+import theknife.model.Recensione;
 import theknife.model.Ristorante;
 
 import java.io.*;
@@ -145,63 +147,15 @@ public class MyReviewsController {
      *
      * @author Matteo Franguelli
      */
-    private void rimuoviRecensioneDalFile(ReviewRow rigaDaEliminare) {
-        File file = new File(NOME_CARTELLA, NOME_FILE_RECENSIONI);
-        List<String> righeDaSalvare = new ArrayList<>();
-
+    private void rimuoviRecensioneDalFile(ReviewRow riga) {
         Session session = Session.getInstance();
-        String mioUsername = session.getUsername();
-        int mioId = trovaIlMioIdDaUsername(mioUsername);
-
-        try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                if (linea.isBlank()) {
-                    righeDaSalvare.add(linea); // mantieni righe vuote o header
-                    continue;
-                }
-
-                // Salta l'header se presente "N_Stelle"
-                if (linea.toLowerCase().startsWith("n_stelle")) {
-                    righeDaSalvare.add(linea);
-                    continue;
-                }
-
-                String[] parti = linea.contains(";") ? linea.split(";") : linea.split(",");
-
-                if (parti.length >= 5) {
-                    try {
-                        int stelle = Integer.parseInt(pulisci(parti[0]));
-                        String testo = pulisci(parti[1]);
-                        int idUtente = Integer.parseInt(pulisci(parti[3]));
-                        int idRistorante = Integer.parseInt(pulisci(parti[4]));
-
-                        // (Utente uguale + Ristorante uguale + Testo uguale + Voto uguale)
-                        if (idUtente == mioId &&
-                                idRistorante == rigaDaEliminare.getRawRestaurantId() &&
-                                stelle == rigaDaEliminare.getRating() &&
-                                testo.equals(rigaDaEliminare.getText())) {
-                        }
-
-                    } catch (Exception e) {
-                        // riga illeggibile
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        // Riscriviamo il file
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
-            for (String riga : righeDaSalvare) {
-                bw.write(riga);
-                bw.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        int mioId = GestioneFile.recuperaId(session.getUsername());
+        GestioneFile.rimuoviRecensione(
+                mioId,
+                riga.getRawRestaurantId(),
+                riga.getRating(),
+                riga.getText()
+        );
     }
     /**
      * Carica dal file tutte le recensioni dell'utente corrente.
@@ -213,38 +167,14 @@ public class MyReviewsController {
         Session session = Session.getInstance();
         if (session.isGuest()) return;
 
-        String mioUsername = session.getUsername();
-        int mioId = trovaIlMioIdDaUsername(mioUsername);
+        int mioId = GestioneFile.recuperaId(session.getUsername());
+        List<Recensione> tutteLeRecensioni = GestioneFile.leggiRecensioni();
 
-        if (mioId == -1) return;
-
-        File file = new File(NOME_CARTELLA, NOME_FILE_RECENSIONI);
-        if (!file.exists()) return;
-
-        try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
-            String linea = br.readLine();
-
-            while ((linea = br.readLine()) != null) {
-                if (linea.isBlank()) continue;
-                String[] parti = linea.contains(";") ? linea.split(";") : linea.split(",");
-
-                if (parti.length >= 5) {
-                    try {
-                        int idAutoreRecensione = Integer.parseInt(pulisci(parti[3]));
-
-                        if (idAutoreRecensione == mioId) {
-                            int stelle = Integer.parseInt(pulisci(parti[0]));
-                            String testo = pulisci(parti[1]);
-                            int idRistorante = Integer.parseInt(pulisci(parti[4]));
-
-                            String nomeRistorante = trovaNomeRistorante(idRistorante);
-                            dati.add(new ReviewRow(nomeRistorante, stelle, testo, idRistorante));
-                        }
-                    } catch (Exception ignored) {}
-                }
+        for (Recensione r : tutteLeRecensioni) {
+            if (r.getIdUtente() == mioId) {
+                String nomeRistorante = trovaNomeRistorante(r.get_id_Ristorante());
+                dati.add(new ReviewRow(nomeRistorante, r.getNumeroStelle(), r.getText(), r.get_id_Ristorante()));
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
     /**
