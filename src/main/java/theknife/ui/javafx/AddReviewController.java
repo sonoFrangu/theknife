@@ -239,7 +239,7 @@ public class AddReviewController {
         righe.add(nuovaRiga);
 
         // Riscrivi il file
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8, false))) {
             for (String r : righe) {
                 bw.write(r);
                 bw.newLine();
@@ -249,7 +249,7 @@ public class AddReviewController {
         chiudiFinestra();
     }
  //todo verifica e avvia
-    private void rispondiRecensione()
+    public void rispondiRecensione()
     {
         GestioneRecensioni gestRest =  GestioneRecensioni.getInstance();
 
@@ -260,10 +260,13 @@ public class AddReviewController {
         }
         int stelle=0;
         String text="";
-        Date data=null;
+        Date datatemp=null;
         int idUtente=0;
         int idRistorante=0;
         String risposta="";
+
+        risposta = "risposta bella";
+
 
 
         try (BufferedReader br = new BufferedReader(new FileReader(fileRecensioni, StandardCharsets.UTF_8))) {
@@ -279,13 +282,17 @@ public class AddReviewController {
                 // Controlliamo che ci siano abbastanza colonne
                 if (parti.length > 4) {
 
-                    if(parti[0].trim()=="-1" |parti[1] ==null|parti[2]== null|parti[3]==null| parti[4]==null| parti[5]!=null)
+                    if(parti[0].trim()=="-1" |parti[1] ==null|parti[2]== null|parti[3]==null| parti[4]==null)
                         continue;
+
                     stelle=Integer.valueOf(parti[0].trim());
                     text=parti[1].trim();
 
                     LocalDateTime localDateTime = LocalDateTime.parse(parti[2].trim());
-                    data =Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+                    datatemp =Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+                    LocalDateTime data = datatemp.toInstant()
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDateTime();
 
                     idUtente = Integer.valueOf(parti[3].trim());
                     idRistorante= Integer.valueOf(parti[4].trim());
@@ -301,7 +308,7 @@ public class AddReviewController {
                         } catch(Exception e){}
 
 
-                    try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileRecensioni, true))) {
+                    try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileRecensioni, false))) {
                         bw.write(stelle + ";" + text + ";" +
                                 data+ ";" +
                                 idUtente + ";" +
@@ -319,6 +326,8 @@ public class AddReviewController {
         }
 
     }
+
+
 
 
 
