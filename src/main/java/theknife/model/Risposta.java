@@ -41,6 +41,10 @@ public class Risposta {
         return this.idRistoratore==r.idRistoratore && this.text ==(r.text);
     }
 
+    public String getText() {
+        return text;
+    }
+
     /**
      * equals
      * @param r

@@ -12,7 +12,6 @@ public class Recensione {
     private int id_ristorante;
     private int id;
     private static int contatore=0;
-
     private Risposta risposta;
 
     /**

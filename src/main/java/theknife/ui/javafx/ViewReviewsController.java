@@ -3,10 +3,12 @@ package theknife.ui.javafx;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import theknife.model.Recensione;
+import theknife.model.Risposta;
 import theknife.model.Ristorante;
 
 import java.io.*;
@@ -28,8 +30,7 @@ public class ViewReviewsController {
 
     private static final String NOME_CARTELLA = "doc";
     private static final String NOME_FILE_RECENSIONI = "recensioni.csv";
-    private static final String NOME_FILE_UTENTI = "users.csv";
-    private final java.util.Map<Integer, String> utentiAttuali = new java.util.HashMap<>();
+
     /**
      * Inizializza la lista delle recensioni e la grafica delle celle.
      * @author Matteo Franguelli
@@ -39,6 +40,7 @@ public class ViewReviewsController {
         listaRecensioni.setItems(recensioniData);
         impostaGraficaCelle();
     }
+
     /**
      * Imposta il ristorante corrente e carica le relative recensioni.
      * @author Matteo Franguelli
@@ -54,6 +56,7 @@ public class ViewReviewsController {
             calcolaStatistiche();
         }
     }
+
     /**
      * Carica dal file solo le recensioni associate al ristorante selezionato.
      * @author Matteo Franguelli
@@ -70,7 +73,6 @@ public class ViewReviewsController {
             while ((linea = br.readLine()) != null) {
                 if (linea.isBlank()) continue;
 
-                // Gestisce sia separatore ; che ,
                 String[] parti;
                 if (linea.contains(";")) parti = linea.split(";");
                 else parti = linea.split(",");
@@ -85,16 +87,32 @@ public class ViewReviewsController {
                         int idRistCsv = Integer.parseInt(sIdRistorante);
                         int idRistAttuale = ristoranteSelezionato.getId();
 
+                        // Controlliamo se la recensione appartiene al ristorante selezionato
                         if (idRistCsv == idRistAttuale) {
                             int stelle = Integer.parseInt(sStelle);
                             int idUtente = Integer.parseInt(sIdUtente);
 
                             Recensione rec = new Recensione(stelle, testo, idUtente, idRistCsv);
+
+                            // Lettura della risposta
+                            if (parti.length >= 6) {
+                                String testoRisposta = pulisci(parti[5]);
+
+                                if (testoRisposta.startsWith("RISPOSTA:")) {
+                                    testoRisposta = testoRisposta.substring(9).trim();
+                                }
+
+                                if (!testoRisposta.isBlank() && !testoRisposta.equals("null")) {
+                                    Risposta rispObj = new Risposta(idRistCsv, testoRisposta);
+                                    rec.setRisposta(rispObj);
+                                }
+                            }
+
                             recensioniData.add(rec);
                         }
 
                     } catch (Exception ignored) {
-                        // Ignora righe malformate senza intasare la console
+                        // Ignora righe malformate
                     }
                 }
             }
@@ -105,16 +123,15 @@ public class ViewReviewsController {
 
     /**
      * Pulisce una stringa rimuovendo spazi e separatori non desiderati.
-     *
      * @author Matteo Franguelli
      */
     private String pulisci(String s) {
         if (s == null) return "";
         return s.trim().replace(";", "");
     }
+
     /**
      * Imposta la grafica personalizzata delle celle della lista recensioni.
-     *
      * @author Matteo Franguelli
      */
     private void impostaGraficaCelle() {
@@ -144,17 +161,41 @@ public class ViewReviewsController {
                     lblTesto.setStyle("-fx-text-fill: black; -fx-font-size: 14px;");
 
                     box.getChildren().addAll(lblStelle, lblTesto);
+
+                    if (item.getRisposta() != null) {
+                        VBox boxRisposta = new VBox(2);
+
+                        boxRisposta.setStyle("-fx-background-color: lightgray; -fx-background-radius: 5; -fx-padding: 8;");
+                        VBox.setMargin(boxRisposta, new Insets(10, 0, 0, 0));
+
+                        Label lblTitolo = new Label("Risposta del Ristoratore:");
+                        lblTitolo.getStyleClass().add("footer-text");
+                        lblTitolo.setStyle("-fx-font-weight: bold;");
+
+                        Label lblRisposta = new Label(item.getRisposta().getText());
+                        lblRisposta.setWrapText(true);
+                        lblRisposta.setMaxWidth(330);
+
+                        // Usa la classe CSS richiesta + forza l'italic
+                        lblRisposta.getStyleClass().add("footer-text");
+                        lblRisposta.setStyle("-fx-font-style: italic;");
+
+                        boxRisposta.getChildren().addAll(lblTitolo, lblRisposta);
+                        box.getChildren().add(boxRisposta);
+                    }
+                    // ---------------------------------------------
+
                     setGraphic(box);
                 }
             }
         });
     }
+
     /**
      * Chiude la finestra corrente.
-     *
      * @author Matteo Franguelli
      */
-        @FXML
+    @FXML
     private void onChiudi() {
         Stage stage = (Stage) etichettaTitolo.getScene().getWindow();
         stage.close();
@@ -173,7 +214,7 @@ public class ViewReviewsController {
         }
         double media = sommaStelle / recensioniData.size();
 
-        String mediaFormattata = String.valueOf(media);
+        String mediaFormattata = String.format("%.1f", media);
         if (etichettaMedia != null) {
             etichettaMedia.setText("Media stelle: " + mediaFormattata);
         }
