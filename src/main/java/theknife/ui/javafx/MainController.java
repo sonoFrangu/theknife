@@ -705,8 +705,20 @@ public class MainController {
         }
     }
 
+    @FXML
     public void onReplyReviews() {
-        //todo completare
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/it/unininsubria/theknifeui/ui/javafx/view/reply_review.fxml"));
+            javafx.scene.Scene scene = new javafx.scene.Scene(loader.load());
+            Stage st = new Stage();
+            st.setScene(scene);
+            st.setTitle("Rispondi alle recensioni");
+            st.initModality(Modality.APPLICATION_MODAL);
+            st.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
