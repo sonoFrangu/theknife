@@ -705,6 +705,7 @@ public class MainController {
         }
     }
 
+    @FXML
     public void onReplyReviews() {
         try {
             FXMLLoader loader = new FXMLLoader(

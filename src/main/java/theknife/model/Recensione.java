@@ -12,7 +12,6 @@ public class Recensione {
     private int id_ristorante;
     private int id;
     private static int contatore=0;
-
     private Risposta risposta;
 
     /**
@@ -34,14 +33,11 @@ public class Recensione {
         this.id = ++contatore;
     }
 
-    //<editor-fold desc="Getter">
     public int getNumeroStelle() {return numeroStelle;}
     public String getText() {return text;}
-    public Date getData() {return data;}
     public int getIdUtente() {return id_utente_reg;}
     public int get_id_Ristorante() {return id_ristorante;}
     public Risposta getRisposta() {return risposta;}
-        //</editor-fold>
 
     public void setData(Date date)
     {
@@ -68,6 +64,7 @@ public class Recensione {
     }
     /**
      * @author Matteo Franguelli
+     * @author Elia Toschi
      */
     @Override
     public boolean equals(Object r) {

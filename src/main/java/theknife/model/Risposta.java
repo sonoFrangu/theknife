@@ -21,7 +21,6 @@ public class Risposta {
     public String getText()
     {return text;}
     /**
-     * stampa
      * @return stringa
      * @author Elia Toschi
      */
@@ -34,10 +33,17 @@ public class Risposta {
      * @author Elia Toschi
      * @param r
      * @return boolean
-     * @author Elia Toschi
      */
     public boolean equals(Risposta r) {
         return  this.text ==(r.text);
+    }
+
+    /**
+     * @author Matteo Franguelli
+     * @return text
+     */
+    public String getText() {
+        return text;
     }
 
     /**

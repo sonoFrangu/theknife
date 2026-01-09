@@ -138,7 +138,7 @@ public class ReplyReviewsController {
     }
 
     private void salvaRisposta(Recensione recensione, String testoRisposta) {
-        File fileRisposte = new File("doc", "risposte.csv");
+        File fileRisposte = new File("doc", "recensioni.csv");
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileRisposte, true))) {
             String riga = recensione.get_id_Ristorante() + ";" +

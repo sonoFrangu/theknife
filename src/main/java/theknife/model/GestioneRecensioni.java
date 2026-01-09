@@ -22,40 +22,16 @@ public class GestioneRecensioni {
     }
 
     /**
+     * Restituisce l'istanza di GestioneRecensioni
      * @author Elia Toschi
      * @author Celestino Resteghini
-     * @return null
+     * @return instance
      */
     public static synchronized GestioneRecensioni getInstance() {
         if (instance == null) {
             instance = new GestioneRecensioni();
         }
         return instance;
-    }
-    /**
-     * rimuove una recensione dalla lista
-     * @param r
-     */
-    public void rimuoviRecensione(Recensione r)
-    {
-        recensioni.remove(r);
-    }
-
-    /**
-     * Modifica una recensione
-     * @param r
-     * @param text
-     * @param numeroStelle
-     * @author Elia Toschi
-     * @author Matteo Franguelli
-     */
-    public void modificaRecensioni(Recensione r, String text, int numeroStelle)
-    {
-        if(isPresente(r)) {
-            recensioni.remove(r);
-            Recensione nuovaRecensione = new Recensione(numeroStelle, text, r.getIdUtente(), r.get_id_Ristorante());
-            recensioni.add(nuovaRecensione);
-        }
     }
 
     /**

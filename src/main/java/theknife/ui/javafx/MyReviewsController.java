@@ -34,9 +34,6 @@ public class MyReviewsController {
 
     private final ObservableList<ReviewRow> dati = FXCollections.observableArrayList();
 
-    private static final String NOME_CARTELLA = "doc";
-    private static final String NOME_FILE_RECENSIONI = "recensioni.csv";
-    private static final String NOME_FILE_UTENTI = "users.csv";
     /**
      * Inizializza la tabella, il menu contestuale e carica le recensioni.
      *
@@ -57,7 +54,7 @@ public class MyReviewsController {
     }
 
     /**
-     * Crea il menu che appare col tasto destro sulla riga
+     * Crea il menu contestuale che appare premendo il tasto destro su un riga
      *
      * @author Matteo Franguelli
      */
@@ -69,15 +66,15 @@ public class MyReviewsController {
             MenuItem modifyItem = new MenuItem("Modifica recensione");
             MenuItem deleteItem = new MenuItem("Elimina recensione");
 
-            //Azione quando clicchi "Modifica" ---
+            //Modifica
             modifyItem.setOnAction(event -> {
                 ReviewRow riga = row.getItem();
                 if (riga != null) {
-                    apriModificaRecensione(riga); // <--- Qui richiami il metodo
+                    apriModificaRecensione(riga);
                 }
             });
 
-            // Azione quando clicchi "Elimina"
+            //Elimina
             deleteItem.setOnAction(event -> {
                 ReviewRow rigaSelezionata = row.getItem();
                 if (rigaSelezionata != null) {
@@ -123,7 +120,7 @@ public class MyReviewsController {
         }
     }
     /**
-     * Chiede conferma ed elimina la recensione selezionata.
+     * Chiede conferma ed elimina la recensione selezionata
      *
      * @author Matteo Franguelli
      */
@@ -179,7 +176,7 @@ public class MyReviewsController {
     }
     /**
      * Restituisce il nome del ristorante dato il suo id.
-     *
+     * @param idRistorante
      * @author Matteo Franguelli
      */
     private String trovaNomeRistorante(int idRistorante) {
@@ -191,7 +188,7 @@ public class MyReviewsController {
     }
     /**
      * Pulisce una stringa da caratteri non desiderati.
-     *
+     * @param s
      * @author Matteo Franguelli
      */
     private String pulisci(String s) {
@@ -209,9 +206,6 @@ public class MyReviewsController {
         if (tabellaRecensioni != null) { tabellaRecensioni.setVisible(!vuota); }
     }
 
-
-
-    // --- MODELLO DATI AGGIORNATO ---
     /**
      * Modello dati per la visualizzazione di una recensione nella tabella.
      *

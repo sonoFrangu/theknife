@@ -1,7 +1,5 @@
 package theknife.model;
 
-import javafx.collections.FXCollections;
-
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,38 +34,14 @@ public class GestioneRistoranti {
      */
     public void add(Ristorante ristorante)
     {
-        //if(ristorante != null && !listaRistoranti.contains(ristorante)) //todo: ci sono alcuni luoghi uguali
-            listaRistoranti.add(ristorante);
+        listaRistoranti.add(ristorante);
     }
 
     /**
-     * Rimuove un ristorante se presente
-     * @author Matteo Franguelli
-     * @param ristorante
-     *
-     */
-    public void remove(Ristorante ristorante)
-    {
-        if(ristorante != null && !listaRistoranti.contains(ristorante))
-            listaRistoranti.add(ristorante);
-    }
-
-    /**
-     * Modifica un ristorante
-     * @param new_r
-     * @param nome
-     * @param luogo
-     */
-    public void modify(Ristorante new_r, String nome, Luogo luogo)
-    {
-        listaRistoranti.removeIf(x -> x.getLuogo().equals(luogo)&&x.getNome().equals(nome));
-        listaRistoranti.add(new_r);
-    }
-
-    /**
-     *
+     * Restituisce un ristorante a partire dal suo indirizzo
      * @param indirizzo
-     * @return
+     * @return r
+     * @author Elia Toschi
      */
     public Ristorante getRistoranteDaIndirizzo(String indirizzo)
     {
@@ -94,6 +68,7 @@ public class GestioneRistoranti {
      * Restituisce un ristorante avendo l'id
      * @param id
      * @return
+     * @author Elia Toschi
      */
     public Ristorante getRistorante(int id)
     {
@@ -104,20 +79,17 @@ public class GestioneRistoranti {
     }
 
     /**
-     * Restituisce una lista di ristoranti ottendento una lista di id
-     * @param listaid
-     * @return
+     * Filtra la lista di tutti i ristoranti con tutti i possibili parametri
+     * @param luogo
+     * @param cucina
+     * @param prezzoMinore
+     * @param prezzoMaggiore
+     * @param delivery
+     * @param booking
+     * @param medStelle
+     * @return r
+     * @author Celestino Resteghini
      */
-    public LinkedList<Ristorante> getRistoranti(LinkedList<Integer> listaid)
-    {
-        LinkedList<Ristorante> list = new LinkedList<>();
-        for(Ristorante r : listaRistoranti)
-            for(Integer i : listaid )
-                if(r.getId()==i)
-                    list.add(r);
-        return list;
-    }
-
     public LinkedList<Ristorante> Filtro(String luogo, String cucina, double prezzoMinore, double prezzoMaggiore, boolean delivery, boolean booking, double medStelle)
     {
         LinkedList<Ristorante> r = null;
@@ -142,9 +114,6 @@ public class GestioneRistoranti {
                 System.out.println("=== [MANCANO RISTORANTI IN QUEL LUOGO] ===");
                 return r;
             }
-
-            /*todo: Versione senza ristoranti vicini
-            r = listaRistoranti.stream().filter(x -> x.getLuogo().getCitta().equals(luogo)).collect(Collectors.toCollection(LinkedList::new));*/
 
             if (cucina != null && cucina.length()>0)//rimozione dei ristoranti con cucine diverse da quella selezionata
             {

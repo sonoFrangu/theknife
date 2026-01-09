@@ -19,15 +19,10 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * Si occupa della gestione dei ristoranti di cui l'utente è proprietario.
- * @author Matteo Franguelli
  * @author Celestino Resteghini
  * version 2
  */
 public class MyRestaurantsController {
-
-
-    //TODO: Finche' non abbiamo modo di tener traccia dei ristoranti inseriti e da chi non posso farla
-    // per ora la tabella la lascio vuota
     @FXML private TableColumn<RistoranteRow, String> colonnaNome;
     @FXML private TableColumn<RistoranteRow, String> colonnaCitta;
     @FXML private TableColumn<RistoranteRow, String> colonnaIndirizzo;
@@ -40,7 +35,6 @@ public class MyRestaurantsController {
     private final ObservableList<RistoranteRow> rist = FXCollections.observableArrayList();
     GestioneRistoranti gr = GestioneRistoranti.getInstance();
 
-    // Etichetta da mostrare quando la tabella è vuota
     @FXML private Label etichettaVuota;
 
     @FXML
@@ -79,8 +73,6 @@ public class MyRestaurantsController {
     /**
      * Aggiorna il contenuto della tabella dei ristoranti nella vista.
      * @author Celestino Resteghini
-     * @author Matteo Franguelli
-     * @deprecated
      */
     public void setRestaurants() {
         rist.clear();
@@ -135,7 +127,6 @@ public class MyRestaurantsController {
     /**
      * Aggiorna la visibilità del campo grafico "etichettaVuota" quando
      * a tabella dei ristoranti è vuota o contiene elementi.
-     * <p>
      * Il messaggio viene mostrato solo se la tabella non
      * contiene alcun ristorante.
      * @author Matteo Franguelli

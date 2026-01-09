@@ -19,8 +19,8 @@ import java.util.List;
 public class Ristorante {
     private String nome;
     private String numeroTelefono;
-    private boolean delivery;  //Disponibilità del servizio di delivery (true/false)
-    private boolean booking;    //Disponibilità del servizio di prenotazione online (true/false)
+    private boolean delivery;
+    private boolean booking;
     public double prezzo;
     public LinkedList<String> cucina;
     private Luogo luogo;
@@ -64,7 +64,6 @@ public class Ristorante {
 
     }
 
-    //<editor-fold desc="Getter">
     public String getNome(){return nome;}
     public String getN_tel(){return numeroTelefono;}
     public double getPrezzo() { return prezzo; }
@@ -77,9 +76,9 @@ public class Ristorante {
     public  int getId() { return id;  }
 
     /**
+     * Restituisce la media delle stelle date dalle recensioni
      * @author Celestino Resteghini
-     * @return Restituisce la media delle stelle Michelin.
-     * versione 1
+     * @return sommaVoti/cont
      */
     public double getMediaStelle()
     {
@@ -113,6 +112,11 @@ public class Ristorante {
             return -1;
     }
 
+    /**
+     * Restituisce il numero delle recensioni
+     * @author Celestino Resteghini
+     * @return cont
+     */
     public int getNumRecensioni()
     {
         int cont=0;
@@ -167,8 +171,8 @@ public class Ristorante {
 
     /**
      * @author Celestino Resteghini
-     * @param r   the reference object with which to compare.
-     * @return
+     * @param r
+     * @return this.equals((Ristorante) r)
      */
     @Override
     public boolean equals(Object r) {
