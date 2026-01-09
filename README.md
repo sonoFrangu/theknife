@@ -1,4 +1,6 @@
-# Requisiti di Sistema
+# TheKnife Project
+---
+## Requisiti di Sistema
 
 Per l’utilizzo dell’applicazione è necessario disporre di un ambiente di esecuzione compatibile con **Java**.
 
@@ -18,7 +20,7 @@ Per macOS fare riferimento alla sezione [Avviare l'applicazione con macOS](#avvi
 
 ---
 
-# Installazione del Programma
+## Installazione del Programma
 
 Per poter eseguire l’applicazione è necessario scaricare il software eseguibile sul proprio dispositivo seguendo questi passaggi:
 
@@ -28,9 +30,9 @@ Per poter eseguire l’applicazione è necessario scaricare il software eseguibi
 
 ---
 
-# Esecuzione e Utilizzo
+## Esecuzione e Utilizzo
 
-## Avviare l'applicazione
+### Avviare l'applicazione
 
 In base al sistema operativo utilizzato, seguire le istruzioni riportate di seguito.
 
