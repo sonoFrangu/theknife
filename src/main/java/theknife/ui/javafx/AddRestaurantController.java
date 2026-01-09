@@ -200,7 +200,11 @@ public class AddRestaurantController {
                             for(String stringa: s1)
                                 if(id == Integer.valueOf(stringa))
                                 {
-                                    System.out.println(" === [Ristorante già nei miei ristoranti] ===");
+                                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                                    alert.setTitle("Attenzione");
+                                    alert.setHeaderText(null);
+                                    alert.setContentText("Questo ristorante è già presente nella tua lista.");
+                                    alert.showAndWait();
                                     return;
                                 }
                             //Salvo il nuovo ristorante
