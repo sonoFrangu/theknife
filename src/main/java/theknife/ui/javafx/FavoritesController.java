@@ -36,9 +36,7 @@ public class FavoritesController {
     private final ObservableList<RestaurantRow> preferiti = FXCollections.observableArrayList();
     GestioneRistoranti gr = GestioneRistoranti.getInstance();
 
-    //TODO: stesso discorso di MyRestaurantController.java, prima devo avere un file da cui prendere i preferiti
-    // se volete farlo e' uguale a MyReviewsController.java
-    // fatemi sapere se bisogna fare anche quale "Elimina" e "Modifica"
+    //TODO: fare "Elimina"
 
     /**
      * Inizializza la lista vuota.
@@ -68,8 +66,6 @@ public class FavoritesController {
      */
     public void addFavorite() {
         preferiti.clear();
-
-        //todo capire perchè non si vedono nella grafica nonostante vengano aggiunti in preferiti
 
         Session session = Session.getInstance();
         if (session.isGuest()) return;
