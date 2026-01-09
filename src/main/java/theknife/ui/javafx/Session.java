@@ -24,14 +24,9 @@ public class Session {
     // Istanza singleton della sessione
     private static Session instance;
 
-    // Nome utente attualmente loggato (null se ospite)
     private String username;
     private String citta;
-
-    // Ruolo principale dell'utente loggato (per visualizzazione)
     private Role ruolo;
-
-    // Permessi specifici (per gestire utenti che sono SIA clienti CHE ristoratori)
     private boolean permessiCliente;
     private boolean permessiRistoratore;
 
