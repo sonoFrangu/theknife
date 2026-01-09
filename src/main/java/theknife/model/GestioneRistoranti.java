@@ -114,7 +114,7 @@ public class GestioneRistoranti {
         if(luogo!=null && luogo.length()>0)
         {
             //Prendo il primo ristorante della città filtrata
-            Optional<Ristorante> primoRist = listaRistoranti.stream().filter(x -> x.getLuogo().getCitta().equals(luogo)).findFirst();
+            Optional<Ristorante> primoRist = listaRistoranti.stream().filter(x -> x.getLuogo().getCitta().equalsIgnoreCase(luogo)).findFirst();
 
             if (primoRist.isPresent()) { //Se esiste un ristorante in quella città, prendo lat e long
                 double lat1 = primoRist.get().getLuogo().getLatitudine();

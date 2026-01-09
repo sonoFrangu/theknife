@@ -1,5 +1,8 @@
 package theknife.model;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
@@ -52,10 +55,7 @@ public class GestioneFile {
         }
     }
 
-    /**
-     * Scrittura su file csv dei ristoranti
-     * @param ristorante
-     */
+
     public static void scriviFile(Ristorante ristorante) {
         String name = ristorante.getNome();
         String address = ristorante.getLuogo() != null ? "\"" + ristorante.getLuogo()+", " + ristorante.getLuogo().getIndirizzo() + ", " + ristorante.getLuogo().getCitta() + "\"": "null";
@@ -140,6 +140,31 @@ public class GestioneFile {
             e.printStackTrace();
         }
         return -1; // Utente non trovato
+    }
+
+    /**
+     * Cerca nel file users.csv la città associata allo username.
+     * @author Matteo Franguelli
+     */
+    public static String recuperaCittaUtente(String usernameTarget) {
+        File file = new File("doc", "users.csv");
+        if (!file.exists()) return null;
+        try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
+            String linea = br.readLine(); // Salta header
+            while ((linea = br.readLine()) != null) {
+                if (linea.isBlank()) continue;
+
+                String[] parti = linea.split(";");
+                if (parti.length > 0 && pulisci(parti[0]).equalsIgnoreCase(usernameTarget)) {
+                    if (parti.length > 4) {
+                        return pulisci(parti[4]);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**

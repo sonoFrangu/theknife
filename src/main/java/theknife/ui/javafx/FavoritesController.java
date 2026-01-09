@@ -2,11 +2,21 @@ package theknife.ui.javafx;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import theknife.model.GestioneRistoranti;
+import theknife.model.Luogo;
 import theknife.model.Ristorante;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Classe che si occupa della gestione dei ristoranti preferiti.
@@ -17,11 +27,14 @@ import javafx.collections.ObservableList;
  */
 public class FavoritesController {
 
-    @FXML private ListView<Ristorante> listaPreferiti;
+    @FXML private TableColumn<RestaurantRow, String> colonnaRistorante;
+    @FXML private TableColumn<RestaurantRow, String> colonnaLuogo;
+    @FXML private TableView<RestaurantRow> tabellaPreferiti;
 
     @FXML private Label etichettaVuota;
 
-    private final ObservableList<Ristorante> preferiti = FXCollections.observableArrayList();
+    private final ObservableList<RestaurantRow> preferiti = FXCollections.observableArrayList();
+    GestioneRistoranti gr = GestioneRistoranti.getInstance();
 
     //TODO: stesso discorso di MyRestaurantController.java, prima devo avere un file da cui prendere i preferiti
     // se volete farlo e' uguale a MyReviewsController.java
@@ -33,22 +46,69 @@ public class FavoritesController {
      */
     @FXML
     private void initialize() {
-        // per ora la lista è vuota → solo grafica
-        listaPreferiti.setItems(preferiti);
+        colonnaRistorante.setCellValueFactory(
+                new PropertyValueFactory<>("nome")
+        );
+
+        colonnaLuogo.setCellValueFactory(
+                new PropertyValueFactory<>("luogo")
+        );
+
+        tabellaPreferiti.setItems(preferiti);
+
+        addFavorite();
+
         aggiornaMessaggioVuoto();
     }
 
     /**
      * Si occupa di aggiungere il ristorante passato ai preferiti.
-     * @param ristorante
      * @author Celestino Resteghini
      * @author Matteo Franguelli
      */
-    public void addFavorite(Ristorante ristorante) {
-        if (ristorante == null) return;
-        if (!preferiti.contains(ristorante)) {
-            preferiti.add(ristorante);
-            aggiornaMessaggioVuoto();
+    public void addFavorite() {
+        preferiti.clear();
+
+        //todo capire perchè non si vedono nella grafica nonostante vengano aggiunti in preferiti
+
+        Session session = Session.getInstance();
+        if (session.isGuest()) return;
+
+        String mioUsername = session.getUsername();
+        int idRistorante=0;
+
+        File file = new File("doc", "users.csv");
+        if (!file.exists()) return;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
+            String linea = br.readLine();
+
+            while ((linea = br.readLine()) != null) {
+                if (linea.isBlank()) continue;
+                String[] parti = linea.contains(";") ? linea.split(";") : linea.split(",");
+
+                if (parti.length >= 0) {
+                    try {
+                        String userN = parti[0].trim();
+                        //Se coincide lo username, prendo i ristoranti preferiti
+                        if (userN.equals(mioUsername)) {
+                            if (parti.length > 8 && !parti[8].isEmpty()) {
+                                String[] s = parti[8].split("-");
+                                for (String st : s) {
+                                    idRistorante = Integer.valueOf(st);
+                                    int id = idRistorante;
+                                    Ristorante r = gr.listaRistoranti.stream().filter(x -> x.getId() == id).findFirst().orElse(null);
+                                    if (r != null)
+                                        preferiti.add(new RestaurantRow(r.getNome(), r.getLuogo().toString(), idRistorante));
+                                }
+                                break;
+                            }
+                        }
+                    } catch (Exception ignored) {}
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -58,7 +118,25 @@ public class FavoritesController {
      */
     private void aggiornaMessaggioVuoto() {
         boolean nessunElemento = preferiti.isEmpty();
+
         etichettaVuota.setVisible(nessunElemento);
         etichettaVuota.setManaged(nessunElemento);
+        tabellaPreferiti.setVisible(!nessunElemento);
+    }
+
+    public static class RestaurantRow {
+        private final String nome;
+        private final String luogo;
+        private final int rawRestaurantId; // Serve per l'eliminazione
+
+        public RestaurantRow(String nome, String luogo, int rawRestaurantId) {
+            this.nome = nome;
+            this.luogo = luogo;
+            this.rawRestaurantId = rawRestaurantId;
+        }
+
+        public String getNome() { return nome; }
+        public String getLuogo() { return luogo; }
+        public int getRawRestaurantId() { return rawRestaurantId; }
     }
 }

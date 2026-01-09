@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import theknife.model.GestioneFile;
 import theknife.model.GestioneRistoranti;
 import theknife.model.Ristorante;
 import theknife.model.Luogo;
@@ -338,7 +339,7 @@ public class MainController {
                     rd.isBooking(),
                     String.join(", ", rd.getCucina()),
                     rd.getWebsite(),
-                    rd.getMediaStelle()
+                    rd.getAward()
             );
             stage.showAndWait();
         } catch (IOException e) {
@@ -407,6 +408,20 @@ public class MainController {
     // chiamato da login e da register
     public void onLoginSuccess() {
         aggiornaInterfaccia();
+        Session session = Session.getInstance();
+        if (session.isAuthenticated()) {
+
+            String cittaUtente = GestioneFile.recuperaCittaUtente(session.getUsername());
+            if (cittaUtente != null && !cittaUtente.isBlank()) {
+                session.setCitta(cittaUtente);
+
+                if (campoLuogo != null) {
+                    campoLuogo.setText(cittaUtente);
+                    onApplyFilters();
+                    System.out.println("Filtro applicato automaticamente per città: " + cittaUtente);
+                }
+            }
+        }
     }
 
     /* =========================
@@ -471,6 +486,9 @@ public class MainController {
         alert.setHeaderText(null);
         alert.setContentText("Logout effettuato.");
         alert.showAndWait();
+
+        onResetFilters();
+
     }
 
     /* =========================
@@ -633,8 +651,9 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/it/unininsubria/theknifeui/ui/javafx/view/favorites.fxml"));
+            Scene scene = new Scene(loader.load());
             Stage st = new Stage();
-            st.setScene(new Scene(loader.load()));
+            st.setScene(scene);
             st.setTitle("I miei preferiti");
             st.initModality(Modality.APPLICATION_MODAL);
             st.showAndWait();

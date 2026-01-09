@@ -239,6 +239,7 @@ public class RestaurantDetailsController {
         if (!fileUtenti.exists()) return;
         List<String> righe = new LinkedList<>();
         String primaparte="";
+        String mieiRist="";
         String idRistorantiPres="";
 
 
@@ -249,7 +250,7 @@ public class RestaurantDetailsController {
                 if (linea.isBlank()) continue;
                 String[] parti = linea.split(";");
 
-                // Formato CSV atteso: username;hash;nome;cognome;città;isCliente;isRistoratore
+                // Formato CSV atteso: username;hash;nome;cognome;città;isCliente;isRistoratore;RistorantiPreferiti;MieiRistoranti
                 if (parti.length >= 2) {
                     if (parti[0].equals(usernameU)) {
 
@@ -257,23 +258,27 @@ public class RestaurantDetailsController {
                         primaparte = parti[0]+";"+parti[1]+";"+parti[2]+";"+parti[3]+";"+parti[4]+";"+parti[5]+";"+parti[6]+";"+parti[7]+";";
 
                         // Nella colonna Ristoranti preferiti ci sarà il seguente formato: "1-4-5"
-                        if (parti.length > 8) {
+                        if (parti.length > 8 && !parti[8].isEmpty()) {
                             idRistorantiPres = parti[8].trim();
                             String[] s1 = parti[8].split("-");
                             //Controllo se il ristorante era già presente nei preferiti
                             for(String stringa: s1)
-                                if(idRistorante == Integer.valueOf(stringa))
-                                {
+                                if (idRistorante == Integer.valueOf(stringa)) {
                                     System.out.println(" === [Ristorante già nei preferiti] ===");
                                     return;
                                 }
+
                             //Salvo il nuovo ristorante
                             idRistorantiPres = idRistorantiPres.trim()+"-"+String.valueOf(idRistorante);
+                            if(parti.length>9)
+                                mieiRist=parti[9];
                             continue; // SALTA QUESTA RIGA (è quella vecchia)
                         }
                         else
                         {
                             idRistorantiPres = String.valueOf(idRistorante);
+                            if(parti.length>9)
+                                mieiRist=parti[9];
                             continue; // SALTA QUESTA RIGA (è quella vecchia)
                         }
                     }
@@ -285,7 +290,7 @@ public class RestaurantDetailsController {
         }
 
         // Aggiungi la NUOVA versione in fondo alla lista
-        String nuovaRiga = primaparte + idRistorantiPres;
+        String nuovaRiga = primaparte + idRistorantiPres +";"+mieiRist;
         righe.add(nuovaRiga);
 
         // Riscrivi il file
