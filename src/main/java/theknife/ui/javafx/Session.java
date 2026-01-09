@@ -86,7 +86,7 @@ public class Session {
 
     /**
      * Imposta esplicitamente i permessi dell'utente.
-     * Utile quando un utente ha il doppio ruolo (es. Ristoratore che vuole recensire).
+     * Utile quando un utente ha il doppio ruolo (es. ristoratore che vuole recensire).
      *
      * @param isCliente true se l'utente può lasciare recensioni e avere preferiti
      * @param isRistoratore true se l'utente può aggiungere ristoranti
@@ -110,7 +110,7 @@ public class Session {
     }
 
     /**
-     * Restituisce true se l'utente ha i permessi da Ristoratore (es. aggiunta ristoranti).
+     * Restituisce true se l'utente ha i permessi da ristoratore (es. aggiunta ristoranti).
      * @author Matteo Franguelli
      */
     public boolean isRistoratore() {

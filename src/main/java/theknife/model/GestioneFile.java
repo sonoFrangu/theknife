@@ -104,46 +104,6 @@ public class GestioneFile {
     // NUOVI METODI AGGIUNTI
     // =============================================================
 
-    /**
-     * Cerca nel file users.csv l'ID corrispondente a un dato username.
-     * @param usernameCercato Lo username da cercare (es. "clt")
-     * @return int L'ID dell'utente, oppure -1 se non trovato o errore.
-     */
-    public static int trovaIdUtenteDaUsername(String usernameCercato) {
-        File file = new File(percorsoFileUtenti);
-        if (!file.exists()) {
-            System.err.println("File utenti non trovato in: " + percorsoFileUtenti);
-            return -1;
-        }
-
-        try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
-            String linea = br.readLine(); // Salta header (se presente) o leggilo
-
-            while ((linea = br.readLine()) != null) {
-                if (linea.isBlank()) continue;
-
-                // Nota: users.csv usa il punto e virgola come separatore
-                String[] parti = linea.split(";");
-
-                // Controlliamo che ci siano abbastanza colonne (ID è indice 7, Username indice 0)
-                if (parti.length > 7) {
-                    String userNelFile = pulisci(parti[0]);
-
-                    if (userNelFile.equals(usernameCercato)) {
-                        try {
-                            return Integer.parseInt(pulisci(parti[7]));
-                        } catch (NumberFormatException e) {
-                            System.err.println("Errore formato ID per utente " + usernameCercato);
-                            return -1;
-                        }
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return -1; // Utente non trovato
-    }
 
     /**
      * Cerca nel file users.csv la città associata allo username.
@@ -244,7 +204,7 @@ public class GestioneFile {
     }
 
     /**
-     * Rimuove la recensione dal file CSV confrontando Utente, Ristorante, Voto e Testo.
+     * Rimuove la recensione dal file CSV confrontando idUtente, Ristorante, Voto e Testo.
      * La data viene ignorata nel confronto.
      */
     public static void rimuoviRecensione(int idUtente, int idRistorante, int voto, String testo) {
