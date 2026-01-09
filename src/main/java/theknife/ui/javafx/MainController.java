@@ -366,7 +366,7 @@ public class MainController {
         // Recuperiamo i permessi esatti
         boolean isGuest = s.isGuest();
         boolean puoRecensire = s.isCliente();       // Vero se nel CSV è Cliente
-        boolean puoAggiungereRisto = s.isRistoratore();  // Vero se nel CSV è Ristoratore
+        boolean puoAggiungereRisto = s.isRistoratore();  // Vero se nel CSV è ristoratore
         boolean isLogged = !isGuest;
 
         // Login / Logout / Registrati
