@@ -124,7 +124,7 @@ public class ReplyReviewsController {
                         System.out.println("RISPOSTA INVIATA: " + testoRisposta);
                         System.out.println("--------------------------------------------------");
 
-                        salvaRisposta(r, testoRisposta);
+                        //salvaRisposta(r, testoRisposta);
 
                         areaRisposta.clear();
                         Alert a = new Alert(Alert.AlertType.INFORMATION, "Risposta inviata con successo!");
