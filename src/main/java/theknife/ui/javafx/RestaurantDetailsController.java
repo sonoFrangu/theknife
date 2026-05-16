@@ -18,6 +18,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+//TODO da rivedere, vengono usati i file
+
 public class RestaurantDetailsController {
 
 

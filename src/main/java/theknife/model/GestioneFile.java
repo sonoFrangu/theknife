@@ -8,6 +8,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 
+//TODO: da cancellare, creare gestioneDB fatta decentemente
+
 /**
  * @author Elia Toschi
  * @author Celestino Resteghini

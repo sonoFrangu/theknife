@@ -19,6 +19,8 @@
             <Label text="Nome *"/>
             <TextField fx:id="campoNome" promptText="Nome ristorante"/>
 
+            <!-- TODO mettere tutti i campi obbligatori, e gestirli a dovere -->
+
             <Label text="Nazione"/>
             <TextField fx:id="campoNazione" promptText="es. Italia"/>
 

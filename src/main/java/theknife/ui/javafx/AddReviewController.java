@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+//TODO da rivedere, vengono richiamati i file
+
 /**
  * Classe che si occupa della gestione di nuove Recensioni.
  * @author Elia Toschi

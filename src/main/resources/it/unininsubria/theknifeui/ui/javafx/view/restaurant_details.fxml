@@ -49,6 +49,9 @@
             <ColumnConstraints percentWidth="35"/> <ColumnConstraints percentWidth="65"/>
         </columnConstraints>
         <children>
+
+            <!-- TODO mettere range da a, conme nel msg sul gruppo-->
+
             <HBox spacing="5" alignment="CENTER_LEFT" GridPane.rowIndex="0" GridPane.columnIndex="0">
                 <Label text="💰" styleClass="emoticon"/>
                 <Label text="Prezzo medio:" styleClass="details-label"/>
@@ -79,6 +82,8 @@
                 <Label text="Telefono:" styleClass="details-label"/>
             </HBox>
             <Label fx:id="valoreTelefono" GridPane.rowIndex="4" GridPane.columnIndex="1" styleClass="details-value"/>
+
+            <!-- TODO aggiungere media recensioni-->
 
             <HBox spacing="5" alignment="CENTER_LEFT" GridPane.rowIndex="5" GridPane.columnIndex="0">
                 <Label text="⭐" styleClass="emoticon"/>

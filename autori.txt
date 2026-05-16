@@ -1,8 +1,3 @@
-Cognome: Ossuzio
-Nome: Tommaso
-Matricola: 761586
-Sede: VA
-
 Cognome: Franguelli
 Nome: Matteo
 Matricola: 761133
@@ -18,4 +13,9 @@ Nome: Celestino
 Matricola: 760865
 Sede: VA
 
-Link repository GitHub:  https://github.com/Tommaso-Ossuzio/theknife.git
+Cognome: Vissselly
+Nome: Michelangelo
+Matricola: -
+Sede: VA
+
+Link repository GitHub:  https://github.com/sonoFrangu/theknife.git

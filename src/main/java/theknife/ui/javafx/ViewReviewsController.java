@@ -14,6 +14,8 @@ import theknife.model.Ristorante;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
+//TODO da rivedere, vengono usati i file
+
 /**
  * Controller della vista che mostra le recensioni di un ristorante selezionato.
  * @author Matteo Franguelli

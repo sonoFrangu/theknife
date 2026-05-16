@@ -15,6 +15,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 
+//TODO da rivedere, vengono usati i file
+
 /**
  * Classe che si occupa della gestione dei ristoranti preferiti.
  * @author Celestino Resteghini

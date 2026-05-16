@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+//TODO da rivedere, vengono usati i file
+
 public class ReplyReviewsController {
 
     private static final String NOME_CARTELLA = "data";

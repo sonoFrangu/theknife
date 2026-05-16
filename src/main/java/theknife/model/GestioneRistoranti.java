@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+//TODO da rivedere
+
 /**
  * @author Celestino Resteghini
  * @author Matteo Franguelli

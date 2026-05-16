@@ -10,6 +10,8 @@ import java.net.URL;
 import java.awt.Taskbar;
 import javax.imageio.ImageIO;
 
+//TODO da rivedere
+
 /**
  * Classe principale JavaFX dell'applicazione.
  * Si occupa di:

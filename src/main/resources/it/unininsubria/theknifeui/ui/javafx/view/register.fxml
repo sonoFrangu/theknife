@@ -46,6 +46,8 @@
                 <TextField fx:id="campoCitta" promptText="Es. Varese" />
             </VBox>
 
+            <!-- TODO da modificare, mettere radioButton, o uno o l'altro  -->
+
             <VBox spacing="5">
                 <Label text="Ruolo (puoi selezionarli entrambi)" style="-fx-font-weight: bold; -fx-text-fill: #555;"/>
                 <HBox spacing="15">

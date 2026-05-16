@@ -12,6 +12,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+//TODO da rivedere, vengono usati i file
+
 /**
  * Controller della finestra di login.
  * Gestisce l'accesso leggendo i permessi specifici dal CSV data/users.csv.

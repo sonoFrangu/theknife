@@ -12,6 +12,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 
+//TODO da rivedere, vengono richiamati i file più volte
+
 /**
  * Controller per la gestione dell'aggiunta di nuovi ristoranti.
  * @author Celestino Resteghini

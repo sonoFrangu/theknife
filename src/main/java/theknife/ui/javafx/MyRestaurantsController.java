@@ -17,6 +17,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+//TODO da rivedere, vengono usati i file
+
 /**
  * Si occupa della gestione dei ristoranti di cui l'utente è proprietario.
  * @author Celestino Resteghini

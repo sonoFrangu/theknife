@@ -10,6 +10,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+//TODO da rivedere, vengono usati i file
+
 /**
  * Controller della finestra di registrazione.
  * Gestisce la creazione di un nuovo utente (cliente e/o ristoratore)

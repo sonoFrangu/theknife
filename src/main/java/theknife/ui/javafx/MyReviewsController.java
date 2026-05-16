@@ -18,6 +18,9 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+
+//TODO da rivedere
+
 /**
  * Controller che gestisce la visualizzazione e la gestione
  * delle recensioni scritte dall'utente corrente.

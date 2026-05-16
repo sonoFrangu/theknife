@@ -1,6 +1,9 @@
 package theknife.model;
 
 import java.util.Date;
+
+//TODO da rivedere
+
 /**
  * @author Elia Toschi
  */

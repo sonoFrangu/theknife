@@ -1,15 +1,13 @@
 package theknife.model;
 
-import theknife.ui.javafx.Session;
-
-import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
-import java.util.List;
+
+//TODO da rivedere, mediaStelle e getNumRecensioni richiama il file
 
 /**
  * @author Celestino Resteghini

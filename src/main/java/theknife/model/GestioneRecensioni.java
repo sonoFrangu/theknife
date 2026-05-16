@@ -2,6 +2,8 @@ package theknife.model;
 
 import java.util.LinkedList;
 
+//TODO da rivedere
+
 /**
  * @author Elia Toschi
  * @author Matteo Franguelli

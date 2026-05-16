@@ -24,6 +24,8 @@
         </VBox>
     </top>
 
+    <!-- TODO una volta scritta la risposta va tolta dalla lista -->
+
     <center>
         <ListView fx:id="listaRecensioni" styleClass="review-list">
             <placeholder>

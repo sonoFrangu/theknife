@@ -1,5 +1,7 @@
 package theknife.ui.javafx;
 
+//TODO da rivedere, non avremo più 4 tipi di utenti, ma solo 3
+
 /**
  * Gestisce lo stato dell'utente attualmente loggato nell'applicazione.
  * È un singleton: esiste una sola Session per tutta l'app.

@@ -1,5 +1,8 @@
 package theknife.model;
 import static java.lang.Math.*;
+
+//TODO da rivedere
+
 /**
  * @author Celestino Resteghini
  * @author Matteo Franguelli

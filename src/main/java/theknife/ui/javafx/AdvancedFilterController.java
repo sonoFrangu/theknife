@@ -10,6 +10,8 @@ import theknife.model.Ristorante;
 
 import java.util.LinkedList;
 
+//TODO da rivedere
+
 /**
  * Classe che si occupa della gestione del Filtro Avanzato.
  * @author Celestino Resteghini
